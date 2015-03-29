@@ -11,5 +11,10 @@ namespace GreySMITH.Utilities.Autodesk.Revit.ConversionTools
         {
 
         }
+
+        public static void OtherMethod()
+        {
+
+        }
     }
 }
