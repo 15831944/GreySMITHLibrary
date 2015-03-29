@@ -68,6 +68,7 @@ namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Documents
                     break;
             }
 
+            #region Find the Host of object
             // set up for incoming hosts
             ElementReferenceType hosttype = ElementReferenceType.REFERENCE_TYPE_NONE;
             switch(hosttype)
@@ -80,7 +81,8 @@ namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Documents
                 case ElementReferenceType.REFERENCE_TYPE_INSTANCE:
                     break;
             }
-            
+            #endregion
+
 
             return Result.Succeeded;
         }

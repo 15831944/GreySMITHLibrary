@@ -61,6 +61,7 @@
     <Compile Include="Utilities\Autodesk\Revit\Extensions\Applications\ProjectTemplate.cs" />
     <Compile Include="Utilities\Autodesk\Revit\Extensions\Applications\TemplateDiscipline.cs" />
     <Compile Include="Utilities\Autodesk\Revit\Extensions\Documents\CopyMonitorUtil.cs" />
+    <Compile Include="Utilities\Autodesk\Revit\Extensions\Documents\ElementUtils.cs" />
     <Compile Include="Utilities\Autodesk\Revit\Extensions\Documents\FamilyUtil.cs" />
     <Compile Include="Utilities\Autodesk\Revit\Extensions\Documents\ObjectGetter.cs" />
     <Compile Include="Utilities\Autodesk\Revit\Extensions\Documents\RevitLinkUtil.cs" />
