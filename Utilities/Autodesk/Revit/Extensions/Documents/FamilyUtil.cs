@@ -45,7 +45,6 @@ namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Documents
                 }
             }
 
-
             Family newfamily = famsym.Family;
             Document doc_family = doctoloadfrom.EditFamily(newfamily);
             doc_family.LoadFamily(curdoc);
@@ -72,6 +71,23 @@ namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Documents
             return famsym;
         }
 
+        public static void LoadFamilyDirect(this Document curdoc, FilteredElementCollector fec, ExternalCommandData excmd)
+        {
+            var collectionoffamsyms = from element in fec
+                                        where element is FamilySymbol
+                                        select element;
+
+            foreach (FamilySymbol fs in collectionoffamsyms)
+            {
+                FamilySymbol curfamysym = curdoc.LoadFamilyDirect(fs, fs.Document, excmd);
+            }
+        }
+        /// <summary>
+        /// Returns truth value on whether the document contains the family symbol in question
+        /// </summary>
+        /// <param name="doc">Document to check</param>
+        /// <param name="famsym">Family symbol to check for</param>
+        /// <returns></returns>
         public static bool HasFamily(this Document doc, FamilySymbol famsym)
         {
             bool answer = false;
@@ -87,5 +103,6 @@ namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Documents
 
             return answer;
         }
+
     }
 }

@@ -82,7 +82,7 @@ namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Documents
         /// Returns the name of the main file which should be used for Copy-Monitoriing etc
         /// </summary>
         /// <param name="doc">Active Document</param>
-        public static ElementId CreateLink_Revit(this Document doc)
+        public static ElementId CreateLinkRevit(this Document doc)
         {
             // Ask the user which links they would like to add to the project
             // Call the ShowDialog method to show the dialog box filtered to show only Revit Projects
