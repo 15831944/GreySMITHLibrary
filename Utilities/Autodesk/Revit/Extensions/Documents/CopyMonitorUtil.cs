@@ -57,8 +57,7 @@ namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Documents
             // acquire the category of the elements
             BuiltInCategory categoryoffec = (BuiltInCategory)fecoflinkedobjs.FirstElement().Category.Id.IntegerValue;
 
-
-            // load in any new families from the linked file
+            // load in all new families from the linked file
             curdoc.LoadFamilyDirect(fecoflinkedobjs, excmd);
 
             switch(categoryoffec)

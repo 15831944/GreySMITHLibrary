@@ -30,14 +30,16 @@ namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Documents
             oop.AllowOpeningLocalByWrongUser = true;
             oop.DetachFromCentralOption = DetachFromCentralOption.DetachAndPreserveWorksets;
 
-            // make "doctoloadfrom" the active document
+            // open "doctoloadfrom" (linked doc) and make it the active document
             if (uiapp.ActiveUIDocument.Document != doctoloadfrom)
             {
+                // try opening the document from memory only
                 try
                 {
                     Document newcurdoc = curdoc.Application.OpenDocumentFile(ModelPathUtils.ConvertUserVisiblePathToModelPath(doctoloadfrom.PathName), oop);
                 }
 
+                // was unable to open the document for some reason
                 catch
                 {
                     uiapp.OpenAndActivateDocument(ModelPathUtils.ConvertUserVisiblePathToModelPath(doctoloadfrom.PathName), oop, false);
@@ -45,13 +47,21 @@ namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Documents
                 }
             }
 
+            // open the family document
             Family newfamily = famsym.Family;
             Document doc_family = doctoloadfrom.EditFamily(newfamily);
+
+            // load it into the original document
             doc_family.LoadFamily(curdoc);
+
+            // close the family once done
             doc_family.Close(false);
             //doctoloadfrom.Close(true);
 
             // return control to the original active document
+            // could create possible bug - write a method to both
+            // move to another current document
+            // close all but current document
             if (uiapp.ActiveUIDocument.Document != curdoc)
             {
                 while (uiapp.ActiveUIDocument.Document != curdoc)
@@ -79,7 +89,10 @@ namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Documents
 
             foreach (FamilySymbol fs in collectionoffamsyms)
             {
-                FamilySymbol curfamysym = curdoc.LoadFamilyDirect(fs, fs.Document, excmd);
+                if (!curdoc.HasFamily(fs))
+                {
+                    FamilySymbol curfamysym = curdoc.LoadFamilyDirect(fs, fs.Document, excmd);
+                }
             }
         }
         /// <summary>
