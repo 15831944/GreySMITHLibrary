@@ -50,25 +50,47 @@ namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Documents
             Document linkeddoc,
             ExternalCommandData excmd)
         {
+            #region Prep
+            // acquire the category of the elements and make local variables
             FamilySymbol famsym = null;
             FamilyInstance faminst = null;
             Element temphost = null;
-
-            // acquire the category of the elements
             BuiltInCategory categoryoffec = (BuiltInCategory)fecoflinkedobjs.FirstElement().Category.Id.IntegerValue;
 
             // load in all new families from the linked file
             curdoc.LoadFamilyDirect(fecoflinkedobjs, excmd);
+            #endregion
 
-            switch(categoryoffec)
+            // for each instance in the collector
+
+            // look at the host
+
+            // if the host is not in the current document, it is a linked item
+
+            // if item is linked
+
+            // find host in the linked document
+
+            // create a reference plane based on this host in the current document
+
+            // place the item on the reference plane
+
+            // force the item to monitor the item in the linked document?
+
+            
+
+            #region Category Based Operations
+            switch (categoryoffec)
             {
                 case BuiltInCategory.OST_ElectricalFixtures:
                     
                     break;
             }
+            #endregion
 
             #region Find the Host of object
             // set up for incoming hosts
+            
             ElementReferenceType hosttype = ElementReferenceType.REFERENCE_TYPE_NONE;
             switch(hosttype)
             {

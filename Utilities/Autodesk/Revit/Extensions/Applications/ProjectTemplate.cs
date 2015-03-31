@@ -71,7 +71,7 @@ namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Applications
             UIDocument uidoc = null;
 
             // Based on the selection in the task dialog, choose the appropiate template
-            #region Possible Disciplines
+            #region Possible Disciplines (still need one for tech)
             switch (tdr)
             {
                 case (TaskDialogResult.CommandLink1):
