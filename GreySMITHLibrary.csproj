@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\Autodesk\Revit\Automation\RibbonCommandShortcuts.cs" />
     <Compile Include="Utilities\Autodesk\Revit\ConversionTools\ReferencePlaneUtil.cs" />
     <Compile Include="Utilities\Autodesk\Revit\Extensions\Applications\ProjectTemplate.cs" />
     <Compile Include="Utilities\Autodesk\Revit\Extensions\Applications\TemplateDiscipline.cs" />
@@ -68,12 +69,11 @@
     <Compile Include="Utilities\Autodesk\Revit\Extensions\Documents\RevitLinkUtil.cs" />
     <Compile Include="Utilities\Autodesk\Revit\Misc\TaskDialogUtil.cs" />
     <Compile Include="Utilities\General\DictionaryUtil.cs" />
+    <Compile Include="Utilities\Autodesk\Revit\Automation\SendRevitCommand.cs" />
     <Compile Include="Utilities\General\StringEnum.cs" />
     <Compile Include="Utilities\General\StringValue.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utilities\Autodesk\Revit\Automation\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /y /d "%25USERPROFILE%25\Dropbox\Work\Programming\Revit API\GreySMITHLibrary\bin\Debug\gsml.dll" "C:\ProgramData\Autodesk\Revit\Addins\2014"</PostBuildEvent>
