@@ -15,17 +15,32 @@ namespace GreySMITH.Utilities.Autodesk.Revit.ConversionTools
 {
     public static class ReferencePlaneUtil
     {
-        public static void ConvertfromFace(Face objectface)
+        /// <summary>
+        /// Creates a reference plane from a host object in the current view
+        /// </summary>
+        /// <param name="hostobject">Any object to which items can be hosted</param>
+        /// <param name="curdoc">The current document</param>
+        /// <returns>A reference plane which is the same length as the object itself</returns>
+        public static ReferencePlane ConvertfromHostObject(this HostObject hostobject, Document curdoc)
         {
-            PlanarFace pof = objectface as PlanarFace;
-            Wall w = new Wall();
-            //LocationCurve lc = w.Location as LocationCurve;
-            //XYZ startpoint = lc.Curve.get_EndPoint(0);
-            //XYZ endpoint = lc.Curve.get_EndPoint(1);
-            //XYZ height = lc
-            
+            ReferencePlane rp = new ReferencePlane();
 
-            
+            // gets the length of the object 
+            LocationCurve lcx = hostobject.Location as LocationCurve;
+            XYZ startpoint = lcx.Curve.GetEndPoint(0);
+            XYZ endpoint = lcx.Curve.GetEndPoint(1);
+            XYZ cutvector = XYZ.BasisZ;
+
+            // creates the reference plane in the current doc
+            using (Transaction tr_referenceplane = new Transaction(curdoc, "Creating reference plane based on object..."))
+            {
+                tr_referenceplane.Start();
+                rp = curdoc.Create.NewReferencePlane(startpoint, endpoint, cutvector, curdoc.ActiveView);
+                rp.Name = "Reference to " + hostobject.Name;
+                tr_referenceplane.Commit();
+            }
+
+            return rp;
         }
 
         public static void OtherMethod()
