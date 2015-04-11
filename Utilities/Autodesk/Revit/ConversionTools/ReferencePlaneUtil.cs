@@ -23,7 +23,7 @@ namespace GreySMITH.Utilities.Autodesk.Revit.ConversionTools
         /// <returns>A reference plane which is the same length as the object itself</returns>
         public static ReferencePlane ConvertfromHostObject(this HostObject hostobject, Document curdoc)
         {
-            ReferencePlane rp = new ReferencePlane();
+            ReferencePlane rp = null;
 
             // gets the length of the object 
             LocationCurve lcx = hostobject.Location as LocationCurve;

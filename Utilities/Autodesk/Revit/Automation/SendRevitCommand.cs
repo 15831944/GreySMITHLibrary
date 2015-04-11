@@ -14,7 +14,16 @@ namespace GreySMITH.Utilities.Autodesk.Revit.Automation
     {
         public static void CopyMonitorLinkedObjects()
         {
-            SendKeys.SendWait(RibbonCommandShortcuts.COLLABORATE_COPY_MONITOR_SELECT_LINK.GetStringValue());
+            try
+            {
+                SendKeys.SendWait(RibbonCommandShortcuts.COLLABORATE_COPY_MONITOR_SELECT_LINK.GetStringValue());
+            }
+
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace + e.Message);
+                throw e;
+            }
         }
     }
 }

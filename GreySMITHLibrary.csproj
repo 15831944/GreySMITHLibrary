@@ -70,13 +70,17 @@
     <Compile Include="Utilities\Autodesk\Revit\Misc\TaskDialogUtil.cs" />
     <Compile Include="Utilities\General\DictionaryUtil.cs" />
     <Compile Include="Utilities\Autodesk\Revit\Automation\SendRevitCommand.cs" />
+    <Compile Include="Utilities\General\Files\FileOperations.cs" />
     <Compile Include="Utilities\General\StringEnum.cs" />
     <Compile Include="Utilities\General\StringValue.cs" />
+    <Compile Include="Utilities\General\Time\TimeUtility.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y /d "%25USERPROFILE%25\Dropbox\Work\Programming\Revit API\GreySMITHLibrary\bin\Debug\gsml.dll" "C:\ProgramData\Autodesk\Revit\Addins\2014"</PostBuildEvent>
+    <PostBuildEvent>xcopy /y /d "%25USERPROFILE%25\Dropbox\Work\Programming\Revit API\GreySMITHLibrary\bin\Debug\gsml.dll" "C:\ProgramData\Autodesk\Revit\Addins\2014"
+
+xcopy /y /d "%25USERPROFILE%25\Dropbox\Work\Programming\Revit API\GreySMITHLibrary\bin\Debug\gsml.dll" "%25USERPROFILE%25\Desktop\Processed Files\Testing\DEBUGGING\Jobs\BIM"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
