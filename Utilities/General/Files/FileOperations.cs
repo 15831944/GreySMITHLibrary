@@ -25,9 +25,9 @@ namespace GreySMITH.Utilities.General.Files
             List<string> filenames = Directory.GetFiles(correctdirectory).ToList<string>();
 
             // find the latest files and give the name of the latest location for each of them
-            foreach (string file in filenames)
+            foreach (string file_fullpath in filenames)
             {
-                string locationlatest = FindLatest(locationstosearch, Path.GetFullPath(file));
+                string locationlatest = FindLatest(locationstosearch, file_fullpath);
 
                 // copy from the latest directory and save to "newfoldername" with current date YEAR-MO-DA format
                 string folderwdate = Path.Combine(newfoldername, TimeUtility.DateFormatter(DateTime.Now));
@@ -35,9 +35,10 @@ namespace GreySMITH.Utilities.General.Files
                 {
                     Directory.CreateDirectory(folderwdate);
                 }
+
                 try
                 {
-                    File.Copy(file, Path.Combine(folderwdate, Path.GetFileName(file)));
+                    File.Copy(file_fullpath, Path.Combine(folderwdate, Path.GetFileName(file_fullpath)), true);
                 }
 
                 catch (Exception e)
