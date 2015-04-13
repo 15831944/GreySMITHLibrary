@@ -82,32 +82,37 @@ namespace GreySMITH.Utilities.General.Files
 
                     catch { }
                 }
-                #region Testing two possible solutions
-                //possible matches to foldername & number of possible matches
-                IEnumerable<string> x = from d in dirlist
-                                        where d.Contains(foldernamestosearchfor[0].ToString()) && d.Contains(foldernamestosearchfor[1].ToString())
-                                        select d;
-                foldermatch = x.ToArray().Length;
+                IEnumerable<string> x = null;
 
-                var test = from h in dirlist
-                            where foldernamestosearchfor.All(arrayvalue => h.Contains(arrayvalue))
-                            select h;
-                #endregion
-                // the new path should equal the first congruent path found
-                try { newpath = x.FirstOrDefault(); }
+                if (dirlist.Count > 1)
+                {
+                    //possible matches to foldername & number of possible matches
+                    x = from d in dirlist
+                        where d.Contains(foldernamestosearchfor[0].ToString()) && d.Contains(foldernamestosearchfor[1].ToString())
+                        select d;
+                    foldermatch = x.ToArray().Length;
 
-                // if nothing is found, move further up the directory tree and try again
-                catch { Console.WriteLine("The path {0} found no results, moving further up the directory tree to try again...", pathtostartin); }
+                    // the new path should equal the first congruent path found
+                    try { newpath = x.FirstOrDefault(); }
+
+                    // if nothing is found, move further up the directory tree and try again
+                    catch { Console.WriteLine("The path {0} found no results, moving further up the directory tree to try again...", pathtostartin); }
+                }
+
+                else
+                {
+                    try
+                    {
+                        newpath = dirlist.FirstOrDefault();
+                        foldermatch = 1;
+                    }
+
+                    catch { Console.WriteLine("The path {0} found no results, moving further up the directory tree to try again...", pathtostartin); }
+                }
+
                 if (foldermatch < 1) { pathtostartin = Directory.GetParent(pathtostartin).ToString(); }
-
-                // two items:
-                // write an exception handler if the algorithm gets all the way to root with no paths found
-                // also, write code that handles the filtering better - you should have to go through the previous 20 lines
-                // unless there's something worth finding (put into a separate function)
-
             }
             #endregion
-
             return newpath;
         }
 
@@ -166,34 +171,20 @@ namespace GreySMITH.Utilities.General.Files
         }
 
         /// <summary>
-        /// Quickly searches path's directory tree to see if there are any folders which could match the names given
+        /// Archives the requested folder to location selected
         /// </summary>
-        /// <param name="pathtocompareto">lowest portion of directory to start from</param>
-        /// <param name="foldernames">folder names to look for</param>
-        /// <returns></returns>
-        public static bool PossibleMatchFound(string pathtocompareto, params string[] foldernames)
-        {
-            bool truthvalue = false;
-            List<string> alldirectoriesintree = new List<string>();
-
-
-
-
-            return truthvalue;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="directorytobearchived"></param>
-        /// <param name="locationtobeachivedto"></param>
-        public static void Archive(string directorytobearchived, string directorytosearchforarchiveparent , string archiveparentfoldername)
+        /// <param name="foldertobearchived"></param>
+        /// <param name="directorytosearchforarchiveparent">Location from which search should begin</param>
+        /// <param name="archiveparentfoldername">Folder where archive should be saved</param>
+        public static void Archive(string foldertobearchived, string directorytosearchforarchiveparent , string archiveparentfoldername)
         {
             // check within directory structure for foldername
-            string archivedirectorypath = FileOperations.FolderFinder(directorytosearchforarchiveparent, directorytobearchived);
+            string archivedirectorypath = FileOperations.FolderFinder(directorytosearchforarchiveparent, foldertobearchived);
+
+            string archiveparent = FileOperations.FolderFinder(directorytosearchforarchiveparent, archiveparentfoldername);
 
             // copy from the latest directory and save to "newfoldername" with current date YEAR-MO-DA format
-            string folderwdate = Path.Combine(archiveparentfoldername, TimeUtility.DateFormatter(DateTime.Now));
+            string folderwdate = Path.Combine(archiveparent, TimeUtility.DateFormatter(DateTime.Now));
             if (!Directory.Exists(folderwdate))
             {
                 Directory.CreateDirectory(folderwdate);
@@ -201,7 +192,22 @@ namespace GreySMITH.Utilities.General.Files
 
             // copy all files from directorytobearchived
             // note the files from "foldername" into a list so that you can search the network for them
-            List<string> filenames = Directory.GetFiles(directorytobearchived).ToList<string>();
+            List<string> foldernames = Directory.GetDirectories(archivedirectorypath).ToList<string>();
+            List<string> filenames = new List<string>();
+
+            // if the directory has any sub-directories, grab those files and add them to the list
+            if(foldernames.Count > 0)
+            {
+                // add a while loop to look further in the folders until there are no further directories
+
+                foreach(string folder in foldernames)
+                {
+                    filenames.AddRange(Directory.GetFiles(folder).ToList<string>());
+                }
+            }
+
+            // finally add any files left in the main directory
+            filenames.AddRange(Directory.GetFiles(archivedirectorypath).ToList<string>());
 
             foreach (string file_fullpath in filenames)
             {
