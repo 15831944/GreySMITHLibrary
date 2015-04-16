@@ -11,6 +11,7 @@ namespace GreySMITH.Utilities.General.Files
 {
     public static class FileOperations
     {
+
         /// <summary>
         /// Saves files from a certain folder over to another folder
         /// </summary>
@@ -57,63 +58,53 @@ namespace GreySMITH.Utilities.General.Files
         public static string FolderFinder(string pathtostartin, params string[] foldernamestosearchfor)
         {
             // variables for amounts of folders which match folder name in the current directory tree
-            // as well as the current directory
             int foldermatch = 0;
-            string newpath = null;
-            // if there are any folders in the directory tree which could match the path,
-            // check the path's tree, otherwise, just fail out
-            //if(PossibleMatchFound(pathtocompareto, foldernames))
-            #region Directory Searching Algorithm
-            // try to find folders which match foldername in the current directory and sub-directories
-            // if none match move up the directory tree and search its sub-directories until one is found
+            string pathoffoundfolder = null;
+            List<string> dirlist = new List<string>();
+            List<string> allfoldersdirectorymustcontain = foldernamestosearchfor.ToList();
+            IEnumerable<string> possiblepaths = null;
+
+            // recursively finds the first directory which matches the name
             while (foldermatch < 1)
             {
-                // placeholder list
-                List<string> dirlist = new List<string>();
-
-                // list all possible directories in the current string
+                // list all possible directories which match the current string
                 foreach (string s in foldernamestosearchfor)
                 {
-                    try
-                    {
-                        // list of directories and sub-directories
-                        dirlist.AddRange(Directory.EnumerateDirectories(pathtostartin, s, SearchOption.AllDirectories).ToList());
-                    }
-
-                    catch { }
+                    // list of directories and sub-directories
+                    dirlist.AddRange(Directory.EnumerateDirectories(pathtostartin, s, SearchOption.AllDirectories).ToList());
                 }
-                IEnumerable<string> x = null;
 
+                // if there are duplicate directories which match the conditions
                 if (dirlist.Count > 1)
                 {
-                    //possible matches to foldername & number of possible matches
-                    x = from d in dirlist
-                        where d.Contains(foldernamestosearchfor[0].ToString()) && d.Contains(foldernamestosearchfor[1].ToString())
-                        select d;
-                    foldermatch = x.ToArray().Length;
-
-                    // the new path should equal the first congruent path found
-                    try { newpath = x.FirstOrDefault(); }
-
-                    // if nothing is found, move further up the directory tree and try again
-                    catch { Console.WriteLine("The path {0} found no results, moving further up the directory tree to try again...", pathtostartin); }
+                    // rule out the matches by including only those with ALL names in the directory
+                    possiblepaths = from directory in dirlist
+                                    where allfoldersdirectorymustcontain.All(directory.Contains)
+                                    select directory;
+                    foldermatch = possiblepaths.ToArray().Length;
                 }
 
-                else
-                {
-                    try
+                // the new path should equal the first equivalent path found
+                pathoffoundfolder = possiblepaths.FirstOrDefault();
+
+                // if nothing is found, move further up the directory tree and try again
+                Console.WriteLine("The path {0} found no results, moving further up the directory tree to try again...", pathtostartin);
+
+                // resets the path to the parent and tries again
+                if (foldermatch < 1) 
+                { 
+                    // moves up one directory
+                    pathtostartin = Directory.GetParent(pathtostartin).ToString();
+
+                    // if parent is the root - algorithm exits
+                    if(pathtostartin == Directory.GetDirectoryRoot(pathtostartin))
                     {
-                        newpath = dirlist.FirstOrDefault();
-                        foldermatch = 1;
+                        throw new Exception("Algorithm has already reached its root with no results. Match could not be found");
                     }
-
-                    catch { Console.WriteLine("The path {0} found no results, moving further up the directory tree to try again...", pathtostartin); }
                 }
-
-                if (foldermatch < 1) { pathtostartin = Directory.GetParent(pathtostartin).ToString(); }
             }
-            #endregion
-            return newpath;
+
+            return pathoffoundfolder;
         }
 
         /// <summary>
@@ -178,47 +169,59 @@ namespace GreySMITH.Utilities.General.Files
         /// <param name="archiveparentfoldername">Folder where archive should be saved</param>
         public static void Archive(string foldertobearchived, string directorytosearchforarchiveparent , string archiveparentfoldername)
         {
-            // check within directory structure for foldername
+            // gets path of folder which should be archived
             string archivedirectorypath = FileOperations.FolderFinder(directorytosearchforarchiveparent, foldertobearchived);
 
+            // gets the path the folder under which the archive should be placed
             string archiveparent = FileOperations.FolderFinder(directorytosearchforarchiveparent, archiveparentfoldername);
 
-            // copy from the latest directory and save to "newfoldername" with current date YEAR-MO-DA format
+            // gets the future name of archive folder; includes today's date info
             string folderwdate = Path.Combine(archiveparent, TimeUtility.DateFormatter(DateTime.Now));
-            if (!Directory.Exists(folderwdate))
+
+            // copies all files + subdirectories to archive location
+            FileOperations.DirectoryCopy(archivedirectorypath, folderwdate, true);
+        }
+
+        /// <summary>
+        /// Copies all files and, optionally, subdirectories to another location
+        /// </summary>
+        /// <param name="sourceDirName">folder which should be copied</param>
+        /// <param name="destDirName">location to copy to; will be created if it doesn't already exist</param>
+        /// <param name="copySubDirs">option to copy sub-directories</param>
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            if (!dir.Exists)
             {
-                Directory.CreateDirectory(folderwdate);
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
             }
 
-            // copy all files from directorytobearchived
-            // note the files from "foldername" into a list so that you can search the network for them
-            List<string> foldernames = Directory.GetDirectories(archivedirectorypath).ToList<string>();
-            List<string> filenames = new List<string>();
-
-            // if the directory has any sub-directories, grab those files and add them to the list
-            if(foldernames.Count > 0)
+            // If the destination directory doesn't exist, create it. 
+            if (!Directory.Exists(destDirName))
             {
-                // add a while loop to look further in the folders until there are no further directories
-
-                foreach(string folder in foldernames)
-                {
-                    filenames.AddRange(Directory.GetFiles(folder).ToList<string>());
-                }
+                Directory.CreateDirectory(destDirName);
             }
 
-            // finally add any files left in the main directory
-            filenames.AddRange(Directory.GetFiles(archivedirectorypath).ToList<string>());
-
-            foreach (string file_fullpath in filenames)
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
             {
-                try
-                {
-                    File.Copy(file_fullpath, Path.Combine(folderwdate, Path.GetFileName(file_fullpath)), true);
-                }
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
 
-                catch (Exception e)
+            // If copying subdirectories, copy them and their contents to new location. 
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
                 {
-                    Console.WriteLine("The following error occured during the program: \n" + e.StackTrace.ToString());
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
                 }
             }
         }
