@@ -25,17 +25,17 @@ namespace GreySMITH.Utilities.General.Files
             // note the files from "foldername" into a list so that you can search the network for them
             List<string> filenames = Directory.GetFiles(correctdirectory).ToList<string>();
 
-            // find the latest files and give the name of the latest location for each of them
+            // copy from the latest directory and save to "newfoldername" with current date YEAR-MO-DA format
+            string folderwdate = Path.Combine(newfoldername, TimeUtility.DateFormatter(DateTime.Now));
+            if (!Directory.Exists(folderwdate))
+            {
+                Directory.CreateDirectory(folderwdate);
+            }
+
+            // find the latest files on the network and give the name of the latest location for each of them
             foreach (string file_fullpath in filenames)
             {
                 string locationlatest = FindLatest(locationstosearch, file_fullpath);
-
-                // copy from the latest directory and save to "newfoldername" with current date YEAR-MO-DA format
-                string folderwdate = Path.Combine(newfoldername, TimeUtility.DateFormatter(DateTime.Now));
-                if (!Directory.Exists(folderwdate))
-                {
-                    Directory.CreateDirectory(folderwdate);
-                }
 
                 try
                 {
@@ -84,8 +84,21 @@ namespace GreySMITH.Utilities.General.Files
                     foldermatch = possiblepaths.ToArray().Length;
                 }
 
-                // the new path should equal the first equivalent path found
-                pathoffoundfolder = possiblepaths.FirstOrDefault();
+                // if there are any paths that meet requirements
+                if (foldermatch > 0)
+                {
+                    try
+                    {
+                        // the new path should equal the first equivalent path found
+                        pathoffoundfolder = possiblepaths.FirstOrDefault();
+                    }
+                    
+                    // shouldn't happen especially if you get this far
+                    catch (ArgumentNullException ane)
+                    {
+                        Console.WriteLine("No paths were found." + ane.StackTrace);
+                    }
+                }
 
                 // if nothing is found, move further up the directory tree and try again
                 Console.WriteLine("The path {0} found no results, moving further up the directory tree to try again...", pathtostartin);
@@ -129,7 +142,7 @@ namespace GreySMITH.Utilities.General.Files
                 {
                     // take away the root location and replace with the various possible locations it could be
                     string temppath = fullfilepath.Remove(0, root.Length);
-                    temppath = Path.Combine("\\", loc, temppath);
+                    temppath = Path.Combine(loc, temppath);
 
                     // if "loc" + "path" exists
                     if (Directory.Exists(temppath))
@@ -207,7 +220,7 @@ namespace GreySMITH.Utilities.General.Files
                 Directory.CreateDirectory(destDirName);
             }
 
-            // Get the files in the directory and copy them to the new location.
+            // Get the files in the directory and copies them to the new location.
             FileInfo[] files = dir.GetFiles();
             foreach (FileInfo file in files)
             {
