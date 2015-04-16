@@ -5,7 +5,7 @@ using System.Text;
 
 using GreySMITH.Utilities.General;
 
-namespace GreySMITH.Utilities.Autodesk.Revit.Automation
+namespace GreySMITH.Utilities.GS_Autodesk.Revit.Automation
 {
     public enum RibbonCommandShortcuts
     {

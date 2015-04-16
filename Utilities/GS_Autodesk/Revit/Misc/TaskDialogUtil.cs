@@ -10,7 +10,7 @@ using Autodesk.Revit.UI.Selection;
 using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
 
-namespace GreySMITH.Utilities.Autodesk.Revit.Misc
+namespace GreySMITH.Utilities.GS_Autodesk.Revit.Misc
 {
     public static class TaskDialogUtil
     {

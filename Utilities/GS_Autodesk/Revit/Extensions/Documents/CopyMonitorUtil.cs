@@ -10,9 +10,9 @@ using Autodesk.Revit.UI.Selection;
 using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
 
-using GreySMITH.Utilities.Autodesk.Revit.Extensions.Documents;
+using GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents;
 
-namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Documents
+namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents
 {
     /// <summary>
     /// Class of methods which deal with extending CopyMonitor functionality

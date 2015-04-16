@@ -10,7 +10,7 @@ using Autodesk.Revit.UI.Selection;
 using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
 
-namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Applications
+namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Applications
 {
     public static class UIApplicationUtils
     {

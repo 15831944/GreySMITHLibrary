@@ -12,7 +12,7 @@ using Autodesk.Revit.Attributes;
 
 using GreySMITH.Utilities.General;
 
-namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Applications
+namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Applications
 {
     public static class ProjectTemplate
     {

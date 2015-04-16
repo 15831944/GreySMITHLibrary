@@ -11,9 +11,9 @@ using Autodesk.Revit.UI.Selection;
 using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
 
-using GreySMITH.Utilities.Autodesk.Revit.Misc;
+using GreySMITH.Utilities.GS_Autodesk.Revit.Misc;
 
-namespace GreySMITH.Utilities.Autodesk.Revit.Extensions.Documents
+namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents
 {
     /// <summary>
     /// Class of items which deal with extension to Revit Linking capabilities
