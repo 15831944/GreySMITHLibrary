@@ -36,5 +36,29 @@ namespace GreySMITH.Utilities.General.Time
 
             return finaldt;
         }
+
+        public static string DateFormatter( DateTime datetime, bool usetimeofday)
+        {
+            string finaldt;
+
+            string Year = datetime.Year.ToString();
+            string Month = datetime.Month.ToString();
+            if (Month.Length < 2)
+            {
+                Month = "0" + Month;
+            }
+            string Day = datetime.Day.ToString();
+            if (Day.Length < 2)
+            {
+                Day = "0" + Day;
+            }
+
+            string Hour = datetime.Hour.ToString();
+            string Minute = "00";
+
+            finaldt = Year + "-" + Month + "-" + Day + "_" + Hour + Minute;
+
+            return finaldt;
+        }
     }
 }

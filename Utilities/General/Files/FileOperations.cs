@@ -196,6 +196,18 @@ namespace GreySMITH.Utilities.General.Files
         }
 
         /// <summary>
+        /// Archives a folder in it's current location
+        /// </summary>
+        /// <param name="objecttobearchived">File or folder to be archived</param>
+        /// <param name="usehour">value to decide whether to use the current hour in the archive folder name</param>
+        public static void Archive(string objecttobearchived, bool usehour)
+        {
+            string folderwdateandtime = Path.Combine(objecttobearchived, TimeUtility.DateFormatter(DateTime.Now, true));
+
+            FileOperations.DirectoryCopy(objecttobearchived, folderwdateandtime, true);
+        }
+
+        /// <summary>
         /// Copies all files and, optionally, subdirectories to another location
         /// </summary>
         /// <param name="sourceDirName">folder which should be copied</param>

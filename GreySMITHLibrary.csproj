@@ -57,31 +57,14 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2014\Autodesk.Navisworks.Interop.ComApi.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.Navisworks.Interop.ComApiAutomation">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2014\Autodesk.Navisworks.Interop.ComApiAutomation.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.Interop.Timeliner">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2014\Autodesk.Navisworks.Interop.Timeliner.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.Takeoff">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2014\Autodesk.Navisworks.Takeoff.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.Timeliner">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2014\Autodesk.Navisworks.Timeliner.dll</HintPath>
-    </Reference>
     <Reference Include="RevitAPI">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2014\RevitAPI.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2014\RevitAPI.dll</HintPath>
     </Reference>
     <Reference Include="RevitAPIUI">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2014\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2014\RevitAPIUI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -116,9 +99,9 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y /d "%25USERPROFILE%25\Dropbox\Work\Programming\Revit API\GreySMITHLibrary\bin\Debug\gsml.dll" "C:\ProgramData\Autodesk\Revit\Addins\2014"
+    <PostBuildEvent>xcopy /y /d "%25USERPROFILE%25\Documents\_Preston\GREYSMITH\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\gsml.dll" "C:\ProgramData\Autodesk\Revit\Addins\2014"
 
-xcopy /y /d "%25USERPROFILE%25\Dropbox\Work\Programming\Revit API\GreySMITHLibrary\bin\Debug\gsml.dll" "%25USERPROFILE%25\Desktop\Processed Files\Testing\DEBUGGING\Jobs\BIM"</PostBuildEvent>
+xcopy /y /d "%25USERPROFILE%25\Documents\_Preston\GREYSMITH\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\gsml.dll" "%25USERPROFILE%25\Desktop\Processed Files\Testing\DEBUGGING\Jobs\BIM"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
