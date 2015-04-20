@@ -16,6 +16,12 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents
 {
     public static class ElementUtils
     {
+        /// <summary>
+        /// Does this work yet?
+        /// </summary>
+        /// <param name="curdoc"></param>
+        /// <param name="faminstance"></param>
+        /// <returns></returns>
         public static Element FindHost(this Document curdoc, FamilyInstance faminstance )
         {
             Element host = null;
@@ -42,6 +48,64 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents
             #endregion
 
             return host;
+        }
+
+        /// <summary>
+        /// Offsets an element a set amount in a specific direction set by the XYZDirection enum
+        /// </summary>
+        /// <param name="originalelement">element, the new element should be offset from</param>
+        /// <param name="offsetamount">amount new element should be offset from original</param>
+        /// <param name="offsetdirection">direction element should be offset</param>
+        /// <returns></returns>
+        public static ElementId Offset(this Element originalelement, double offsetamount, XYZDirection offsetdirection)
+        {
+            // variable for new offset element
+            ElementId newelement = null;
+
+            // the current document
+            Document curdoc = originalelement.Document;
+
+            // element's XYZ
+            LocationPoint elp = originalelement.Location as LocationPoint;
+            XYZ elem_location = null;
+            
+
+            // depending on user input offset direction should be incremented by the offsetamount
+            switch(offsetdirection)
+            {
+                default:
+                    break;
+
+                case XYZDirection.X:
+                    elem_location = new XYZ(offsetamount, 0.0, 0.0) + elp.Point;
+                    break;
+
+                case XYZDirection.Y:
+                    elem_location = new XYZ(0.0, offsetamount, 0.0) + elp.Point;
+                    break;
+
+                case XYZDirection.Z:
+                    elem_location = new XYZ(0.0, 0.0, offsetamount) + elp.Point;
+                    break;
+            }
+
+            try
+            {
+                // attempt to offset the element within the transaction
+                using (Transaction tr_offset = new Transaction(curdoc, "Offsetting element"))
+                {
+                    tr_offset.Start();
+                    newelement = ElementTransformUtils.CopyElement(curdoc, originalelement.Id, elem_location).FirstOrDefault();
+                    tr_offset.Commit();
+                }
+            }
+
+            catch (Exception e)
+            {
+                Console.WriteLine("Command Failed. See below: \n" + e.StackTrace.ToString());
+            }
+
+            return newelement;
         }
     }
 }

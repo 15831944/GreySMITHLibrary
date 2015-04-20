@@ -99,10 +99,12 @@
     <Compile Include="Utilities\GS_Autodesk\Revit\Extensions\Applications\TemplateDiscipline.cs" />
     <Compile Include="Utilities\GS_Autodesk\Revit\Extensions\Applications\UIApplicationUtils.cs" />
     <Compile Include="Utilities\GS_Autodesk\Revit\Extensions\Documents\CopyMonitorUtil.cs" />
+    <Compile Include="Utilities\GS_Autodesk\Revit\Extensions\Documents\DirectionValue.cs" />
     <Compile Include="Utilities\GS_Autodesk\Revit\Extensions\Documents\ElementUtils.cs" />
     <Compile Include="Utilities\GS_Autodesk\Revit\Extensions\Documents\FamilyUtil.cs" />
     <Compile Include="Utilities\GS_Autodesk\Revit\Extensions\Documents\ObjectGetter.cs" />
     <Compile Include="Utilities\GS_Autodesk\Revit\Extensions\Documents\RevitLinkUtil.cs" />
+    <Compile Include="Utilities\GS_Autodesk\Revit\Extensions\Documents\XYZDirection.cs" />
     <Compile Include="Utilities\GS_Autodesk\Revit\Misc\TaskDialogUtil.cs" />
     <Compile Include="Utilities\General\DictionaryUtil.cs" />
     <Compile Include="Utilities\GS_Autodesk\Revit\Automation\SendRevitCommand.cs" />
