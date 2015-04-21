@@ -15,28 +15,7 @@ namespace GreySMITH.Utilities.General.Time
         /// Returns a string with the DateTime value in the YYYY-MM-DD format
         /// </summary>
         /// <param name="datetime">Date Time to be formatted</param>
-        /// <returns>YYYY-MM-DD</returns>
-        public static string DateFormatter( DateTime datetime)
-        {
-            string finaldt;
-
-            string Year = datetime.Year.ToString();
-            string Month = datetime.Month.ToString();
-            if(Month.Length < 2)
-            {
-                Month = "0" + Month;
-            }
-            string Day = datetime.Day.ToString();
-            if (Day.Length < 2)
-            {
-                Day = "0" + Day;
-            }
-
-            finaldt = Year + "-" + Month + "-" + Day;
-
-            return finaldt;
-        }
-
+        /// <returns>YYYY-MM-DD_0000 if using time of day</returns>
         public static string DateFormatter( DateTime datetime, bool usetimeofday)
         {
             string finaldt;
@@ -56,7 +35,11 @@ namespace GreySMITH.Utilities.General.Time
             string Hour = datetime.Hour.ToString();
             string Minute = "00";
 
-            finaldt = Year + "-" + Month + "-" + Day + "_" + Hour + Minute;
+            if (usetimeofday)
+                finaldt = Year + "-" + Month + "-" + Day + "_" + Hour + Minute;
+
+            else
+                finaldt = Year + "-" + Month + "-" + Day;
 
             return finaldt;
         }
