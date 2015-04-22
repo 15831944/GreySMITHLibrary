@@ -26,3 +26,23 @@ C:\Users\smith_000\Documents\_Preston\GREYSMITH\RESEARCH\Programming\GreySMITHLi
 C:\Users\smith_000\Documents\_Preston\GREYSMITH\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\RevitAPI.xml
 C:\Users\smith_000\Documents\_Preston\GREYSMITH\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\RevitAPIUI.xml
 C:\Users\smith_000\Documents\_Preston\GREYSMITH\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\en-US\AdWindows.resources.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\obj\Debug\GreySMITHLibrary.csprojResolveAssemblyReference.cache
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\gsml.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\gsml.pdb
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\Autodesk.Navisworks.Takeoff.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\Autodesk.Navisworks.Timeliner.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\RevitAPI.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\RevitAPIUI.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\DBManagedServices.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\AdWindows.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\RevitAddInUtility.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\APIInterop.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\UIFramework.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\AddInManager.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\UIFrameworkServices.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\ManagedMC3.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\RevitAPI.xml
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\RevitAPIUI.xml
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\en-US\AdWindows.resources.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\obj\Debug\gsml.dll
+C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\obj\Debug\gsml.pdb

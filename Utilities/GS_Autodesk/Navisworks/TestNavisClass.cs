@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Autodesk.Navisworks.Api;
+﻿using Autodesk.Navisworks.Api;
 using Autodesk.Navisworks.Api.ApplicationParts;
-using Autodesk.Navisworks.Api.Plugins;
 using Autodesk.Navisworks.Api.Automation;
 using Autodesk.Navisworks.Api.Controls;
 using Autodesk.Navisworks.Api.Data;
 using Autodesk.Navisworks.Api.DocumentParts;
+using Autodesk.Navisworks.Api.Plugins;
 using Autodesk.Navisworks.Internal;
-using Autodesk.Navisworks.Api.Data;
-using Autodesk.Navisworks.Api.ApplicationParts;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace GreySMITH.Utilities.GS_Autodesk.Navisworks
 {
@@ -41,8 +39,6 @@ namespace GreySMITH.Utilities.GS_Autodesk.Navisworks
             // save Navisworks file in location
             app_nav.SaveFile(@"C:\test\newnavisfile.nwd");
 
-            
-            
             // program failed
             return -1;
         }

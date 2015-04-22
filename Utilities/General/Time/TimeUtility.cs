@@ -33,7 +33,7 @@ namespace GreySMITH.Utilities.General.Time
             }
 
             string Hour = datetime.Hour.ToString();
-            string Minute = "00";
+            string Minute = datetime.Minute.ToString();
 
             if (usetimeofday)
                 finaldt = Year + "-" + Month + "-" + Day + "_" + Hour + Minute;
