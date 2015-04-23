@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\General\StringUtils.cs" />
     <Compile Include="Utilities\GS_Autodesk\Navisworks\TestNavisClass.cs" />
     <Compile Include="Utilities\GS_Autodesk\Revit\Automation\RibbonCommandShortcuts.cs" />
     <Compile Include="Utilities\GS_Autodesk\Revit\ConversionTools\ReferencePlaneUtil.cs" />
