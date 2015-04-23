@@ -43,9 +43,7 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Applications
         /// <summary>
         /// Creates a project based a on a template chosen by the user
         /// </summary>
-        /// <param name="tdr">Choice given by dialog box</param>
         /// <param name="uiApp">Current UIApplication</param>
-        /// <param name="oops">Options for opening the document</param>
         /// <returns>The document chosen by the user</returns>
         public static Document CreateFromTemplate(this UIApplication uiApp)
         {
