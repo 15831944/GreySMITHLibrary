@@ -9,7 +9,7 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Automation
 {
     public enum RibbonCommandShortcuts
     {
-        [StringValueAttribute("^{C}{CM}{DOWN}{DOWN}")]
+        [StringValueAttribute("^{F10}{C}{CM}{DOWN}{DOWN}{ENTER}")]
         COLLABORATE_COPY_MONITOR_SELECT_LINK = 1
     }
 }
