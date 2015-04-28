@@ -104,6 +104,7 @@
     <Compile Include="Utilities\GS_Autodesk\Revit\Extensions\Documents\ObjectGetter.cs" />
     <Compile Include="Utilities\GS_Autodesk\Revit\Extensions\Documents\RevitLinkUtil.cs" />
     <Compile Include="Utilities\GS_Autodesk\Revit\Extensions\Documents\XYZDirection.cs" />
+    <Compile Include="Utilities\GS_Autodesk\Revit\Extensions\Parameters\ParameterUtils.cs" />
     <Compile Include="Utilities\GS_Autodesk\Revit\Misc\TaskDialogUtil.cs" />
     <Compile Include="Utilities\General\DictionaryUtil.cs" />
     <Compile Include="Utilities\GS_Autodesk\Revit\Automation\SendRevitCommand.cs" />
