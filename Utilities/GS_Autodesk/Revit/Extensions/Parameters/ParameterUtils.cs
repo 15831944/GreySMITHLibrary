@@ -24,15 +24,16 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
         static bool IsInstance(this Parameter param)
         {
             bool instancetruth = false;
-            Document doc = param.Element.Document;
-
-            DefinitionBindingMap dbindmap = doc.ParameterBindings as DefinitionBindingMap;
-            Definition paramDef = param.Definition;
-            Binding binding = dbindmap.get_Item(paramDef);
-
-            if(binding is InstanceBinding)
+            using (Document doc = param.Element.Document)
             {
-                instancetruth = true;
+                DefinitionBindingMap dbindmap = doc.ParameterBindings as DefinitionBindingMap;
+                Definition paramDef = param.Definition;
+                Binding binding = dbindmap.get_Item(paramDef);
+
+                if (binding is InstanceBinding)
+                {
+                    instancetruth = true;
+                }
             }
 
             return instancetruth;
