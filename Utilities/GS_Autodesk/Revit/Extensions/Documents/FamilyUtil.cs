@@ -73,6 +73,7 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents
             using (Transaction tr_regen = new Transaction(curdoc, "Regenerating the document..."))
             {
                 tr_regen.Start();
+
                 // regenerate that document
                 curdoc.Regenerate();
                 tr_regen.Commit();
@@ -116,6 +117,5 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents
 
             return answer;
         }
-
     }
 }
