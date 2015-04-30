@@ -19,9 +19,9 @@ using GreySMITH.Utilities.General;
 
 namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
 {
-    static class ParameterUtils
+    public static class ParameterUtils
     {
-        static bool IsInstance(this Parameter param)
+        public static bool IsInstance(this Parameter param)
         {
             bool instancetruth = false;
             using (Document doc = param.Element.Document)
