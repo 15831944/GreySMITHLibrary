@@ -32,7 +32,6 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
                 {
                     TextWriterTraceListener ip_logger = new TextWriterTraceListener(log_instparam);
                     Debug.Listeners.Add(ip_logger);
-                    Debug.Indent();
                     Debug.AutoFlush = true;
 
                     using (Document doc = param.Element.Document)
@@ -40,10 +39,10 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
                         using (DefinitionBindingMap dbindmap = doc.ParameterBindings as DefinitionBindingMap)
                         {
                             Debug.WriteLine("Opening object document and seeking definition binding map");
-                            Definition paramDef = param.Definition;
                             Debug.WriteLine("Getting parameter definition.");
-                            Binding binding = dbindmap.get_Item(paramDef);
+                            Definition paramDef = param.Definition;
                             Debug.WriteLine("Getting parameter binding.");
+                            Binding binding = dbindmap.get_Item(paramDef);
 
                             if (binding is InstanceBinding)
                             {
@@ -121,9 +120,20 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
 
                     if (id.IntegerValue >= 0)
                     {
-                        using (Document paramdoc = param.Element.Document)
+                        try
                         {
-                            value = paramdoc.GetElement(id).Name;
+                            using (Document paramdoc = param.Element.Document)
+                            {
+                                value = paramdoc.GetElement(id).Name;
+                            }
+                        }
+
+                        catch (Autodesk.Revit.Exceptions.InvalidObjectException invalidoex)
+                        {
+                            Debug.WriteLine("The program failed to get the Parameter's ElementID here.");
+                            Debug.WriteLine(invalidoex.Message);
+                            Debug.WriteLine(invalidoex.Data);
+                            Debug.WriteLine(invalidoex.StackTrace);
                         }
                     }
 
