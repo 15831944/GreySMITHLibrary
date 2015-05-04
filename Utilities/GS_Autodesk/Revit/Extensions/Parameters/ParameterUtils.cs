@@ -22,60 +22,123 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
 {
     public static class ParameterUtils
     {
-        public static FileStream log_instparam = new FileStream(@"C:\temp\Revit\InstanceParameterSync\debuglog.log", FileMode.OpenOrCreate);
-        public static TextWriterTraceListener ip_logger = new TextWriterTraceListener(log_instparam);
-
-        public static ParameterType GetParameterType(this Parameter param)
+        public static ParameterForm GetParameterForm(this Parameter param)
         {
-            Debug.Listeners.Add(ip_logger);
-            Debug.Indent();
-            Debug.AutoFlush = true;
-
-            ParameterType paramtype = ParameterType.None;
-
-            try
+            ParameterForm paramtype = ParameterForm.None;
+            
+            using (FileStream log_instparam = new FileStream(@"C:\temp\Revit\InstanceParameterSync\debuglog2.log", FileMode.OpenOrCreate))
             {
-                
-                using (Document doc = param.Element.Document)
+                try
                 {
-                    using (DefinitionBindingMap dbindmap = doc.ParameterBindings as DefinitionBindingMap)
+                    TextWriterTraceListener ip_logger = new TextWriterTraceListener(log_instparam);
+                    Debug.Listeners.Add(ip_logger);
+                    Debug.Indent();
+                    Debug.AutoFlush = true;
+
+                    using (Document doc = param.Element.Document)
                     {
-                        Debug.WriteLine("Opening object document and seeking definition binding map");
-                        Definition paramDef = param.Definition;
-                        Debug.WriteLine("Getting parameter definition.");
-                        Binding binding = dbindmap.get_Item(paramDef);
-                        Debug.WriteLine("Getting parameter binding.");
-
-                        if (binding is InstanceBinding)
+                        using (DefinitionBindingMap dbindmap = doc.ParameterBindings as DefinitionBindingMap)
                         {
-                            paramtype = ParameterType.Instance;
-                        }
+                            Debug.WriteLine("Opening object document and seeking definition binding map");
+                            Definition paramDef = param.Definition;
+                            Debug.WriteLine("Getting parameter definition.");
+                            Binding binding = dbindmap.get_Item(paramDef);
+                            Debug.WriteLine("Getting parameter binding.");
 
-                        else
-                        {
-                            if(binding is TypeBinding)
+                            if (binding is InstanceBinding)
                             {
-                                paramtype = ParameterType.Type;
+                                paramtype = ParameterForm.Instance;
                             }
 
                             else
                             {
-                                paramtype = ParameterType.None;
+                                if (binding is TypeBinding)
+                                {
+                                    paramtype = ParameterForm.Type;
+                                }
+
+                                else
+                                {
+                                    paramtype = ParameterForm.None;
+                                }
                             }
                         }
                     }
                 }
+
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Program failed: " + e.StackTrace);
+                }
             }
 
-            catch(Exception e)
-            {
-
-            }
 
             return paramtype;
         }
 
-        public enum ParameterType
+        public static string GetParameterValue(this Parameter param)
+        {
+            string value = null;
+
+            switch(param.StorageType)
+            {
+                default:
+                    // A NULL VALUE MEANS THE PARAMETER IS UNEXPOSED
+                    value = "PARAMETER HAS NOT BEEN EXPOSED";
+                    break;
+
+                case StorageType.Double:
+                    value = "DOUBLE: " + param.AsDouble().ToString();
+                    break;
+
+                case StorageType.Integer:
+                    if (ParameterType.YesNo == param.Definition.ParameterType)
+                    {
+                        if (param.AsInteger() == 0)
+                        {
+                            value = "False";
+                        }
+                        else
+                        {
+                            value = "True";
+                        }
+                    }
+                    else
+                    {
+                        value = "INTEGER: " + param.AsInteger().ToString();
+                    }
+                    break;
+
+                case StorageType.String:
+                    value = param.AsString();
+                    break;
+
+                case StorageType.ElementId:
+                    // this one is tricky
+                    // a positive ElementID can point to a specific element
+                    // however a negative one can mean a number of different things
+                    ElementId id = param.AsElementId();
+
+                    if (id.IntegerValue >= 0)
+                    {
+                        using (Document paramdoc = param.Element.Document)
+                        {
+                            value = paramdoc.GetElement(id).Name;
+                        }
+                    }
+
+                    else
+                    {
+                        value = "ELEMENTID: " + id.IntegerValue.ToString();
+                    }
+                    break;
+
+            }
+
+            return value;
+        }
+
+        public enum ParameterForm
         {
             [StringValueAttribute("Instance")]
             Instance = 1,
