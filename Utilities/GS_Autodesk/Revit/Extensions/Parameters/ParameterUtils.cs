@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
@@ -21,22 +22,67 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
 {
     public static class ParameterUtils
     {
-        public static bool IsInstance(this Parameter param)
-        {
-            bool instancetruth = false;
-            using (Document doc = param.Element.Document)
-            {
-                DefinitionBindingMap dbindmap = doc.ParameterBindings as DefinitionBindingMap;
-                Definition paramDef = param.Definition;
-                Binding binding = dbindmap.get_Item(paramDef);
+        public static FileStream log_instparam = new FileStream(@"C:\temp\Revit\InstanceParameterSync\debuglog.log", FileMode.OpenOrCreate);
+        public static TextWriterTraceListener ip_logger = new TextWriterTraceListener(log_instparam);
 
-                if (binding is InstanceBinding)
+        public static ParameterType GetParameterType(this Parameter param)
+        {
+            Debug.Listeners.Add(ip_logger);
+            Debug.Indent();
+            Debug.AutoFlush = true;
+
+            ParameterType paramtype = ParameterType.None;
+
+            try
+            {
+                
+                using (Document doc = param.Element.Document)
                 {
-                    instancetruth = true;
+                    using (DefinitionBindingMap dbindmap = doc.ParameterBindings as DefinitionBindingMap)
+                    {
+                        Debug.WriteLine("Opening object document and seeking definition binding map");
+                        Definition paramDef = param.Definition;
+                        Debug.WriteLine("Getting parameter definition.");
+                        Binding binding = dbindmap.get_Item(paramDef);
+                        Debug.WriteLine("Getting parameter binding.");
+
+                        if (binding is InstanceBinding)
+                        {
+                            paramtype = ParameterType.Instance;
+                        }
+
+                        else
+                        {
+                            if(binding is TypeBinding)
+                            {
+                                paramtype = ParameterType.Type;
+                            }
+
+                            else
+                            {
+                                paramtype = ParameterType.None;
+                            }
+                        }
+                    }
                 }
             }
 
-            return instancetruth;
+            catch(Exception e)
+            {
+
+            }
+
+            return paramtype;
+        }
+
+        public enum ParameterType
+        {
+            [StringValueAttribute("Instance")]
+            Instance = 1,
+            [StringValueAttribute("Type")]
+            Type = 2,
+            [StringValueAttribute("None")]
+            None = 3
         }
     }
 
