@@ -24,55 +24,85 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
     {
         public static ParameterForm GetParameterForm(this Parameter param)
         {
-            ParameterForm paramtype = ParameterForm.None;
-            
-            using (FileStream log_instparam = new FileStream(@"C:\temp\Revit\InstanceParameterSync\debuglog2.log", FileMode.OpenOrCreate))
+            ParameterForm paramform = ParameterForm.None;
+
+            Debug.WriteLine("This parameter's type is: " + param.Definition.ParameterType.ToString());
+            if (!param.Definition.ParameterType.ToString().Equals("Invalid"))
             {
                 try
                 {
-                    TextWriterTraceListener ip_logger = new TextWriterTraceListener(log_instparam);
-                    Debug.Listeners.Add(ip_logger);
-                    Debug.AutoFlush = true;
+                    // add something here to check if the parameter's document is already open
+                    // if not - open it in a memory state.
 
                     using (Document doc = param.Element.Document)
                     {
-                        using (DefinitionBindingMap dbindmap = doc.ParameterBindings as DefinitionBindingMap)
-                        {
-                            Debug.WriteLine("Opening object document and seeking definition binding map");
-                            Debug.WriteLine("Getting parameter definition.");
-                            Definition paramDef = param.Definition;
-                            Debug.WriteLine("Getting parameter binding.");
-                            Binding binding = dbindmap.get_Item(paramDef);
+                        DefinitionBindingMap dbindmap = doc.ParameterBindings;
+                        Debug.WriteLine("Opening object document and seeking definition binding map");
+                        Debug.WriteLine("Getting parameter definition.");
+                        Definition paramDef = param.Definition as Definition;
+                        Binding paramBind = null;
 
-                            if (binding is InstanceBinding)
+                        #region Testing
+                        Debug.WriteLine("Getting parameter binding.");
+                        DefinitionBindingMapIterator dbm_it = dbindmap.GetEnumerator() as DefinitionBindingMapIterator;
+
+                        while (dbm_it.MoveNext())
+                        {
+                            Definition d = dbm_it.Key as Definition;
+
+                            // if this isnt' the right parameter - skip to next iteration
+                            if (!d.Equals(paramDef))
+                                continue;
+                            paramBind = dbm_it.Current as Binding;
+                        }
+
+                        #endregion
+
+
+                        //var bob = dbindmap.get_Item(param.Definition);
+
+                        if (paramBind is InstanceBinding)
+                        {
+                            paramform = ParameterForm.Instance;
+                            Debug.WriteLine("Parameter: " + param.Definition.Name.ToString() + " is instance.");
+                            Debug.WriteLine("Parameter value is: " + param.GetParameterValue());
+                        }
+
+                        else
+                        {
+                            if (paramBind is TypeBinding)
                             {
-                                paramtype = ParameterForm.Instance;
+                                paramform = ParameterForm.Type;
+                                Debug.WriteLine("Parameter: " + param.Definition.Name.ToString() + " is type.");
+                                Debug.WriteLine("Parameter value is: " + param.GetParameterValue());
                             }
 
                             else
                             {
-                                if (binding is TypeBinding)
-                                {
-                                    paramtype = ParameterForm.Type;
-                                }
-
-                                else
-                                {
-                                    paramtype = ParameterForm.None;
-                                }
+                                paramform = ParameterForm.None;
+                                Debug.WriteLine("Parameter: " + param.Definition.Name.ToString() + "  is neither instance or type.");
+                                Debug.WriteLine("Parameter value is: " + param.GetParameterValue());
                             }
                         }
+
+                        #region old code
+
+                        #endregion
                     }
                 }
 
                 catch (Exception e)
                 {
-                    Debug.WriteLine("Program failed: " + e.StackTrace);
+                    Debug.WriteLine("Program ran into an exception, see info below: " + "\n"
+                        + e.Source + "\n"
+                        + e.StackTrace + "\n"
+                        + e.Message + "\n"
+                        + e.TargetSite + "\n"
+                        + e.Data + "\n");
                 }
             }
 
-
-            return paramtype;
+            return paramform;
         }
 
         public static string GetParameterValue(this Parameter param)
