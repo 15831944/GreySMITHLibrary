@@ -23,60 +23,64 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents
         /// <param name="doctoloadfrom">Document the family symbol should be loaded from</param>
         public static FamilySymbol LoadFamilyDirect(this Document curdoc, FamilySymbol famsym, Document doctoloadfrom, ExternalCommandData cmd)
         {
+            Family newfamily = null;
             // grab the application and change the active document
-            UIApplication uiapp = cmd.Application;
-            OpenOptions oop = new OpenOptions();
-
-            oop.AllowOpeningLocalByWrongUser = true;
-            oop.DetachFromCentralOption = DetachFromCentralOption.DetachAndPreserveWorksets;
-
-            // open "doctoloadfrom" (linked doc) and make it the active document
-            if (uiapp.ActiveUIDocument.Document != doctoloadfrom)
+            using (UIApplication uiapp = cmd.Application)
             {
-                // try opening the document from memory only
-                try
+                OpenOptions oop = new OpenOptions();
+
+                oop.AllowOpeningLocalByWrongUser = true;
+                oop.DetachFromCentralOption = DetachFromCentralOption.DetachAndPreserveWorksets;
+
+                // open "doctoloadfrom" (linked doc) and make it the active document
+                if (uiapp.ActiveUIDocument.Document != doctoloadfrom)
                 {
-                    Document newcurdoc = curdoc.Application.OpenDocumentFile(ModelPathUtils.ConvertUserVisiblePathToModelPath(doctoloadfrom.PathName), oop);
+                    // try opening the document from memory only
+                    try
+                    {
+                        Document newcurdoc = curdoc.Application.OpenDocumentFile(ModelPathUtils.ConvertUserVisiblePathToModelPath(doctoloadfrom.PathName), oop);
+                    }
+
+                    // was unable to open the document for some reason
+                    catch
+                    {
+                        uiapp.OpenAndActivateDocument(ModelPathUtils.ConvertUserVisiblePathToModelPath(doctoloadfrom.PathName), oop, false);
+                        throw new Exception("Failed in attempt to open file. File name is:" + doctoloadfrom.PathName);
+                    }
                 }
 
-                // was unable to open the document for some reason
-                catch
+                // open the family document
+                newfamily = famsym.Family;
+                using (Document doc_family = doctoloadfrom.EditFamily(newfamily))
                 {
-                    uiapp.OpenAndActivateDocument(ModelPathUtils.ConvertUserVisiblePathToModelPath(doctoloadfrom.PathName), oop, false);
-                    throw new Exception("Failed in attempt to open file. File name is:" + doctoloadfrom.PathName);
+                    // load it into the original document
+                    doc_family.LoadFamily(curdoc);
+
+                    // close the family once done
+                    doc_family.Close(false);
+                    //doctoloadfrom.Close(true);
                 }
-            }
 
-            // open the family document
-            Family newfamily = famsym.Family;
-            Document doc_family = doctoloadfrom.EditFamily(newfamily);
-
-            // load it into the original document
-            doc_family.LoadFamily(curdoc);
-
-            // close the family once done
-            doc_family.Close(false);
-            //doctoloadfrom.Close(true);
-
-            // return control to the original active document
-            // could create possible bug - write a method to both
-            // move to another current document
-            // close all but current document
-            if (uiapp.ActiveUIDocument.Document != curdoc)
-            {
-                while (uiapp.ActiveUIDocument.Document != curdoc)
+                // return control to the original active document
+                // could create possible bug - write a method to both
+                // move to another current document
+                // close all but current document
+                if (uiapp.ActiveUIDocument.Document != curdoc)
                 {
-                    uiapp.ActiveUIDocument.Document.Close(false);
+                    while (uiapp.ActiveUIDocument.Document != curdoc)
+                    {
+                        uiapp.ActiveUIDocument.Document.Close(false);
+                    }
                 }
-            }
 
-            using (Transaction tr_regen = new Transaction(curdoc, "Regenerating the document..."))
-            {
-                tr_regen.Start();
+                using (Transaction tr_regen = new Transaction(curdoc, "Regenerating the document..."))
+                {
+                    tr_regen.Start();
 
-                // regenerate that document
-                curdoc.Regenerate();
-                tr_regen.Commit();
+                    // regenerate that document
+                    curdoc.Regenerate();
+                    tr_regen.Commit();
+                }
             }
 
             return famsym;
@@ -85,8 +89,8 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents
         public static void LoadFamilyDirect(this Document curdoc, FilteredElementCollector fec, ExternalCommandData excmd)
         {
             var collectionoffamsyms = from element in fec
-                                        where element is FamilySymbol
-                                        select element;
+                                      where element is FamilySymbol
+                                      select element;
 
             foreach (FamilySymbol fs in collectionoffamsyms)
             {

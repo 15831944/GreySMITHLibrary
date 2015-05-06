@@ -25,85 +25,178 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
         public static ParameterForm GetParameterForm(this Parameter param)
         {
             ParameterForm paramform = ParameterForm.None;
-
-            Debug.WriteLine("This parameter's type is: " + param.Definition.ParameterType.ToString());
-            if (!param.Definition.ParameterType.ToString().Equals("Invalid"))
+            try
             {
-                try
+                if (!param.Element.Document.IsFamilyDocument)
                 {
-                    // add something here to check if the parameter's document is already open
-                    // if not - open it in a memory state.
+                    #region Failed Code
+                    //if (!param.Definition.ParameterType.ToString().Equals("Invalid"))
+                    //{
+                    //    try
+                    //    {
+                    //        // add something here to check if the parameter's document is already open
+                    //        // if not - open it in a memory state.
 
-                    using (Document doc = param.Element.Document)
+                    //        using (Document doc = param.Element.Document)
+                    //        {
+                    //            // will not work with Family Documents
+                    //            Debug.Assert(doc.IsFamilyDocument, "Document is a family - this parameter will be skipped.");
+
+                    //            // binding map has only one entry?
+                    //            DefinitionBindingMap dbindmap = doc.ParameterBindings;
+
+                    //            Debug.WriteLine("Opening object document and seeking definition binding map");
+                    //            Debug.WriteLine("Getting parameter definition.");
+                    //            Definition paramDef = param.Definition as Definition;
+                    //            Binding paramBind = null;
+
+                    //            #region Testing
+                    //            Debug.WriteLine("Getting parameter binding.");
+                    //            DefinitionBindingMapIterator dbm_it = dbindmap.GetEnumerator() as DefinitionBindingMapIterator;
+
+                    //            while (dbm_it.MoveNext())
+                    //            {
+                    //                // definition found in bindmapiterator is completely different than the used parameter?
+                    //                Definition d = dbm_it.Key as Definition;
+
+                    //                // if this isnt' the right parameter - skip to next iteration
+                    //                if (!d.Equals(paramDef))
+                    //                    continue;
+                    //                paramBind = dbm_it.Current as Binding;
+                    //            }
+
+                    //            #endregion
+
+                    //            //var bob = dbindmap.get_Item(param.Definition);
+
+                    //            if (paramBind is InstanceBinding)
+                    //            {
+                    //                paramform = ParameterForm.Instance;
+                    //                Debug.WriteLine("Parameter: " + param.Definition.Name.ToString() + " is instance.");
+                    //                Debug.WriteLine("Parameter value is: " + param.GetParameterValue());
+                    //            }
+
+                    //            else
+                    //            {
+                    //                if (paramBind is TypeBinding)
+                    //                {
+                    //                    paramform = ParameterForm.Type;
+                    //                    Debug.WriteLine("Parameter: " + param.Definition.Name.ToString() + " is type.");
+                    //                    Debug.WriteLine("Parameter value is: " + param.GetParameterValue());
+                    //                }
+
+                    //                else
+                    //                {
+                    //                    paramform = ParameterForm.None;
+                    //                    Debug.WriteLine("Parameter: " + param.Definition.Name.ToString() + "  is neither instance or type.");
+                    //                    Debug.WriteLine("Parameter value is: " + param.GetParameterValue());
+                    //                }
+                    //            }
+                    //        }
+                    //    }
+
+                    //    catch (Exception e)
+                    //    {
+                    //        Debug.WriteLine("Program ran into an exception, see info below: " + "\n"
+                    //            + e.Source + "\n"
+                    //            + e.StackTrace + "\n"
+                    //            + e.Message + "\n"
+                    //            + e.TargetSite + "\n"
+                    //            + e.Data + "\n");
+                    //    }
+                    //}
+                    #endregion
+
+                    Element e = param.Element;
+
+                    if (!(e is HostObject))
                     {
-                        DefinitionBindingMap dbindmap = doc.ParameterBindings;
-                        Debug.WriteLine("Opening object document and seeking definition binding map");
-                        Debug.WriteLine("Getting parameter definition.");
-                        Definition paramDef = param.Definition as Definition;
-                        Binding paramBind = null;
+                        // need code to deal with System Families like Walls,
+                        // Ducts, Pipe
+                        // HostObject seems to be the one that's most consistent
+                        // will capture the above + floors, cable tray etc...
 
-                        #region Testing
-                        Debug.WriteLine("Getting parameter binding.");
-                        DefinitionBindingMapIterator dbm_it = dbindmap.GetEnumerator() as DefinitionBindingMapIterator;
-
-                        while (dbm_it.MoveNext())
-                        {
-                            Definition d = dbm_it.Key as Definition;
-
-                            // if this isnt' the right parameter - skip to next iteration
-                            if (!d.Equals(paramDef))
-                                continue;
-                            paramBind = dbm_it.Current as Binding;
-                        }
-
-                        #endregion
-
-
-                        //var bob = dbindmap.get_Item(param.Definition);
-
-                        if (paramBind is InstanceBinding)
+                        // supposedly FamilyInstances hold all the instance parameters and FamilySymbols hold all the 
+                        // the type parameters
+                        // will not work with System Families
+                        if (e is FamilyInstance)
                         {
                             paramform = ParameterForm.Instance;
-                            Debug.WriteLine("Parameter: " + param.Definition.Name.ToString() + " is instance.");
-                            Debug.WriteLine("Parameter value is: " + param.GetParameterValue());
+                            Debug.Print("'" + param.Definition.Name.ToString() + "'" + " is an instance parameter.");
                         }
 
                         else
                         {
-                            if (paramBind is TypeBinding)
+                            if (e is FamilySymbol)
                             {
                                 paramform = ParameterForm.Type;
-                                Debug.WriteLine("Parameter: " + param.Definition.Name.ToString() + " is type.");
-                                Debug.WriteLine("Parameter value is: " + param.GetParameterValue());
+                                Debug.Print("'" + param.Definition.Name.ToString() + "'" + " is an type parameter.");
                             }
 
                             else
                             {
-                                paramform = ParameterForm.None;
-                                Debug.WriteLine("Parameter: " + param.Definition.Name.ToString() + "  is neither instance or type.");
-                                Debug.WriteLine("Parameter value is: " + param.GetParameterValue());
+                                Debug.Print("Element isn't useable in this operation.");
                             }
                         }
-
-                        #region old code
-
-                        #endregion
                     }
-                }
 
-                catch (Exception e)
-                {
-                    Debug.WriteLine("Program ran into an exception, see info below: " + "\n"
-                        + e.Source + "\n"
-                        + e.StackTrace + "\n"
-                        + e.Message + "\n"
-                        + e.TargetSite + "\n"
-                        + e.Data + "\n");
+                    else
+                    {
+                        Debug.Print("The " + e.Name + " is a HostObject, not a FamilyInstance or FamilySymbol");
+                        // still need to find a way to distinguish elements which are from HostObject elements.
+                    }
                 }
             }
 
+            catch (Exception e)
+            {
+                Debug.WriteLine("Program ran into an exception, see info below: " + "\n"
+                    + e.Source + "\n"
+                    + e.StackTrace + "\n"
+                    + e.Message + "\n"
+                    + e.TargetSite + "\n"
+                    + e.Data + "\n");
+            }
+
+            Debug.WriteLine("This parameter's type is: " + param.Definition.ParameterType.ToString());
+
             return paramform;
         }
+
+        //public static ParameterForm GetParameterForm(this Parameter param, Document doc)
+        //{
+        //    ParameterForm pf = ParameterForm.None;
+
+        //    Debug.WriteLine("This parameter's type is: " + param.Definition.ParameterType.ToString());
+        //    if (!param.Definition.ParameterType.ToString().Equals("Invalid"))
+        //    {
+        //        try
+        //        {
+        //            DefinitionBindingMap dbm = doc.ParameterBindings;
+        //            Debug.WriteLine("The DefinitionBindingMap has " + dbm.Size.ToString() + "entries");
+
+        //            Definition d = param.Definition;
+        //            Binding b = dbm.get_Item(d);
+
+        //            Debug.Assert(b is InstanceBinding, (d.Name + " is an instance"));
+        //            Debug.Assert(b is TypeBinding, (d.Name + " is a type"));
+        //        }
+
+        //        catch (Autodesk.Revit.Exceptions.InvalidObjectException invOe)
+        //        {
+        //            // coode
+        //            Debug.WriteLine("The object was invalid?" + "\n" + invOe.Message);
+        //        }
+
+        //        catch (Autodesk.Revit.Exceptions.InvalidOperationException auto_ioe)
+        //        {
+        //            // code
+        //            Debug.WriteLine("The operation was invalid?" + "\n" + auto_ioe.Message);
+        //        }
+        //    }
+
+        //    return pf;
+        //}
 
         public static string GetParameterValue(this Parameter param)
         {
@@ -176,6 +269,11 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
             }
 
             return value;
+        }
+
+        public static string SetParameterValue(this Parameter param)
+        {
+            //param.Set()
         }
 
         public enum ParameterForm
