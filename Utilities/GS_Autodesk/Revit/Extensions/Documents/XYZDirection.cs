@@ -19,7 +19,7 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents
 
     public static class XYZDirectionEnum
     {
-        public static string GetDirectionValue(this Enum value)
+        public static string GetDirectionValue(this XYZDirection value)
         {
             string output = null;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -27,9 +28,11 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents
             Element host = null;
 
             #region Find the Revit Link*
-            // get the revitlinkinstance from the current document
-            FilteredElementCollector newlinkfec = new FilteredElementCollector(curdoc).OfClass(typeof(RevitLinkInstance));
-            RevitLinkInstance rvtlink_other = (from posslink in newlinkfec
+            // get the revitlinkinstances from the current document
+            FilteredElementCollector collectionofRVTInst = new FilteredElementCollector(curdoc).OfCategory(BuiltInCategory.OST_RvtLinks);
+
+            // selects the link which matches the instance's host's document's path
+            RevitLinkInstance parentlinkDoc = (from posslink in collectionofRVTInst
                                                where (posslink as RevitLinkInstance).GetLinkDocument().PathName.ToString().Equals(faminstance.Host.Document.PathName.ToString())
                                                select (posslink as RevitLinkInstance)).Single();
             #endregion
@@ -46,6 +49,57 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents
                     where posshost.UniqueId.ToString().Equals(faminstance.Host.UniqueId.ToString())
                     select posshost).First();
             #endregion
+
+            return host;
+        }
+
+        public static Element FindElementinLinkedDoc(this Document curDoc, string elementUNIQUEID)
+        {
+            Element element = null;
+
+            #region Find the Revit Link*
+            // get the revitlinks from the current document
+            FilteredElementCollector collectionofRVTInst = new FilteredElementCollector(curDoc).OfCategory(BuiltInCategory.OST_RvtLinks);
+
+
+            #endregion
+
+            #region Finding the Element in the Linked Document
+            // convert those objects into RevitLinkInstances
+            //IEnumerable<RevitLinkInstance> parentlinkDoc = from posslink in collectionofRVTInst
+            //                                               where (posslink is RevitLinkInstance)
+            //                                               select posslink as RevitLinkInstance;
+
+            // check each of the documents to see if they contain the element
+            // select appropiate link
+            RevitLinkInstance rvtlink = (from posslink in collectionofRVTInst
+                                         where (posslink as RevitLinkInstance).GetLinkDocument().GetElement(elementUNIQUEID).IsValidObject
+                                         select posslink as RevitLinkInstance).FirstOrDefault();
+
+            // find the host in the list by comparing the UNIQUEIDS
+            element = rvtlink.GetLinkDocument().GetElement(elementUNIQUEID);
+            #endregion
+
+            return element;
+        }
+
+        public static Element FindHost(this Document curDoc, Element elem)
+        {
+            Element host = null;
+
+            // if the element is actually a family instance
+            if (elem is FamilyInstance)
+            {
+                host = curDoc.FindHost(elem);
+            }
+
+            // however, if the element is a family symbol
+            else
+            {
+                string msg = "The object which was used is a FamilySymbol. Use a FamilyInstance instead.";
+                Debug.WriteLine(msg);
+                throw new Exception(msg);
+            }
 
             return host;
         }

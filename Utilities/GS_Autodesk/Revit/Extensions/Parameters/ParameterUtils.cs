@@ -283,7 +283,9 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
             [StringValueAttribute("Type")]
             Type = 2,
             [StringValueAttribute("None")]
-            None = 3
+            None = 3,
+            [StringValueAttribute("Invalid")]
+            Invalid = 4
         }
     }
 
