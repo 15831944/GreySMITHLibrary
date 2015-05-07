@@ -271,7 +271,7 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
             return value;
         }
 
-        public static string SetParameterValue(this Parameter param)
+        public static void SetParameterValue(this Parameter param)
         {
             //param.Set()
         }
@@ -287,7 +287,7 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
         }
     }
 
-    ///* Parameter is a concrete class
+    //* Parameter is a concrete class
     // * of the abstract class DEFINITION
     // * all of the info we want about the parameter comes from
     // * the definition of the parameter
