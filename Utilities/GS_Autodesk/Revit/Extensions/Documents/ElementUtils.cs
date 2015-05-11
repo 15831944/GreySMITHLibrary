@@ -61,7 +61,6 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents
             // get the revitlinks from the current document
             FilteredElementCollector collectionofRVTInst = new FilteredElementCollector(curDoc).OfCategory(BuiltInCategory.OST_RvtLinks);
 
-
             #endregion
 
             #region Finding the Element in the Linked Document
