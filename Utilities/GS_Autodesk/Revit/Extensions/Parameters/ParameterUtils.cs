@@ -253,10 +253,7 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
 
                         catch (Autodesk.Revit.Exceptions.InvalidObjectException invalidoex)
                         {
-                            Debug.WriteLine("The program failed to get the Parameter's ElementID here.");
-                            Debug.WriteLine(invalidoex.Message);
-                            Debug.WriteLine(invalidoex.Data);
-                            Debug.WriteLine(invalidoex.StackTrace);
+                            ExceptionReport.Log(invalidoex);
                         }
                     }
 
