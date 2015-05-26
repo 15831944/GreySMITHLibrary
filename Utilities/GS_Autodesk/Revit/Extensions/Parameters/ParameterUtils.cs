@@ -253,7 +253,7 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
 
                         catch (Autodesk.Revit.Exceptions.InvalidObjectException invalidoex)
                         {
-                            ExceptionReport.Log(invalidoex);
+                            ExceptionReport.DebugLog(invalidoex);
                         }
                     }
 

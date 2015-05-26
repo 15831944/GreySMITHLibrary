@@ -64,7 +64,7 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents
             #endregion
 
             #region Finding the Element in the Linked Document
-            // convert those objects into RevitLinkInstances
+            // convert those objects into RevitLinkInstances?
             //IEnumerable<RevitLinkInstance> parentlinkDoc = from posslink in collectionofRVTInst
             //                                               where (posslink is RevitLinkInstance)
             //                                               select posslink as RevitLinkInstance;

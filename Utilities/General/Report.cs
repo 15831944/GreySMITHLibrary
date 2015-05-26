@@ -10,7 +10,7 @@ namespace GreySMITH.Utilities.General
 {
     public static class ExceptionReport
     {
-        public static void Log(Exception e)
+        public static void DebugLog(Exception e)
         {
             // automatically flush out the last lines when complete
             Debug.AutoFlush = true;
@@ -24,7 +24,7 @@ namespace GreySMITH.Utilities.General
             // if there are any InnerExceptions, recursively print those as well
             if(e.InnerException != null)
             {
-                ExceptionReport.Log(e.InnerException);
+                ExceptionReport.DebugLog(e.InnerException);
             }
         }
 
@@ -32,7 +32,7 @@ namespace GreySMITH.Utilities.General
         {
             // prints a specific message before actually doing the report log
             Debug.Print(specificmessage);
-            ExceptionReport.Log(e);
+            ExceptionReport.DebugLog(e);
         }
     }
 }
