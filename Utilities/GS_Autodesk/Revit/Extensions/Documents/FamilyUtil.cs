@@ -121,5 +121,85 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Documents
 
             return answer;
         }
+
+
+    }
+
+    private interface IFamilyExtender
+    {
+        public static FamilySymbol LoadFamilyDirect(this Document curdoc, FamilySymbol famsym, Document doctoloadfrom, ExternalCommandData cmd)
+        {
+            Family newfamily = null;
+            // grab the application and change the active document
+            using (UIApplication uiapp = cmd.Application)
+            {
+                OpenOptions oop = new OpenOptions();
+
+                oop.AllowOpeningLocalByWrongUser = true;
+                oop.DetachFromCentralOption = DetachFromCentralOption.DetachAndPreserveWorksets;
+
+                // open "doctoloadfrom" (linked doc) and make it the active document
+                if (uiapp.ActiveUIDocument.Document != doctoloadfrom)
+                {
+                    // try opening the document from memory only
+                    try
+                    {
+                        Document newcurdoc = curdoc.Application.OpenDocumentFile(ModelPathUtils.ConvertUserVisiblePathToModelPath(doctoloadfrom.PathName), oop);
+                    }
+
+                    // was unable to open the document for some reason
+                    catch
+                    {
+                        uiapp.OpenAndActivateDocument(ModelPathUtils.ConvertUserVisiblePathToModelPath(doctoloadfrom.PathName), oop, false);
+                        throw new Exception("Failed in attempt to open file. File name is:" + doctoloadfrom.PathName);
+                    }
+                }
+
+                // open the family document
+                newfamily = famsym.Family;
+                using (Document doc_family = doctoloadfrom.EditFamily(newfamily))
+                {
+                    // load it into the original document
+                    doc_family.LoadFamily(curdoc);
+
+                    // close the family once done
+                    doc_family.Close(false);
+                    //doctoloadfrom.Close(true);
+                }
+
+                // return control to the original active document
+                // could create possible bug - write a method to both
+                // move to another current document
+                // close all but current document
+                if (uiapp.ActiveUIDocument.Document != curdoc)
+                {
+                    while (uiapp.ActiveUIDocument.Document != curdoc)
+                    {
+                        uiapp.ActiveUIDocument.Document.Close(false);
+                    }
+                }
+
+                using (Transaction tr_regen = new Transaction(curdoc, "Regenerating the document..."))
+                {
+                    tr_regen.Start();
+
+                    // regenerate that document
+                    curdoc.Regenerate();
+                    tr_regen.Commit();
+                }
+            }
+
+            return famsym;
+        }
+
+        public void OtherMethod()
+        {
+
+        }
+    }
+
+    private class NewFamilyClass : IFamilyExtender, FamilyUtil
+    {
+
     }
 }
