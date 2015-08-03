@@ -12,7 +12,7 @@ using Autodesk.Revit.Attributes;
 
 namespace GreySMITH.Utilities.GS_Autodesk.Revit
 {
-    public class LineUtils
+    public static class LineUtils
     {
         /* questions
          * 
@@ -49,7 +49,7 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit
         /// method should transpose line information to new object
         /// </summary>
         /// <param name="lineinmodel">abstracted parent class of line objects</param>
-        public void Export(this CurveElement lineinmodel)
+        public static void Export(this CurveElement lineinmodel)
         {
             CurveElementType cet = lineinmodel.CurveElementType;
 

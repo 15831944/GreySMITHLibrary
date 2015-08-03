@@ -119,6 +119,7 @@
     <Compile Include="Utilities\General\StringEnum.cs" />
     <Compile Include="Utilities\General\StringValue.cs" />
     <Compile Include="Utilities\General\Time\TimeUtility.cs" />
+    <Compile Include="Utilities\GS_Autodesk\Revit\Wrappers\AbstractCommand.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
