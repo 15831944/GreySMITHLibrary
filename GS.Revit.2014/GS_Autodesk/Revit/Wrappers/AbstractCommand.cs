@@ -4,7 +4,7 @@ using Autodesk.Revit.Attributes;
 
 namespace GreySMITH.Utilities.GS_Autodesk.Revit.Wrappers
 {
-    public abstract class AbstractCommand : IExternalCommand
+    public abstract partial class AbstractCommand : IExternalCommand
     {
         protected TransactionAttribute _transactionAttribute =      new TransactionAttribute(TransactionMode.Manual);
         protected RegenerationAttribute _regenerationAttribute =    new RegenerationAttribute(RegenerationOption.Manual);

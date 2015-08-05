@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreySMITHLibrary", "GreySMITHLibrary.csproj", "{1F3B3D98-8618-45E1-8955-6DB266034938}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GS.Common", "GS.Common.csproj", "{1F3B3D98-8618-45E1-8955-6DB266034938}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GS.2014", "GS.Revit.2014\GS.2014.csproj", "{BB73121A-976D-4BEF-8D43-859C21D1B15A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GS.2015", "GS.Revit.2015\GS.2015.csproj", "{C5729470-3103-47A0-8E1B-172C6099C331}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{1F3B3D98-8618-45E1-8955-6DB266034938}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F3B3D98-8618-45E1-8955-6DB266034938}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F3B3D98-8618-45E1-8955-6DB266034938}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB73121A-976D-4BEF-8D43-859C21D1B15A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB73121A-976D-4BEF-8D43-859C21D1B15A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB73121A-976D-4BEF-8D43-859C21D1B15A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB73121A-976D-4BEF-8D43-859C21D1B15A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5729470-3103-47A0-8E1B-172C6099C331}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5729470-3103-47A0-8E1B-172C6099C331}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5729470-3103-47A0-8E1B-172C6099C331}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5729470-3103-47A0-8E1B-172C6099C331}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
