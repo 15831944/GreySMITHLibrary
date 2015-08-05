@@ -18,3 +18,11 @@ C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLi
 C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\bin\Debug\gsml.pdb
 C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\obj\Debug\gsml.dll
 C:\Users\psmith\Documents\_Work\_BIM Management\RESEARCH\Programming\GreySMITHLibrary\obj\Debug\gsml.pdb
+A:\Work\GreySMITHLibrary\obj\Debug\GreySMITHLibrary.csprojResolveAssemblyReference.cache
+A:\Work\GreySMITHLibrary\bin\Debug\gsml.dll
+A:\Work\GreySMITHLibrary\bin\Debug\gsml.pdb
+A:\Work\GreySMITHLibrary\bin\Debug\RevitAddInUtility.dll
+A:\Work\GreySMITHLibrary\bin\Debug\RevitAPI.dll
+A:\Work\GreySMITHLibrary\bin\Debug\RevitAPIUI.dll
+A:\Work\GreySMITHLibrary\obj\Debug\gsml.dll
+A:\Work\GreySMITHLibrary\obj\Debug\gsml.pdb

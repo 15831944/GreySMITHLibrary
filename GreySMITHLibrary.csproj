@@ -35,60 +35,23 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autodesk.Navisworks.Api, Version=12.0.1147.53, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2014\Autodesk.Navisworks.Api.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.Automation, Version=12.0.1147.53, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2014\Autodesk.Navisworks.Automation.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.ComApi, Version=12.0.1147.53, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2014\Autodesk.Navisworks.ComApi.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.Controls, Version=12.0.1147.53, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2014\Autodesk.Navisworks.Controls.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.Interop.ComApi, Version=10.0.840.82, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2014\Autodesk.Navisworks.Interop.ComApi.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.Interop.ComApiAutomation">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2014\Autodesk.Navisworks.Interop.ComApiAutomation.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.Interop.Timeliner">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2014\Autodesk.Navisworks.Interop.Timeliner.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.Takeoff">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2014\Autodesk.Navisworks.Takeoff.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.Timeliner">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2014\Autodesk.Navisworks.Timeliner.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="RevitAddInUtility">
+      <HintPath>..\References\Revit\2014\RevitAddInUtility.dll</HintPath>
     </Reference>
     <Reference Include="RevitAPI">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2014\RevitAPI.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\References\Revit\2014\RevitAPI.dll</HintPath>
     </Reference>
     <Reference Include="RevitAPIUI">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2014\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\References\Revit\2014\RevitAPIUI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -124,10 +87,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y "$(TargetPath)" "C:\ProgramData\Autodesk\Revit\Addins\2014"
-
-
-xcopy /y /d "$(TargetPath)" "%25USERPROFILE%25\Desktop\Processed Files\Testing\DEBUGGING\Jobs\BIM"</PostBuildEvent>
+    <PostBuildEvent>xcopy /y "$(TargetPath)" "C:\ProgramData\Autodesk\Revit\Addins\2014"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

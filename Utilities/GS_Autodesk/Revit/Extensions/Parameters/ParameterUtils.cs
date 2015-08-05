@@ -20,6 +20,18 @@ using GreySMITH.Utilities.General;
 
 namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
 {
+    /// <summary>
+    // Parameter is a concrete class
+    // of the abstract class DEFINITION
+    // all of the info we want about the parameter comes from
+    // the definition of the parameter
+    // 
+    // Definition d = param.Definition;
+    // name
+    // string param_name = d.Name;
+    // kind of parameter (i.e.: Yes|No, Volume, Horsepower
+    //ParameterType param_kind = d.ParameterType;
+    /// </summary>
     public static class ParameterUtils
     {
         public static ParameterForm GetParameterForm(this Parameter param)
@@ -27,9 +39,13 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
             ParameterForm paramform = ParameterForm.None;
             try
             {
-                if (!param.Element.Document.IsFamilyDocument)
+                if (param.Element.Document.IsFamilyDocument)
                 {
-                    #region Failed Code
+                    Debug.Print("Element isn't useable in this operation.");
+                    return ParameterForm.None;
+                }
+
+                #region Failed Code
                     //if (!param.Definition.ParameterType.ToString().Equals("Invalid"))
                     //{
                     //    try
@@ -107,45 +123,31 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
                     //}
                     #endregion
 
-                    Element e = param.Element;
-
-                    if (!(e is HostObject))
-                    {
-                        // need code to deal with System Families like Walls,
-                        // Ducts, Pipe
-                        // HostObject seems to be the one that's most consistent
-                        // will capture the above + floors, cable tray etc...
-
-                        // supposedly FamilyInstances hold all the instance parameters and FamilySymbols hold all the 
-                        // the type parameters
-                        // will not work with System Families
-                        if (e is FamilyInstance)
-                        {
-                            paramform = ParameterForm.Instance;
-                            Debug.Print("'" + param.Definition.Name.ToString() + "'" + " is an instance parameter.");
-                        }
-
-                        else
-                        {
-                            if (e is FamilySymbol)
-                            {
-                                paramform = ParameterForm.Type;
-                                Debug.Print("'" + param.Definition.Name.ToString() + "'" + " is an type parameter.");
-                            }
-
-                            else
-                            {
-                                Debug.Print("Element isn't useable in this operation.");
-                            }
-                        }
-                    }
-
-                    else
-                    {
-                        Debug.Print("The " + e.Name + " is a HostObject, not a FamilyInstance or FamilySymbol");
-                        // still need to find a way to distinguish elements which are from HostObject elements.
-                    }
+                // supposedly FamilyInstances hold all the instance parameters and FamilySymbols hold all the 
+                // the type parameters
+                // will not work with System Families
+                if (param.Element is FamilyInstance)
+                {
+                    Debug.Print("'" + param.Definition.Name.ToString() + "'" + " is an instance parameter.");
+                    return ParameterForm.Instance;
                 }
+
+                if (param.Element is FamilySymbol)
+                {
+                    Debug.Print("'" + param.Definition.Name.ToString() + "'" + " is an type parameter.");
+                    return ParameterForm.Type;
+                }
+
+                // need code to deal with System Families like Walls,
+                // Ducts, Pipe
+                // HostObject seems to be the one that's most consistent
+                // will capture the above + floors, cable tray etc...
+                //if (param.Element is HostObject)
+                //{
+                Debug.Print("The " + param.Element.Name + " is a HostObject, not a FamilyInstance or FamilySymbol");
+
+                // still need to find a way to distinguish elements which are from HostObject elements.
+                return ParameterForm.Invalid;
             }
 
             catch (Exception e)
@@ -156,11 +158,8 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
                     + e.Message + "\n"
                     + e.TargetSite + "\n"
                     + e.Data + "\n");
+                return ParameterForm.Invalid;
             }
-
-            Debug.WriteLine("This parameter's type is: " + param.Definition.ParameterType.ToString());
-
-            return paramform;
         }
 
         //public static ParameterForm GetParameterForm(this Parameter param, Document doc)
@@ -200,72 +199,56 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
 
         public static string GetParameterValue(this Parameter param)
         {
-            string value = null;
-
-            switch(param.StorageType)
+            try
             {
-                default:
-                    // A NULL VALUE MEANS THE PARAMETER IS UNEXPOSED
-                    value = "PARAMETER HAS NOT BEEN EXPOSED";
-                    break;
+                switch (param.StorageType)
+                {
+                    default:
+                        // A NULL VALUE MEANS THE PARAMETER IS UNEXPOSED
+                        return "PARAMETER HAS NOT BEEN EXPOSED";
 
-                case StorageType.Double:
-                    value = "DOUBLE: " + param.AsDouble().ToString();
-                    break;
+                    case StorageType.Double:
+                        return GetParameterDouble(param);
 
-                case StorageType.Integer:
-                    if (ParameterType.YesNo == param.Definition.ParameterType)
-                    {
+                    case StorageType.Integer:
+                        if (ParameterType.YesNo != param.Definition.ParameterType)
+                            return "INTEGER: " + param.AsInteger().ToString();
+
                         if (param.AsInteger() == 0)
+                            return "False";
+
+                        return "True";
+
+                    case StorageType.String:
+                        return param.AsString();
+
+                    case StorageType.ElementId:
+                        // this one is tricky
+                        // a positive ElementID can point to a specific element
+                        // however a negative one can mean a number of different things
+
+                        if (param.AsElementId().IntegerValue <= 0)
+                            return "ELEMENTID: " + param.AsElementId().IntegerValue.ToString();
+
+                        using (Document paramdoc = param.Element.Document)
                         {
-                            value = "False";
+                            return paramdoc.GetElement(param.AsElementId()).Name;
                         }
-                        else
-                        {
-                            value = "True";
-                        }
-                    }
-                    else
-                    {
-                        value = "INTEGER: " + param.AsInteger().ToString();
-                    }
-                    break;
-
-                case StorageType.String:
-                    value = param.AsString();
-                    break;
-
-                case StorageType.ElementId:
-                    // this one is tricky
-                    // a positive ElementID can point to a specific element
-                    // however a negative one can mean a number of different things
-                    ElementId id = param.AsElementId();
-
-                    if (id.IntegerValue >= 0)
-                    {
-                        try
-                        {
-                            using (Document paramdoc = param.Element.Document)
-                            {
-                                value = paramdoc.GetElement(id).Name;
-                            }
-                        }
-
-                        catch (Autodesk.Revit.Exceptions.InvalidObjectException invalidoex)
-                        {
-                            ExceptionReport.DebugLog(invalidoex);
-                        }
-                    }
-
-                    else
-                    {
-                        value = "ELEMENTID: " + id.IntegerValue.ToString();
-                    }
-                    break;
-
+                }
             }
 
-            return value;
+
+            catch (Autodesk.Revit.Exceptions.InvalidObjectException invalidoex)
+            {
+                ExceptionReport.DebugLog(invalidoex);
+            }
+
+            return null;
+        }
+
+        public static string GetParameterDouble(Parameter param)
+        {
+            return "DOUBLE: " + param.AsDouble().ToString();
         }
 
         public static void SetParameterValue(this Parameter param)
@@ -286,15 +269,5 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Extensions.Parameters
         }
     }
 
-    //* Parameter is a concrete class
-    // * of the abstract class DEFINITION
-    // * all of the info we want about the parameter comes from
-    // * the definition of the parameter
-    // */
-    //Definition d = param.Definition;
-    //// name
-    //string param_name = d.Name;
 
-    //// kind of parameter (i.e.: Yes|No, Volume, Horsepower
-    //ParameterType param_kind = d.ParameterType;
 }

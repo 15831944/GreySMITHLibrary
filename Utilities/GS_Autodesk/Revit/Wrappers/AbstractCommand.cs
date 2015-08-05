@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Autodesk.Revit.UI;
 using Autodesk.Revit.Attributes;
 
@@ -29,7 +25,7 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Wrappers
             set;
         }
 
-        public AbstractCommand(
+        protected AbstractCommand(
             ExternalCommandData excmd,
             string mainmessage,            
             Autodesk.Revit.DB.ElementSet elemset)
@@ -37,6 +33,13 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Wrappers
             _mainMessage = mainmessage;
             _externalCMD = excmd;
             _elementSet = elemset;
+        }
+
+        protected AbstractCommand()
+        {
+            _mainMessage = null;
+            _externalCMD = null;
+            _elementSet  = null;
         }
 
         // necessary method that Revit needs to call
@@ -56,13 +59,13 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Wrappers
                 _elementSet = elemset;
             }
 
-            return this.Execute();
+            return Execute();
         }
 
         // Internal method that allows the Revit method to use the internal method below
         protected Result Execute()
         {
-            return this.Execute(_externalCMD, _mainMessage, _elementSet);
+            return Execute(_externalCMD, _mainMessage, _elementSet);
         }
 
         // Internal method that allows this class to use this private fields it contains
@@ -74,7 +77,7 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Wrappers
         {
             try
             {
-
+                // defined in derived classes
                 return Work();
             }
 
@@ -86,7 +89,7 @@ namespace GreySMITH.Utilities.GS_Autodesk.Revit.Wrappers
             return Result.Failed;
         }
 
-        public abstract Result Work();
+        protected abstract Result Work();
 
     }
 }
