@@ -89,7 +89,7 @@ namespace GreySMITH.Revit.Wrappers
             return Result.Failed;
         }
 
-        protected abstract Result Work();
+        public abstract Result Work();
 
     }
 }

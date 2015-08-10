@@ -4,7 +4,7 @@ using GreySMITH.Common.Utilities.General;
 
 namespace GreySMITH.Revit.Extensions.Applications
 {
-    public static class ProjectTemplate
+    public static partial class ProjectTemplate
     {
         /// <summary>
         /// Shows the user a dialog box which displays choices for possible Revit Templates
@@ -38,12 +38,13 @@ namespace GreySMITH.Revit.Extensions.Applications
         public static Document CreateFromTemplate(this UIApplication uiApp)
         {
             // prompt user to pick the template
-            TaskDialogResult tdr = ProjectTemplate.Choose();
+            TaskDialogResult tdr = Choose();
 
             #region DocumentOptions (look into making this a separate item)
             // set options for typical document opening
             WorksetConfiguration wrkcon = new WorksetConfiguration();
-            wrkcon.OpenLastViewed();
+            WorksetConfiguration worksetConfiguration 
+                = new WorksetConfiguration(WorksetConfigurationOption.OpenLastViewed);
 
 
             Document doc = uiApp.ActiveUIDocument.Document;

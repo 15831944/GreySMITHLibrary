@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C5729470-3103-47A0-8E1B-172C6099C331}</ProjectGuid>
+    <ProjectGuid>{BB73121A-976D-4BEF-8D43-859C21D1B15A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GreySMITH.Revit</RootNamespace>
-    <AssemblyName>GreySMITH.Revit.2015</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <AssemblyName>GreySMITH.Revit.2014</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -32,10 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="RevitAPI">
-      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2015\RevitAPI.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2014\RevitAPI.dll</HintPath>
     </Reference>
     <Reference Include="RevitAPIUI">
-      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2015\RevitAPIUI.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2014\RevitAPIUI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,8 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Wrappers\AbstractedLine.cs" />
-    <Compile Include="Automation\RibbonCommandShortcuts.cs" />
-    <Compile Include="Automation\SendRevitCommand.cs" />
     <Compile Include="ConversionTools\ReferencePlaneUtil.cs" />
     <Compile Include="Extensions\Applications\ProjectTemplate.cs" />
     <Compile Include="Extensions\Applications\TemplateDiscipline.cs" />
@@ -66,6 +64,8 @@
     <Compile Include="Wrappers\LineUtils.cs" />
     <Compile Include="Misc\TaskDialogUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Automation\RibbonCommandShortcuts.cs" />
+    <Compile Include="Automation\SendRevitCommand.cs" />
     <Compile Include="Wrappers\AbstractCommand.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +78,9 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y "$(TargetPath)" "C:\ProgramData\Autodesk\Revit\Addins\2014"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
