@@ -73,6 +73,7 @@
   <ItemGroup>
     <None Include="Misc\TemplateDiscipline.cs~RF1f3653fc.TMP" />
   </ItemGroup>
+  <Import Project="..\..\..\GreySMITH.Revit\GreySMITH.Revit.projitems" Label="Shared" Condition="Exists('..\..\..\GreySMITH.Revit\GreySMITH.Revit.projitems')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /y "$(TargetPath)" "C:\ProgramData\Autodesk\Revit\Addins\2016"</PostBuildEvent>
