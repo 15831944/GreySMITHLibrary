@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreySMITH.Common", "Common\GreySMITH.Common.csproj", "{1F3B3D98-8618-45E1-8955-6DB266034938}"
 EndProject
@@ -20,6 +20,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreySMITH.Revit.2016", "Autodesk\Revit\GreySMITH.Revit.2016\GreySMITH.Revit.2016.csproj", "{D689B022-0EDE-48CA-8A9A-203D40CA12C8}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GreySMITH.Revit", "GreySMITH.Revit\GreySMITH.Revit.shproj", "{30E5A928-4B04-4167-A93B-1440609816CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Commands", "Commands", "{8A8A8639-49D3-40C2-8C18-DE87CDD6552B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawPipeOuts", "..\..\..\..\..\..\Dropbox\Work\Programming\DrawPipeOuts\DrawPipeOuts\DrawPipeOuts.csproj", "{81E9DF04-155E-4C8A-8A69-47D44C1152F2}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -49,6 +53,10 @@ Global
 		{D689B022-0EDE-48CA-8A9A-203D40CA12C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D689B022-0EDE-48CA-8A9A-203D40CA12C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D689B022-0EDE-48CA-8A9A-203D40CA12C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81E9DF04-155E-4C8A-8A69-47D44C1152F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81E9DF04-155E-4C8A-8A69-47D44C1152F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81E9DF04-155E-4C8A-8A69-47D44C1152F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81E9DF04-155E-4C8A-8A69-47D44C1152F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,5 +69,6 @@ Global
 		{C5729470-3103-47A0-8E1B-172C6099C331} = {FC5ED986-4FB1-4BDF-ACA6-80982D8861C5}
 		{D689B022-0EDE-48CA-8A9A-203D40CA12C8} = {FC5ED986-4FB1-4BDF-ACA6-80982D8861C5}
 		{30E5A928-4B04-4167-A93B-1440609816CF} = {FC5ED986-4FB1-4BDF-ACA6-80982D8861C5}
+		{81E9DF04-155E-4C8A-8A69-47D44C1152F2} = {8A8A8639-49D3-40C2-8C18-DE87CDD6552B}
 	EndGlobalSection
 EndGlobal

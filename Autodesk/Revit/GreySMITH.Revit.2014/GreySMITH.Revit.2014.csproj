@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NLog.4.0.1\lib\net40\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RevitAPI">
       <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2014\RevitAPI.dll</HintPath>
     </Reference>
@@ -48,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\Documents\ExtensionsViews.cs" />
+    <Compile Include="Extensions\Elements\ExtensionsConnectors.cs" />
     <Compile Include="Wrappers\AbstractedLine.cs" />
     <Compile Include="ConversionTools\ReferencePlaneUtil.cs" />
     <Compile Include="Extensions\Applications\ProjectTemplate.cs" />
@@ -61,15 +67,18 @@
     <Compile Include="Extensions\Documents\RevitLinkUtil.cs" />
     <Compile Include="Extensions\Documents\XYZDirection.cs" />
     <Compile Include="Extensions\Parameters\ParameterUtils.cs" />
+    <Compile Include="Wrappers\IRevitExtension.cs" />
     <Compile Include="Wrappers\LineUtils.cs" />
     <Compile Include="Misc\TaskDialogUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Automation\RibbonCommandShortcuts.cs" />
     <Compile Include="Automation\SendRevitCommand.cs" />
     <Compile Include="Wrappers\AbstractCommand.cs" />
+    <Compile Include="Wrappers\RevitExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Misc\TemplateDiscipline.cs~RF1f3653fc.TMP" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\GreySMITH.Common.csproj">

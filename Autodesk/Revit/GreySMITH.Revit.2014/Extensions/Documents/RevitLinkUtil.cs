@@ -24,7 +24,7 @@ namespace GreySMITH.Revit.Extensions.Documents
         {
             foreach (string rfp in revitFilePath)
             {
-                RevitLinkUtil.InstanceMaker(doc, rfp);
+                InstanceMaker(doc, rfp);
             }
         }
 
