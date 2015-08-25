@@ -3,7 +3,7 @@ using Autodesk.Revit.DB;
 
 namespace GreySMITH.Revit.Wrappers
 {
-    public static class LineUtils
+    public partial class LineUtils
     {
         /* questions
          * 
@@ -36,27 +36,26 @@ namespace GreySMITH.Revit.Wrappers
             // workset?
             // 
 
-        /// <summary>
-        /// method should transpose line information to new object
-        /// </summary>
-        /// <param name="lineinmodel">abstracted parent class of line objects</param>
-        public static void Export(this CurveElement lineinmodel)
-        {
-            CurveElementType cet = lineinmodel.CurveElementType;
-
-            switch(cet)
-            {
-                case CurveElementType.Invalid:
-                    throw new Exception("{0}: \tis not a valid element. ");
-
-                case CurveElementType.DetailCurve:
-                    // do work
-                    break;
-                
-                default:
-                    break;
-            }
-            
-        }
+//        /// <summary>
+//        /// method should transpose line information to new object
+//        /// </summary>
+//        /// <param name="lineinmodel">abstracted parent class of line objects</param>
+//        public static void Export(this CurveElement lineinmodel)
+//        {
+//            CurveElementType cet = lineinmodel.CurveElementType;
+//
+//            switch(cet)
+//            {
+//                case CurveElementType.Invalid:
+//                    throw new Exception("{0}: \tis not a valid element. ");
+//
+//                case CurveElementType.DetailCurve:
+//                    // do work
+//                    break;
+//                
+//                default:
+//                    break;
+//            }
+//            
     }
 }

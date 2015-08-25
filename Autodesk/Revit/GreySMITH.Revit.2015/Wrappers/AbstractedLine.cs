@@ -1,6 +1,6 @@
 ﻿namespace GreySMITH.Revit.Wrappers
 {
-    public class AbstractedLine
+    public partial class AbstractedLine
     {
         //    private int length
         //    {
