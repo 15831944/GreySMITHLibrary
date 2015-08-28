@@ -9,8 +9,27 @@
     <Import_RootNamespace>GreySMITH.Revit</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\RibbonCommandShortcuts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\SendRevitCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConversionTools\ReferencePlaneUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Applications\ProjectTemplate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Applications\TemplateDiscipline.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Applications\UIApplicationUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Documents\CopyMonitorUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Documents\DirectionValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Documents\ElementUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Documents\ExtensionsViews.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Documents\FamilyUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Documents\ObjectGetter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Documents\RevitLinkUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Documents\XYZDirection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Elements\ExtensionsConnectors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Parameters\ParameterUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Misc\TaskDialogUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Wrappers\AbstractCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Wrappers\AbstractedLine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Wrappers\IRevitExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Wrappers\LineUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Wrappers\RevitExtension.cs" />
   </ItemGroup>
 </Project>

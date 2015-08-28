@@ -23,16 +23,17 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GreySMITH.Revit", "GreySMIT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Commands", "Commands", "{8A8A8639-49D3-40C2-8C18-DE87CDD6552B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawPipeOuts", "..\..\..\..\..\..\Dropbox\Work\Programming\DrawPipeOuts\DrawPipeOuts\DrawPipeOuts.csproj", "{81E9DF04-155E-4C8A-8A69-47D44C1152F2}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{EA41C795-669E-47F5-A5A0-E179B3834C3C}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawPipeOuts", "GreySMITH.Revit\Commands\DrawPipeOuts\DrawPipeOuts\DrawPipeOuts.csproj", "{81E9DF04-155E-4C8A-8A69-47D44C1152F2}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		GreySMITH.Revit\GreySMITH.Revit.projitems*{bb73121a-976d-4bef-8d43-859c21d1b15a}*SharedItemsImports = 4
+		GreySMITH.Revit\GreySMITH.Revit.projitems*{81e9df04-155e-4c8a-8a69-47d44c1152f2}*SharedItemsImports = 4
 		GreySMITH.Revit\GreySMITH.Revit.projitems*{c5729470-3103-47a0-8e1b-172c6099c331}*SharedItemsImports = 4
 		GreySMITH.Revit\GreySMITH.Revit.projitems*{d689b022-0ede-48ca-8a9a-203d40ca12c8}*SharedItemsImports = 4
 		GreySMITH.Revit\GreySMITH.Revit.projitems*{30e5a928-4b04-4167-a93b-1440609816cf}*SharedItemsImports = 13
@@ -74,6 +75,7 @@ Global
 		{C5729470-3103-47A0-8E1B-172C6099C331} = {FC5ED986-4FB1-4BDF-ACA6-80982D8861C5}
 		{D689B022-0EDE-48CA-8A9A-203D40CA12C8} = {FC5ED986-4FB1-4BDF-ACA6-80982D8861C5}
 		{30E5A928-4B04-4167-A93B-1440609816CF} = {FC5ED986-4FB1-4BDF-ACA6-80982D8861C5}
+		{8A8A8639-49D3-40C2-8C18-DE87CDD6552B} = {FC5ED986-4FB1-4BDF-ACA6-80982D8861C5}
 		{81E9DF04-155E-4C8A-8A69-47D44C1152F2} = {8A8A8639-49D3-40C2-8C18-DE87CDD6552B}
 	EndGlobalSection
 EndGlobal

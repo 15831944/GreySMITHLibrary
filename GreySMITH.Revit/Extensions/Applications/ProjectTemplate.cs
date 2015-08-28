@@ -38,13 +38,12 @@ namespace GreySMITH.Revit.Extensions.Applications
         public static Document CreateFromTemplate(this UIApplication uiApp)
         {
             // prompt user to pick the template
-            TaskDialogResult tdr = Choose();
+            TaskDialogResult tdr = ProjectTemplate.Choose();
 
             #region DocumentOptions (look into making this a separate item)
             // set options for typical document opening
             WorksetConfiguration wrkcon = new WorksetConfiguration();
-            WorksetConfiguration worksetConfiguration 
-                = new WorksetConfiguration(WorksetConfigurationOption.OpenLastViewed);
+            wrkcon.OpenLastViewed();
 
 
             Document doc = uiApp.ActiveUIDocument.Document;
@@ -64,33 +63,29 @@ namespace GreySMITH.Revit.Extensions.Applications
             switch (tdr)
             {
                 case (TaskDialogResult.CommandLink1):
-                    uidoc = uiApp.OpenAndActivateDocument(
+                    return uiApp.OpenAndActivateDocument(
                         ModelPathUtils.ConvertUserVisiblePathToModelPath(TemplateDiscipline.Electrical.GetStringValue()),
                         oops,
-                        false);
-                    break;
+                        false).Document;
                 case (TaskDialogResult.CommandLink2):
-                    uidoc = uiApp.OpenAndActivateDocument(
+                    return uiApp.OpenAndActivateDocument(
                         ModelPathUtils.ConvertUserVisiblePathToModelPath(TemplateDiscipline.Mechanical.GetStringValue()),
                         oops,
-                        false);
-                    break;
+                        false).Document;
                 case (TaskDialogResult.CommandLink3):
-                    uidoc = uiApp.OpenAndActivateDocument(
+                    return uiApp.OpenAndActivateDocument(
                         ModelPathUtils.ConvertUserVisiblePathToModelPath(TemplateDiscipline.PlumbingFireProtection.GetStringValue()),
                         oops,
-                        false);
-                    break;
+                        false).Document;
                 case (TaskDialogResult.CommandLink4):
-                    uidoc = uiApp.OpenAndActivateDocument(
+                    return uiApp.OpenAndActivateDocument(
                         ModelPathUtils.ConvertUserVisiblePathToModelPath(TemplateDiscipline.All.GetStringValue()),
                         oops,
-                        false);
-                    break;
+                        false).Document;
+                default:
+                    return null;
             }
             #endregion
-
-            return uidoc.Document;
         }
     }
 }

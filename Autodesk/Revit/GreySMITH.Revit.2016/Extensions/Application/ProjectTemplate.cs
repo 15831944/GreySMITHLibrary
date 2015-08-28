@@ -4,31 +4,9 @@ using GreySMITH.Common.Utilities.General;
 
 namespace GreySMITH.Revit.Extensions.Applications
 {
-    public static class ProjectTemplate
+    public static partial class ProjectTemplate
     {
-        /// <summary>
-        /// Shows the user a dialog box which displays choices for possible Revit Templates
-        /// </summary>
-        /// <returns>User's choice of template</returns>
-        private static TaskDialogResult Choose()
-        {
-            TaskDialog RVT = new TaskDialog("Revit Model Setup");
-            RVT.MainInstruction = "Which discipline model would you like to create?";
-            RVT.MainContent = "To begin, please choose which model you'd like to create from the choices below";
 
-            // All the links for the dialog box for discipline models
-            RVT.AddCommandLink(TaskDialogCommandLinkId.CommandLink1, "Electrical Template");
-            RVT.AddCommandLink(TaskDialogCommandLinkId.CommandLink2, "Mechanical Template");
-            RVT.AddCommandLink(TaskDialogCommandLinkId.CommandLink3, "Plumbing|Fire Protection Template");
-            RVT.AddCommandLink(TaskDialogCommandLinkId.CommandLink4, "Combined Discipline Template");
-
-            // Set default and common behavior buttons
-            RVT.CommonButtons = TaskDialogCommonButtons.Cancel;
-            RVT.DefaultButton = TaskDialogResult.Cancel;
-
-            TaskDialogResult tdr = RVT.Show();
-            return tdr;
-        }
 
         /// <summary>
         /// Creates a project based a on a template chosen by the user
@@ -44,7 +22,8 @@ namespace GreySMITH.Revit.Extensions.Applications
             // set options for typical document opening
             WorksetConfiguration wrkcon = new WorksetConfiguration();
             wrkcon.OpenLastViewed();
-
+            uiApp.ActiveUIDocument.Document
+            
 
             Document doc = uiApp.ActiveUIDocument.Document;
             //var list_elems = from 
