@@ -16,7 +16,7 @@ namespace GreySMITH.Commands.DrawPipeOuts
     /// </summary>
     public partial class DrawPipeOutCommand : AbstractCommand
     {
-        // default constructor for concrte classes - make sure to implement this in all cases.
+        // default constructor for concrete classes - make sure to implement this in all cases.
         public DrawPipeOutCommand(
             ExternalCommandData excmd,
             string mainmessage,

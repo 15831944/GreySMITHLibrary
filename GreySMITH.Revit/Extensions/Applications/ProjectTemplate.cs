@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.UI;
 using GreySMITH.Common.Utilities.General;
 
@@ -6,6 +7,9 @@ namespace GreySMITH.Revit.Extensions.Applications
 {
     public static partial class ProjectTemplate
     {
+        private static OpenOptions _openOptions;
+        private static UIApplication _uiApplication;
+
         /// <summary>
         /// Shows the user a dialog box which displays choices for possible Revit Templates
         /// </summary>
@@ -37,24 +41,11 @@ namespace GreySMITH.Revit.Extensions.Applications
         /// <returns>The document chosen by the user</returns>
         public static Document CreateFromTemplate(this UIApplication uiApp)
         {
+            _uiApplication = uiApp;
             // prompt user to pick the template
-            TaskDialogResult tdr = ProjectTemplate.Choose();
+            TaskDialogResult tdr = Choose();
 
-            #region DocumentOptions (look into making this a separate item)
-            // set options for typical document opening
-            WorksetConfiguration wrkcon = new WorksetConfiguration();
-            wrkcon.OpenLastViewed();
-
-
-            Document doc = uiApp.ActiveUIDocument.Document;
-            //var list_elems = from 
-            //var worksetlist = doc.GetWorksetId()
-
-            OpenOptions oops = new OpenOptions();
-            oops.Audit = true;
-            oops.DetachFromCentralOption = DetachFromCentralOption.ClearTransmittedSaveAsNewCentral;
-            oops.SetOpenWorksetsConfiguration(wrkcon);
-            #endregion
+            SetDocumentOpenOptions();
 
             UIDocument uidoc = null;
 
@@ -65,22 +56,22 @@ namespace GreySMITH.Revit.Extensions.Applications
                 case (TaskDialogResult.CommandLink1):
                     return uiApp.OpenAndActivateDocument(
                         ModelPathUtils.ConvertUserVisiblePathToModelPath(TemplateDiscipline.Electrical.GetStringValue()),
-                        oops,
+                        _openOptions,
                         false).Document;
                 case (TaskDialogResult.CommandLink2):
                     return uiApp.OpenAndActivateDocument(
                         ModelPathUtils.ConvertUserVisiblePathToModelPath(TemplateDiscipline.Mechanical.GetStringValue()),
-                        oops,
+                        _openOptions,
                         false).Document;
                 case (TaskDialogResult.CommandLink3):
                     return uiApp.OpenAndActivateDocument(
                         ModelPathUtils.ConvertUserVisiblePathToModelPath(TemplateDiscipline.PlumbingFireProtection.GetStringValue()),
-                        oops,
+                        _openOptions,
                         false).Document;
                 case (TaskDialogResult.CommandLink4):
                     return uiApp.OpenAndActivateDocument(
                         ModelPathUtils.ConvertUserVisiblePathToModelPath(TemplateDiscipline.All.GetStringValue()),
-                        oops,
+                        _openOptions,
                         false).Document;
                 default:
                     return null;

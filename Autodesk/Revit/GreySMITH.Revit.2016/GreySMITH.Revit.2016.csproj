@@ -45,9 +45,6 @@
       <HintPath>..\..\..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GreySMITH.Common">
-      <HintPath>..\..\..\..\..\..\..\..\..\ProgramData\Autodesk\Revit\Addins\2014\GreySMITH.Common.dll</HintPath>
-    </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
@@ -83,11 +80,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\Application\ProjectTemplate.cs" />
+    <Compile Include="Extensions\Applications\ProjectTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\GreySMITH.Common.csproj">
+      <Project>{1f3b3d98-8618-45e1-8955-6db266034938}</Project>
+      <Name>GreySMITH.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\..\GreySMITH.Revit\GreySMITH.Revit.projitems" Label="Shared" Condition="Exists('..\..\..\GreySMITH.Revit\GreySMITH.Revit.projitems')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
