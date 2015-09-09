@@ -1,6 +1,7 @@
 ﻿using System;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.Attributes;
+using Autodesk.Revit.DB;
 
 namespace GreySMITH.Revit.Wrappers
 {
@@ -23,6 +24,21 @@ namespace GreySMITH.Revit.Wrappers
         {
             get;
             set;
+        }
+        private UIApplication UiApplication
+        {
+            get
+            {
+                return _externalCMD.Application;
+            }
+        }
+        private Document CurrentDocument
+        {
+            get { return UiApplication.ActiveUIDocument.Document; }
+        }
+        private UIDocument UiDocument
+        {
+            get { return UiApplication.ActiveUIDocument; }
         }
 
         protected AbstractCommand(
@@ -50,9 +66,9 @@ namespace GreySMITH.Revit.Wrappers
         {
             // if any of the private fields are incorrect - let Revit re-correct them
             if(
-            _mainMessage != mainmessage ||
-            _externalCMD != excmd ||
-            _elementSet  != elemset)
+            (!_mainMessage.Equals(mainmessage)) ||
+            (!_externalCMD.Equals(excmd)) ||
+            (!_elementSet.Equals(elemset)))
             {
                 _mainMessage = mainmessage;
                 _externalCMD = excmd;

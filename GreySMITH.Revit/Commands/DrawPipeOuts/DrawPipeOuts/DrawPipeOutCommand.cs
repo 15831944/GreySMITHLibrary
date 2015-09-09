@@ -34,21 +34,7 @@ namespace GreySMITH.Commands.DrawPipeOuts
             new List<ElementId>();
         private Dictionary<Connector, Element> _connectorDictionary =
             new Dictionary<Connector, Element>();
-        private UIApplication UiApplication
-        {
-            get
-            {
-                return _externalCMD.Application;
-            }
-        }
-        private Document CurrentDocument
-        {
-            get{return UiApplication.ActiveUIDocument.Document;}
-        }
-        private UIDocument UiDocument
-        {
-            get{return UiApplication.ActiveUIDocument;}
-        }
+
         public Dictionary<Connector, Element> ConnectorDictionary
         {
             get
@@ -166,11 +152,28 @@ namespace GreySMITH.Commands.DrawPipeOuts
                     break;
             }
         }
+        // TODO figure out how to calculate roughing
         private double CalculateRoughing(Element element)
         {
+            Units documentUnits = element.Document.GetUnits();
+            DisplayUnit documentUnitSystem = element.Document.DisplayUnitSystem;
+            
+            double roughingAmount = 0.0;
+
+            // if the element has a host 
+            if (((FamilyInstance)element).Host != null) { 
+                return CalculateRoughingFromHost(element);}
+
+            return roughingAmount;
+        }
+
+        private double CalculateRoughingFromHost(Element element)
+        {
+            double roughingAmount = 0.0;
+
             // do stuff
 
-            return 0.0;
+            return roughingAmount;
         }
         private View3D Create3DView()
         {
@@ -194,8 +197,8 @@ namespace GreySMITH.Commands.DrawPipeOuts
 
             // if the object returned is not null AND is the element itself, the connector intersects with it
             if (null != intersectedReference.GetReference() &&
-                intersectedReference.GetReference() == new Reference(c.Owner))
-                return true;
+                intersectedReference.GetReference() == new Reference(c.Owner)) { 
+                return true;}
 
             return false;
         }

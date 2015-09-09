@@ -11,7 +11,7 @@ using GreySMITH.Revit.Extensions.Elements;
 
 namespace GreySMITH.Revit.Wrappers
 {
-    public interface IRevitExtension
+    public interface IRevitObject
     {
         Document CurrentDocument { get; }
     }
