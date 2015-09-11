@@ -25,18 +25,18 @@ namespace GreySMITH.Revit.Wrappers
             get;
             set;
         }
-        private UIApplication UiApplication
+        protected UIApplication UiApplication
         {
             get
             {
                 return _externalCMD.Application;
             }
         }
-        private Document CurrentDocument
+        protected Document CurrentDocument
         {
             get { return UiApplication.ActiveUIDocument.Document; }
         }
-        private UIDocument UiDocument
+        protected UIDocument UiDocument
         {
             get { return UiApplication.ActiveUIDocument; }
         }

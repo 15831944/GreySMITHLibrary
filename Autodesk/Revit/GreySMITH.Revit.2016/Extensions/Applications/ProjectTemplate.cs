@@ -52,27 +52,6 @@ namespace GreySMITH.Revit.Extensions.Applications
 //            #endregion
 //        }
 
-        static partial void SetDocumentOpenOptions()
-        {
-            #region DocumentOptions (look into making this a separate item)
-            // set options for typical document opening
-            WorksetConfiguration wrkcon = new WorksetConfiguration();
-            wrkcon.Close(
-                new FilteredWorksetCollector(
-                    _uiApplication.ActiveUIDocument.Document)
-                    .ToWorksetIds()
-                    .ToList());
 
-
-            Document doc = _uiApplication.ActiveUIDocument.Document;
-            //var list_elems = from 
-            //var worksetlist = doc.GetWorksetId()
-
-
-            _openOptions.Audit = true;
-            _openOptions.DetachFromCentralOption = DetachFromCentralOption.ClearTransmittedSaveAsNewCentral;
-            _openOptions.SetOpenWorksetsConfiguration(wrkcon);
-            #endregion
-        }
     }
 }

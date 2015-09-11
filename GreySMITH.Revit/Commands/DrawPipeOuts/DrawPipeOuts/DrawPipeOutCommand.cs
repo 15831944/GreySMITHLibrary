@@ -169,8 +169,12 @@ namespace GreySMITH.Commands.DrawPipeOuts
 
         private double CalculateRoughingFromHost(Element element)
         {
-            double roughingAmount = 0.0;
+            double roughingAmount = 12.0;
+            double hostWidth;
 
+            Element hostElement = ((FamilyInstance) element).Host;
+            var hostElementWidth = hostElement.get_Parameter(BuiltInParameter.WALL_ATTR_WIDTH_PARAM);
+            double.TryParse(hostElementWidth.AsValueString(), out hostWidth);
             // do stuff
 
             return roughingAmount;
