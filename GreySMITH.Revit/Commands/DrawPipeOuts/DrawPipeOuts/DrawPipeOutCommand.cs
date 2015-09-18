@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using NLog;
 using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Plumbing;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using GreySMITH.Revit.Wrappers;
@@ -129,64 +130,106 @@ namespace GreySMITH.Commands.DrawPipeOuts
         }
         private void DrawPipeToOrFromConnector(Connector c)
         {
-            double amount = CalculateRoughing(c.Owner);
-
-            // find out if the connector direction will intersect with object
-            switch (IntersectsWithOwner(c))
+            using (Transaction tr_pipedraw = new Transaction(CurrentDocument, "Drawing pipe..."))
             {
-                // if so draw FROM THE OPPOSITE DIRECTION, pipe system is supply.
+                tr_pipedraw.Start();
+                double amount = CalculateRoughing(c.Owner);
+                PipeType suggestedPipeType = GetSuggestedPipeType(CurrentDocument, c.PipeSystemType);
+                
 
+                // find out if the connector direction will intersect with object
+                switch (IntersectsWithOwner(c))
+                {
+                    case (true):
+                        // if so draw FROM THE OPPOSITE DIRECTION, pipe system is supply.
+                        CurrentDocument.Create.NewPipe(c.Origin, (), suggestedPipeType);
+                        
 
-                // otherwise, draw away from object, pipe system is not supply
-                // draw a pipe in space of the appropiate size (2' away from the object)
-                //            Pipe.Create()
+                        // draw a pipe in space of the appropiate size (2' away from the object)
+                        //            Pipe.Create()
 
+                        // connect the pipe back up to the fixture
 
-                // connect the pipe back up to the fixture
+                        //            CurrentDocument.Create.NewPipe();
+                        break;
 
-                //            CurrentDocument.Create.NewPipe();   
+                    case (false):
+                        // otherwise, draw away from object, pipe system is not supply
 
-                case (true):
-                    // do stuff
-                    break;
-
-                case (false):
-                    // do stuff
-                    break;
+                        // do stuff
+                        break;
+                }
             }
         }
-        // TODO figure out how to calculate roughing
+
+        /// <summary>
+        /// Returns a PipeType based on the PipeType most used with a specific System Type in this document
+        /// </summary>
+        /// <param name="currentDocument">Document to check</param>
+        /// <param name="connector">Connector to base on</param>
+        /// <returns></returns>
+        private PipeType GetSuggestedPipeType(Document currentDocument, PipeSystemType pipeSystemType )
+        {
+            throw new NotImplementedException();
+        }
+
         private double CalculateRoughing(Element element)
         {
-            Units documentUnits = element.Document.GetUnits();
-            DisplayUnit documentUnitSystem = element.Document.DisplayUnitSystem;
-            
-            
-            double roughingAmount = 0.0;
+            double roughingAmount = 12.0;
 
-            // if the element has a host 
-            if (((FamilyInstance)element).Host != null) { 
+            // if the element has a host AND that host is not a level
+            if (((FamilyInstance)element).Host != null &&
+                ((FamilyInstance)element).Host.GetType() != typeof(Level)) { 
                 return CalculateRoughingFromHost(element);}
 
-            return roughingAmount;
+            // returns an number that is already converted to the Document's internal Unit System
+            // i.e: changes inches to millimeters or vice versa
+            return UnitUtils.ConvertToInternalUnits(roughingAmount, DisplayUnitType.DUT_FRACTIONAL_INCHES);
         }
 
         private double CalculateRoughingFromHost(Element element)
         {
+            // typical roughing amount in inches
             double roughingAmount = 12.0;
-            double hostWidth;
 
+            // variable for the host width which will be returned
+            double hostWidth = 0;
+
+            // the element's host (Host is typically a Wall, Roof, Ceiling or Floor, but could be something else)
             Element hostElement = ((FamilyInstance) element).Host;
-            var hostElementWidth = hostElement.get_Parameter(BuiltInParameter.WALL_ATTR_WIDTH_PARAM);
-            double.TryParse(hostElementWidth.AsValueString(), out hostWidth);
-            // do stuff
 
-            return roughingAmount;
-        }
+            // define the Host Type
+            switch (hostElement.Category.Name)
+            {
+                case "ExtrusionRoof":
+                    hostWidth = ((RoofBase) hostElement).FasciaDepth;
+                    break;
 
-        private void ConvertToDocumentUnits(double value)
-        {
-            
+                case "FootPrintRoof":
+                    hostWidth = ((FootPrintRoof) hostElement).FasciaDepth;
+                    break;
+
+                case "Wall":
+                    hostWidth = ((Wall) hostElement).Width;
+                    break;
+
+                case "Ceiling":
+                    hostWidth = ((Ceiling) hostElement).ParametersMap.get_Item("Thickness").AsDouble();
+                    break;
+
+                case "Floor":
+                    hostWidth = ((Floor) hostElement).ParametersMap.get_Item("Thickness").AsDouble();
+                    break;
+
+                default:
+                    Logger.Warn(
+                        "The element called :'{0}' has an unknown host type called '{1}'." +
+                        " Create a new case for this in the method.",
+                        element.Name, hostElement.Name);
+                    break;
+            }
+
+            return UnitUtils.ConvertToInternalUnits(roughingAmount, DisplayUnitType.DUT_FRACTIONAL_INCHES) + hostWidth;
         }
 
         private bool IntersectsWithOwner(Connector c)
