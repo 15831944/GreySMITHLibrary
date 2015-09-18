@@ -8,6 +8,7 @@ using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using GreySMITH.Revit.Wrappers;
 using GreySMITH.Revit.Extensions.Elements;
+using GreySMITH.Revit.Extensions.Documents;
 
 namespace GreySMITH.Commands.DrawPipeOuts
 {
@@ -102,8 +103,10 @@ namespace GreySMITH.Commands.DrawPipeOuts
             TaskDialog.Show(
                 "Roughing Results",
                 string.Format(
-                    "{0} objects were unable to be drawn because of a lack of connectors. Speak to the architect and creator of the family so" +
-                    "that a connector can be added to the family", ListOfElementsWithoutConnectors.Count()));
+                    "{0} objects were unable to be drawn because of a lack of connectors. " +
+                    "Speak to the architect and creator of the family so" +
+                    "that a connector can be added to the family", 
+                    ListOfElementsWithoutConnectors.Count()));
         }
         private void DrawPipeToOrFromObject(Element element)
         {
@@ -114,7 +117,7 @@ namespace GreySMITH.Commands.DrawPipeOuts
             // if none - keep track and let the user know to add a connector for that fixture
             if (!HasConnection(element))
             {
-                Logger.Debug("ElementID {0} contained no connections and was not drawn from.", element.Id);
+                Logger.Debug("ElementID {0} contained no connections and was neither drawn to nor from.", element.Id);
                 ListOfElementsWithoutConnectors.Add(element.Id);
                 return;
             }
@@ -158,6 +161,7 @@ namespace GreySMITH.Commands.DrawPipeOuts
             Units documentUnits = element.Document.GetUnits();
             DisplayUnit documentUnitSystem = element.Document.DisplayUnitSystem;
             
+            
             double roughingAmount = 0.0;
 
             // if the element has a host 
@@ -179,24 +183,19 @@ namespace GreySMITH.Commands.DrawPipeOuts
 
             return roughingAmount;
         }
-        private View3D Create3DView()
-        {
-            // Filters the model for 3D Views
-            FilteredElementCollector fec3DViews =
-                new FilteredElementCollector(CurrentDocument);
 
-            // creates an Isometric 3D View 
-            return View3D.CreateIsometric(
-                    CurrentDocument,
-                    fec3DViews.OfType<View3D>().First().Id);
+        private void ConvertToDocumentUnits(double value)
+        {
+            
         }
+
         private bool IntersectsWithOwner(Connector c)
         {
             ReferenceWithContext intersectedReference = 
                 new ReferenceIntersector(                           // shoots a ray from the connector's face
                 c.Owner.Id,                                         // element it looks for intersection with
                 FindReferenceTarget.All,                            // look for all intersections because this should hit it's owner first anyway if they intersect
-                Create3DView()).                                    // newly created 3DView
+                CurrentDocument.Create3DView()).                    // newly created 3DView
                 FindNearest(c.Origin, c.CoordinateSystem.BasisZ);   // gives the normal from the connector's face
 
             // if the object returned is not null AND is the element itself, the connector intersects with it

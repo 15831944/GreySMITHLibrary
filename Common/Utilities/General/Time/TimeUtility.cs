@@ -12,7 +12,7 @@ namespace GreySMITH.Common.Utilities.General.Time
         /// </summary>
         /// <param name="datetime">Date Time to be formatted</param>
         /// <returns>YYYY-MM-DD_0000 if using time of day</returns>
-        public static string DateFormatter( DateTime datetime, bool usetimeofday)
+        public static string DateFormatter( DateTime datetime, bool usetimeofday = false)
         {
             string finaldt;
 

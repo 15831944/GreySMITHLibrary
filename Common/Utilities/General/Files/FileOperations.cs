@@ -23,7 +23,7 @@ namespace GreySMITH.Common.Utilities.General.Files
             List<string> filenames = Directory.GetFiles(correctdirectory).ToList<string>();
 
             // copy from the latest directory and save to "newfoldername" with current date YEAR-MO-DA format
-            string folderwdate = Path.Combine(newfoldername, TimeUtility.DateFormatter(DateTime.Now, false));
+            string folderwdate = Path.Combine(newfoldername, TimeUtility.DateFormatter(DateTime.Now));
             if (!Directory.Exists(folderwdate))
             {
                 Directory.CreateDirectory(folderwdate);
@@ -180,16 +180,16 @@ namespace GreySMITH.Common.Utilities.General.Files
         public static void Archive(string foldertobearchived, string directorytosearchforarchiveparent , string archiveparentfoldername)
         {
             // gets path of folder which should be archived
-            string archivedirectorypath = FileOperations.FolderFinder(directorytosearchforarchiveparent, foldertobearchived);
+            string archivedirectorypath = FolderFinder(directorytosearchforarchiveparent, foldertobearchived);
 
             // gets the path the folder under which the archive should be placed
-            string archiveparent = FileOperations.FolderFinder(directorytosearchforarchiveparent, archiveparentfoldername);
+            string archiveparent = FolderFinder(directorytosearchforarchiveparent, archiveparentfoldername);
 
             // gets the future name of archive folder; includes today's date info
             string folderwdate = Path.Combine(archiveparent, TimeUtility.DateFormatter(DateTime.Now, false));
 
             // copies all files + subdirectories to archive location
-            FileOperations.DirectoryCopy(archivedirectorypath, folderwdate, true);
+            DirectoryCopy(archivedirectorypath, folderwdate, true);
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace GreySMITH.Common.Utilities.General.Files
             string folderwdateandtime = Path.Combine(objecttobearchived, TimeUtility.DateFormatter(DateTime.Now, true));
 
             // copies the contents of the folder in question to the dated folder, as well as any items within it
-            FileOperations.DirectoryCopy(objecttobearchived, folderwdateandtime, true);
+            DirectoryCopy(objecttobearchived, folderwdateandtime, true);
         }
 
         /// <summary>
