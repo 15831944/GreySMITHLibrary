@@ -11,7 +11,7 @@ using GreySMITH.Revit.Wrappers;
 using GreySMITH.Revit.Extensions.Elements;
 using GreySMITH.Revit.Extensions.Documents;
 
-namespace GreySMITH.Commands.DrawPipeOuts
+namespace GreySMITH.Commands
 {
     /// <summary>
     /// Command designed to allow the user to "rough out" the piping for multiple plumbing fixtures simultaneously
@@ -22,12 +22,16 @@ namespace GreySMITH.Commands.DrawPipeOuts
         public DrawPipeOutCommand(
             ExternalCommandData excmd,
             string mainmessage,
-            Autodesk.Revit.DB.ElementSet elemset)
-            : base(excmd, mainmessage, elemset)
+            Autodesk.Revit.DB.ElementSet elemset,
+            string tabname = "Plumbing",
+            string commandname = "Draw Roughing")
+            : base(excmd, mainmessage, elemset, tabname, commandname)
         {
             _mainMessage = mainmessage;
             _externalCMD = excmd;
             _elementSet = elemset;
+            TabName = tabname;
+            CommandName = commandname;
         }
 
         private static readonly Logger Logger =
@@ -141,8 +145,9 @@ namespace GreySMITH.Commands.DrawPipeOuts
                 switch (IntersectsWithOwner(c))
                 {
                     case (true):
+                        
                         // if so draw FROM THE OPPOSITE DIRECTION, pipe system is supply.
-                        CurrentDocument.Create.NewPipe(c.Origin, (), suggestedPipeType);
+//                        CurrentDocument.Create.NewPipe(c.Origin, (), suggestedPipeType);
                         
 
                         // draw a pipe in space of the appropiate size (2' away from the object)
@@ -166,8 +171,8 @@ namespace GreySMITH.Commands.DrawPipeOuts
         /// Returns a PipeType based on the PipeType most used with a specific System Type in this document
         /// </summary>
         /// <param name="currentDocument">Document to check</param>
-        /// <param name="connector">Connector to base on</param>
-        /// <returns></returns>
+        /// <param name="pipeSystemType">The pipe system type to check for</param>
+        /// <returns>The most used pipe type for this system type</returns>
         private PipeType GetSuggestedPipeType(Document currentDocument, PipeSystemType pipeSystemType )
         {
             throw new NotImplementedException();

@@ -7,6 +7,9 @@ namespace GreySMITH.Revit.Wrappers
 {
     public abstract partial class AbstractCommand : IExternalCommand
     {
+        public string TabName;
+        public string CommandName;
+
         protected TransactionAttribute _transactionAttribute =      new TransactionAttribute(TransactionMode.Manual);
         protected RegenerationAttribute _regenerationAttribute =    new RegenerationAttribute(RegenerationOption.Manual);
 
@@ -44,11 +47,15 @@ namespace GreySMITH.Revit.Wrappers
         protected AbstractCommand(
             ExternalCommandData excmd,
             string mainmessage,            
-            Autodesk.Revit.DB.ElementSet elemset)
+            Autodesk.Revit.DB.ElementSet elemset,
+            string commandName,
+            string tabName)
         {
             _mainMessage = mainmessage;
             _externalCMD = excmd;
             _elementSet = elemset;
+            CommandName = commandName;
+            TabName = tabName;
         }
 
         protected AbstractCommand()

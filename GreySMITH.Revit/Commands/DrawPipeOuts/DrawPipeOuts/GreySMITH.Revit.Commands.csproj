@@ -7,8 +7,8 @@
     <ProjectGuid>{81E9DF04-155E-4C8A-8A69-47D44C1152F2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GreySMITH.Commands.DrawPipeOuts</RootNamespace>
-    <AssemblyName>DrawPipeOuts</AssemblyName>
+    <RootNamespace>GreySMITH.Commands</RootNamespace>
+    <AssemblyName>GreySMITH.Commands</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -28,6 +28,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>GSCommands.addin</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime">
@@ -60,6 +63,7 @@
   <ItemGroup>
     <Compile Include="DrawPipeOutCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ribbon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -69,6 +73,9 @@
       <Project>{1f3b3d98-8618-45e1-8955-6db266034938}</Project>
       <Name>GreySMITH.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="GSCommands.addin" />
   </ItemGroup>
   <Import Project="..\..\..\GreySMITH.Revit.projitems" Label="Shared" Condition="Exists('..\..\..\GreySMITH.Revit.projitems')" />
   <Import Project="..\..\..\GreySMITH.Revit.projitems" Label="Shared" Condition="Exists('..\..\..\GreySMITH.Revit.projitems')" />
