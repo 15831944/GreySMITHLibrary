@@ -2,12 +2,13 @@
 using Autodesk.Revit.UI;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
+using GreySMITH.Commands;
 
 namespace GreySMITH.Revit.Wrappers
 {
     public abstract partial class AbstractCommand : IExternalCommand
     {
-        public string TabName;
+        public string PanelName;
         public string CommandName;
 
         protected TransactionAttribute _transactionAttribute =      new TransactionAttribute(TransactionMode.Manual);
@@ -49,13 +50,14 @@ namespace GreySMITH.Revit.Wrappers
             string mainmessage,            
             Autodesk.Revit.DB.ElementSet elemset,
             string commandName,
-            string tabName)
+            string panelName)
         {
             _mainMessage = mainmessage;
             _externalCMD = excmd;
             _elementSet = elemset;
             CommandName = commandName;
-            TabName = tabName;
+            PanelName = panelName;
+            CommandList.Add(this);
         }
 
         protected AbstractCommand()

@@ -23,15 +23,16 @@ namespace GreySMITH.Commands
             ExternalCommandData excmd,
             string mainmessage,
             Autodesk.Revit.DB.ElementSet elemset,
-            string tabname = "Plumbing",
+            string panelname = "Plumbing",
             string commandname = "Draw Roughing")
-            : base(excmd, mainmessage, elemset, tabname, commandname)
+            : base(excmd, mainmessage, elemset, panelname, commandname)
         {
             _mainMessage = mainmessage;
             _externalCMD = excmd;
             _elementSet = elemset;
-            TabName = tabname;
+            PanelName = panelname;
             CommandName = commandname;
+            
         }
 
         private static readonly Logger Logger =
