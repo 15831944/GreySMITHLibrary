@@ -1,15 +1,19 @@
 ﻿using System;
+using System.Reflection;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
-using GreySMITH.Commands;
+using GreySMITH.Revit.Commands;
 
-namespace GreySMITH.Revit.Wrappers
+namespace GreySMITH.Revit.Commands.Wrappers
 {
     public abstract partial class AbstractCommand : IExternalCommand
     {
         public string PanelName;
         public string CommandName;
+        public string AssemblyLocation;
+        public string Description;
+        public string ClassName;
 
         protected TransactionAttribute _transactionAttribute =      new TransactionAttribute(TransactionMode.Manual);
         protected RegenerationAttribute _regenerationAttribute =    new RegenerationAttribute(RegenerationOption.Manual);
@@ -50,13 +54,20 @@ namespace GreySMITH.Revit.Wrappers
             string mainmessage,            
             Autodesk.Revit.DB.ElementSet elemset,
             string commandName,
-            string panelName)
+            string panelName,
+            string className,
+            string assemblyLocation,
+            string description)
         {
             _mainMessage = mainmessage;
             _externalCMD = excmd;
             _elementSet = elemset;
             CommandName = commandName;
             PanelName = panelName;
+            ClassName = this.GetType().Name;
+            Description = description;
+            AssemblyLocation = Assembly.GetExecutingAssembly().Location;
+
             CommandList.Add(this);
         }
 

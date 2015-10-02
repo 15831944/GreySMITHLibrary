@@ -2,16 +2,16 @@
 <RevitAddIns>
   <AddIn Type="Application">
     <Name>BR+A Automation Tools</Name>
-    <Assembly>GreySMITH.Commands.dll</Assembly>
+    <Assembly>GreySMITH.Revit.Commands.dll</Assembly>
     <AddInId>69275E32-E9C5-4A19-BA3A-092E6A032016</AddInId>
-    <FullClassName>GreySMITH.Commands.Ribbon</FullClassName>
+    <FullClassName>GreySMITH.Commands.RibbonPanel_BRplusA</FullClassName>
     <VendorId>GreySMITH</VendorId>
     <VendorDescription>Autodesk, www.autodesk.com</VendorDescription>
   </AddIn>
   <AddIn Type="Command">
-    <Assembly>GreySMITH.Commands.dll</Assembly>
+    <Assembly>GreySMITH.Revit.Commands.dll</Assembly>
     <AddInId>8054ba25-088e-47e0-bd33-f1da89c62087</AddInId>
-    <FullClassName>GreySMITH.Commands.DrawPipeOutCommand</FullClassName>
+    <FullClassName>GreySMITH.Revit.Commands.DrawPipeOutCommand</FullClassName>
     <VendorId>GreySMITH</VendorId>
     <Text>Draw Roughing</Text>
     <Description>Draws typical roughing for one or multiple Plumbing Fixtures</Description>

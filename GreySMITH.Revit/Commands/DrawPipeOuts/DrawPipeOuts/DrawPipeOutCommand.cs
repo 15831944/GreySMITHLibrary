@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using NLog;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Plumbing;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
-using GreySMITH.Revit.Wrappers;
+using GreySMITH.Revit.Commands.Wrappers;
 using GreySMITH.Revit.Extensions.Elements;
 using GreySMITH.Revit.Extensions.Documents;
 
-namespace GreySMITH.Commands
+
+namespace GreySMITH.Revit.Commands
 {
     /// <summary>
     /// Command designed to allow the user to "rough out" the piping for multiple plumbing fixtures simultaneously
@@ -23,16 +25,16 @@ namespace GreySMITH.Commands
             ExternalCommandData excmd,
             string mainmessage,
             Autodesk.Revit.DB.ElementSet elemset,
+            string classname,
+            string description,
+            string assemblyLocation,
             string panelname = "Plumbing",
             string commandname = "Draw Roughing")
-            : base(excmd, mainmessage, elemset, panelname, commandname)
+            : base(excmd, mainmessage, elemset, commandname, panelname, assemblyLocation, classname, description)
         {
             _mainMessage = mainmessage;
             _externalCMD = excmd;
             _elementSet = elemset;
-            PanelName = panelname;
-            CommandName = commandname;
-            
         }
 
         private static readonly Logger Logger =
@@ -178,7 +180,6 @@ namespace GreySMITH.Commands
         {
             throw new NotImplementedException();
         }
-
         private double CalculateRoughing(Element element)
         {
             double roughingAmount = 12.0;
@@ -192,7 +193,6 @@ namespace GreySMITH.Commands
             // i.e: changes inches to millimeters or vice versa
             return UnitUtils.ConvertToInternalUnits(roughingAmount, DisplayUnitType.DUT_FRACTIONAL_INCHES);
         }
-
         private double CalculateRoughingFromHost(Element element)
         {
             // typical roughing amount in inches
@@ -237,7 +237,6 @@ namespace GreySMITH.Commands
 
             return UnitUtils.ConvertToInternalUnits(roughingAmount, DisplayUnitType.DUT_FRACTIONAL_INCHES) + hostWidth;
         }
-
         private bool IntersectsWithOwner(Connector c)
         {
             ReferenceWithContext intersectedReference = 

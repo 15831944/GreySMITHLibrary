@@ -26,11 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Elements\ExtensionsConnectors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Parameters\ParameterUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Misc\TaskDialogUtil.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Wrappers\AbstractApplication.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Wrappers\AbstractButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Wrappers\AbstractCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Wrappers\AbstractedLine.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Wrappers\AbstractRibbon.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Wrappers\IRevitObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Wrappers\LineUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Wrappers\RevitObject.cs" />

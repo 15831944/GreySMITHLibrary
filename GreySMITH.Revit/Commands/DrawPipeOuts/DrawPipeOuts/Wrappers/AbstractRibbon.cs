@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GreySMITH.Revit.Wrappers
+namespace GreySMITH.Revit.Commands.Wrappers
 {
     class AbstractRibbon
     {

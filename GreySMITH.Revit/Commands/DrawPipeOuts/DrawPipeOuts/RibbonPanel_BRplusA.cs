@@ -7,10 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Autodesk.Revit.UI;
+using GreySMITH.Revit.Commands.Wrappers;
 
-using GreySMITH.Revit.Wrappers;
-
-namespace GreySMITH.Commands
+namespace GreySMITH.Revit.Commands
 {
     public class RibbonPanel_BRplusA : IExternalApplication
     {
@@ -46,15 +45,18 @@ namespace GreySMITH.Commands
             {
                 var pushbuttondata = new PushButtonData(
                     command.CommandName,
-                    description,
-                    assemblyLocation,
-                    classname);
+                    command.Description,
+                    command.AssemblyLocation,
+                    command.ClassName);
 
                 try
                 {
+                    // make a panel in the browser - if there are no panels which match names, keep going
+                    // TODO: resolve this better later
                     (from panel in panels
-                     where panel.Name.Equals(command.PanelName)
-                     select panel).FirstOrDefault().AddItem(pushbuttondata);
+                        where panel.Name.Equals(command.PanelName)
+                        select panel).FirstOrDefault().
+                        AddItem(pushbuttondata);
                 }
 
                 catch (NullReferenceException)
@@ -65,6 +67,9 @@ namespace GreySMITH.Commands
         }
     }
 
+    /// <summary>
+    /// Global list of commands available to be added to the Ribbon
+    /// </summary>
     public static class CommandList
     {
         private static Dictionary<AbstractCommand, string> _commands;
@@ -75,7 +80,7 @@ namespace GreySMITH.Commands
         }
 
         /// <summary>
-        /// Shoudl only return the unique Panels of the series.
+        /// Should only return the unique Panels of the series.
         /// </summary>
         public static IEnumerable<string> PanelNames
         {
@@ -91,7 +96,7 @@ namespace GreySMITH.Commands
             get
             {
                 return (from command in _commands.Keys
-                        select command.CommandName);
+                    select command.CommandName);
             }
         }
 
