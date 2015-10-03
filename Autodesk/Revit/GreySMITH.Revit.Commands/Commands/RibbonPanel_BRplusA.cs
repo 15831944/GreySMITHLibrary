@@ -14,7 +14,7 @@ namespace GreySMITH.Revit.Commands
     public class RibbonPanel_BRplusA : IExternalApplication
     {
         private const string tabName = "BR+A Automation Tools";
-        private List<RibbonPanel> panels;
+        private List<RibbonPanel> panels = new List<RibbonPanel>();
 
         public Result OnStartup(UIControlledApplication uiContApp)
         {
@@ -39,31 +39,32 @@ namespace GreySMITH.Revit.Commands
 
         public void AddButtons()
         {
-            // Creates a button for each of the Commands in List
-            // Adds the button to the appropiate panel
-            foreach (AbstractCommand command in CommandList.Commands)
-            {
-                var pushbuttondata = new PushButtonData(
-                    command.CommandName,
-                    command.Description,
-                    command.AssemblyLocation,
-                    command.ClassName);
+//            // Creates a button for each of the Commands in List
+//            // Adds the button to the appropiate panel
+//            foreach (AbstractCommand command in CommandList.Commands)
+//            {
+//                var pushbuttondata = new PushButtonData(
+//                    command.CommandName,
+//                    command.Description,
+//                    command.AssemblyLocation,
+//                    command.ClassName);
+//
+//                try
+//                {
+//                    // make a panel in the browser - if there are no panels which match names, keep going
+//                    // TODO: resolve this better later
+//                    (from panel in panels
+//                        where panel.Name.Equals(command.PanelName)
+//                        select panel).FirstOrDefault().
+//                        AddItem(pushbuttondata);
+//                }
+//
+//                catch (NullReferenceException)
+//                {
+//                    // eat the error and keep going
+//                }
+//            }
 
-                try
-                {
-                    // make a panel in the browser - if there are no panels which match names, keep going
-                    // TODO: resolve this better later
-                    (from panel in panels
-                        where panel.Name.Equals(command.PanelName)
-                        select panel).FirstOrDefault().
-                        AddItem(pushbuttondata);
-                }
-
-                catch (NullReferenceException)
-                {
-                    // eat the error and keep going
-                }
-            }
         }
     }
 
@@ -72,7 +73,13 @@ namespace GreySMITH.Revit.Commands
     /// </summary>
     public static class CommandList
     {
-        private static Dictionary<AbstractCommand, string> _commands;
+        private static Dictionary<AbstractCommand, string> _commands =
+            new Dictionary<AbstractCommand, string>();
+
+//        static CommandList()
+//        {
+//            
+//        }
 
         public static void Add(AbstractCommand command)
         {
@@ -90,7 +97,6 @@ namespace GreySMITH.Revit.Commands
                     select panel).Distinct();
             }
         }
-
         public static IEnumerable<string> CommandNames
         {
             get
@@ -99,7 +105,6 @@ namespace GreySMITH.Revit.Commands
                     select command.CommandName);
             }
         }
-
         public static IEnumerable<AbstractCommand> Commands
         {
             get { return _commands.Keys; }

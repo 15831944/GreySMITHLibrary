@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DrawPipeOuts")]
+[assembly: AssemblyTitle("GreySMITH.Revit.Commands.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Boxx Technologies, Inc.")]
-[assembly: AssemblyProduct("DrawPipeOuts")]
-[assembly: AssemblyCopyright("Copyright © Boxx Technologies, Inc. 2015")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("GreySMITH.Revit.Commands.Tests")]
+[assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b7f59965-db65-4c1f-9321-b5075a84f8e3")]
+[assembly: Guid("973c5e8b-700c-4041-8911-25a3fff2b72d")]
 
 // Version information for an assembly consists of the following four values:
 //

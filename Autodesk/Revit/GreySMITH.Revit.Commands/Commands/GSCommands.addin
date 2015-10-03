@@ -4,7 +4,7 @@
     <Name>BR+A Automation Tools</Name>
     <Assembly>GreySMITH.Revit.Commands.dll</Assembly>
     <AddInId>69275E32-E9C5-4A19-BA3A-092E6A032016</AddInId>
-    <FullClassName>GreySMITH.Commands.RibbonPanel_BRplusA</FullClassName>
+    <FullClassName>GreySMITH.Revit.Commands.RibbonPanel_BRplusA</FullClassName>
     <VendorId>GreySMITH</VendorId>
     <VendorDescription>Autodesk, www.autodesk.com</VendorDescription>
   </AddIn>

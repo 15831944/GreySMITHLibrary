@@ -7,6 +7,8 @@ using GreySMITH.Revit.Commands;
 
 namespace GreySMITH.Revit.Commands.Wrappers
 {
+    [Transaction(TransactionMode.Manual)]
+    [Regeneration(RegenerationOption.Manual)]
     public abstract partial class AbstractCommand : IExternalCommand
     {
         public string PanelName;
@@ -14,9 +16,6 @@ namespace GreySMITH.Revit.Commands.Wrappers
         public string AssemblyLocation;
         public string Description;
         public string ClassName;
-
-        protected TransactionAttribute _transactionAttribute =      new TransactionAttribute(TransactionMode.Manual);
-        protected RegenerationAttribute _regenerationAttribute =    new RegenerationAttribute(RegenerationOption.Manual);
 
         protected ExternalCommandData _externalCMD
         {
@@ -48,7 +47,6 @@ namespace GreySMITH.Revit.Commands.Wrappers
         {
             get { return UiApplication.ActiveUIDocument; }
         }
-
         protected AbstractCommand(
             ExternalCommandData excmd,
             string mainmessage,            

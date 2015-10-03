@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using Autodesk.Revit.Attributes;
 using NLog;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Plumbing;
@@ -12,14 +13,20 @@ using GreySMITH.Revit.Commands.Wrappers;
 using GreySMITH.Revit.Extensions.Elements;
 using GreySMITH.Revit.Extensions.Documents;
 
-
 namespace GreySMITH.Revit.Commands
 {
+    [Transaction(TransactionMode.Manual)]
+    [Regeneration(RegenerationOption.Manual)]
     /// <summary>
     /// Command designed to allow the user to "rough out" the piping for multiple plumbing fixtures simultaneously
     /// </summary>
     public partial class DrawPipeOutCommand : AbstractCommand
     {
+        public DrawPipeOutCommand()
+        {
+            
+        }
+
         // default constructor for concrete classes - make sure to implement this in all cases.
         public DrawPipeOutCommand(
             ExternalCommandData excmd,
@@ -169,7 +176,6 @@ namespace GreySMITH.Revit.Commands
                 }
             }
         }
-
         /// <summary>
         /// Returns a PipeType based on the PipeType most used with a specific System Type in this document
         /// </summary>
@@ -178,7 +184,14 @@ namespace GreySMITH.Revit.Commands
         /// <returns>The most used pipe type for this system type</returns>
         private PipeType GetSuggestedPipeType(Document currentDocument, PipeSystemType pipeSystemType )
         {
-            throw new NotImplementedException();
+            // find all the runs of pipe which have the same PipeSystemType as above
+            var pipes = from pipe in (new FilteredElementCollector(currentDocument).OfType<Pipe>())
+                where pipe.MEPSystem.SystemType.Equals(pipeSystemType)
+                select pipe;
+
+            // return the pipe system type whic occurs the most in the group
+            
+
         }
         private double CalculateRoughing(Element element)
         {
@@ -253,7 +266,6 @@ namespace GreySMITH.Revit.Commands
 
             return false;
         }
-
         #region Un-Ready Methods
         /// <summary>
         /// This might have to wait - realizing that it would be quite a task
@@ -276,3 +288,4 @@ namespace GreySMITH.Revit.Commands
         #endregion
     }
 }
+

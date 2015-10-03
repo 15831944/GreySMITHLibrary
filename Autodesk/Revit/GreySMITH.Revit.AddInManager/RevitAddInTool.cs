@@ -35,5 +35,10 @@ namespace GreySMITH.Revit.AddInManager
 
         }
 
+        public static void FindAllCommands()
+        {
+            
+        }
+
     }
 }

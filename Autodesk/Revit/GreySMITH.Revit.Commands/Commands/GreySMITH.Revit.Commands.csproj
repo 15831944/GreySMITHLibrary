@@ -110,6 +110,8 @@
   <Import Project="..\..\..\GreySMITH.Revit.projitems" Label="Shared" Condition="Exists('..\..\..\GreySMITH.Revit.projitems')" />
   <Import Project="..\..\..\GreySMITH.Revit.projitems" Label="Shared" Condition="Exists('..\..\..\GreySMITH.Revit.projitems')" />
   <Import Project="..\..\..\GreySMITH.Revit.projitems" Label="Shared" Condition="Exists('..\..\..\GreySMITH.Revit.projitems')" />
+  <Import Project="..\..\GreySMITH.Revit\GreySMITH.Revit.projitems" Label="Shared" Condition="Exists('..\..\GreySMITH.Revit\GreySMITH.Revit.projitems')" />
+  <Import Project="..\..\GreySMITH.Revit\GreySMITH.Revit.projitems" Label="Shared" Condition="Exists('..\..\GreySMITH.Revit\GreySMITH.Revit.projitems')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
