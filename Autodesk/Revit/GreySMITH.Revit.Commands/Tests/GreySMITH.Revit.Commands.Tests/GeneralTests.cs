@@ -9,7 +9,6 @@ namespace GreySMITH.Revit.Commands.Tests
         [Test]
         public void IsActive()
         {
-
         }
     }
 }

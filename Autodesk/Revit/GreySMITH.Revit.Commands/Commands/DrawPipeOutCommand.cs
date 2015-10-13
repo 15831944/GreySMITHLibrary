@@ -186,8 +186,8 @@ namespace GreySMITH.Revit.Commands
         {
             // find all the runs of pipe which have the same PipeSystemType as above
             var pipes = from pipe in (new FilteredElementCollector(currentDocument).OfType<Pipe>())
-                where pipe.MEPSystem.SystemType.Equals(pipeSystemType)
-                select pipe;
+                        where pipe.MEPSystem.SystemType.Equals(pipeSystemType)
+                        select pipe;
 
             // return the pipe system type whic occurs the most in the group
             
