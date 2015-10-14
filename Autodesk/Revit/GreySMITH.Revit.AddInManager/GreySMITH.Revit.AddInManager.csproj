@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="RevitAddInUtility">
-      <HintPath>..\References\Revit\2014\RevitAddInUtility.dll</HintPath>
+      <HintPath>..\..\..\References\Revit\2014\RevitAddInUtility.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

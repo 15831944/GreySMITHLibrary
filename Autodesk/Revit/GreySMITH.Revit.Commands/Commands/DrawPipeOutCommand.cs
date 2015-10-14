@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Configuration;
 using System.Reflection;
 using Autodesk.Revit.Attributes;
 using NLog;
@@ -15,11 +16,12 @@ using GreySMITH.Revit.Extensions.Documents;
 
 namespace GreySMITH.Revit.Commands
 {
-    [Transaction(TransactionMode.Manual)]
-    [Regeneration(RegenerationOption.Manual)]
+
     /// <summary>
     /// Command designed to allow the user to "rough out" the piping for multiple plumbing fixtures simultaneously
     /// </summary>
+    [Transaction(TransactionMode.Manual)]
+    [Regeneration(RegenerationOption.Manual)]
     public partial class DrawPipeOutCommand : AbstractCommand
     {
         public DrawPipeOutCommand()
@@ -31,7 +33,7 @@ namespace GreySMITH.Revit.Commands
         public DrawPipeOutCommand(
             ExternalCommandData excmd,
             string mainmessage,
-            Autodesk.Revit.DB.ElementSet elemset,
+            ElementSet elemset,
             string classname,
             string description,
             string assemblyLocation,
@@ -108,7 +110,7 @@ namespace GreySMITH.Revit.Commands
                 return true;
             return false;
         }
-        private void DrawRoughing(IList<Element> elementList)
+        private Result DrawRoughing(IList<Element> elementList)
         {
             foreach (Element element in elementList)
             {
@@ -122,6 +124,8 @@ namespace GreySMITH.Revit.Commands
                     "Speak to the architect and creator of the family so" +
                     "that a connector can be added to the family", 
                     ListOfElementsWithoutConnectors.Count()));
+
+            return Result.Succeeded;
         }
         private void DrawPipeToOrFromObject(Element element)
         {
@@ -129,7 +133,7 @@ namespace GreySMITH.Revit.Commands
             XYZ elementLocation =       
                 ((LocationPoint) element.Location).Point;
 
-            // if none - keep track and let the user know to add a connector for that fixture
+            // if there are no connectors - keep track and let the user know to add a connector for that fixture
             if (!HasConnection(element))
             {
                 Logger.Debug("ElementID {0} contained no connections and was neither drawn to nor from.", element.Id);
@@ -137,6 +141,7 @@ namespace GreySMITH.Revit.Commands
                 return;
             }
             
+            // try to draw a connector for all the connections in the model
             foreach (Connector c in (ConnectorDictionary.Keys.Where(c => c.Owner == element)))
             {
                 DrawPipeToOrFromConnector(c);
@@ -144,55 +149,71 @@ namespace GreySMITH.Revit.Commands
         }
         private void DrawPipeToOrFromConnector(Connector c)
         {
-            using (Transaction tr_pipedraw = new Transaction(CurrentDocument, "Drawing pipe..."))
+            using (Transaction trPipeDraw = new Transaction(CurrentDocument, "Drawing pipe..."))
             {
-                tr_pipedraw.Start();
+                trPipeDraw.Start();
+
+                // calculate the distance the pipe should be drawn
                 double amount = CalculateRoughing(c.Owner);
-                PipeType suggestedPipeType = GetSuggestedPipeType(CurrentDocument, c.PipeSystemType);
-                
+
+                // based on the pipe systems in the document, suggest the most likely pipe to be used
+                PipeType suggestedPipeType = FindSuggestedPipeType(CurrentDocument, c.PipeSystemType);
 
                 // find out if the connector direction will intersect with object
-                switch (IntersectsWithOwner(c))
-                {
-                    case (true):
-                        
-                        // if so draw FROM THE OPPOSITE DIRECTION, pipe system is supply.
-//                        CurrentDocument.Create.NewPipe(c.Origin, (), suggestedPipeType);
-                        
+                // if so, pipe should start away from connector and connect to it
+                XYZ pipeStartPoint = CalculatePipeDirection(IntersectsWithOwner(c), c, amount);
+                
+                // draw the pipe
+                DrawPipe(c, suggestedPipeType, pipeStartPoint);
 
-                        // draw a pipe in space of the appropiate size (2' away from the object)
-                        //            Pipe.Create()
-
-                        // connect the pipe back up to the fixture
-
-                        //            CurrentDocument.Create.NewPipe();
-                        break;
-
-                    case (false):
-                        // otherwise, draw away from object, pipe system is not supply
-
-                        // do stuff
-                        break;
-                }
+                trPipeDraw.Commit();
             }
         }
+        //TODO: Does the pipe derive it's size from the connector's size?
+        private void DrawPipe(Connector connector, PipeType pipeType, XYZ pipeStartPoint)
+        {
+            CurrentDocument.Create.NewPipe(pipeStartPoint, connector, pipeType);
+        }
+        private XYZ CalculatePipeDirection(bool fromOppositeDirection, Connector connector, double pipeLength)
+        {
+            // normal of connector
+            var normalPoint = connector.CoordinateSystem.BasisZ;
+            var originPoint = connector.CoordinateSystem.Origin;
+            // want to convert normal to something else?
+            
+            // if so draw FROM THE OPPOSITE DIRECTION, pipe system is supply.
+
+            // use this method to compare the connector's normal direction with the document's XYZ
+
+            return new XYZ();
+        }
+        //TODO: Write a test to ensure that this returns the most frequent pipe AND standard pipe if none are available
+        //TODO: What if there are no pipes in the document at all? Find a way to suggest a standard pipe
         /// <summary>
         /// Returns a PipeType based on the PipeType most used with a specific System Type in this document
         /// </summary>
         /// <param name="currentDocument">Document to check</param>
         /// <param name="pipeSystemType">The pipe system type to check for</param>
         /// <returns>The most used pipe type for this system type</returns>
-        private PipeType GetSuggestedPipeType(Document currentDocument, PipeSystemType pipeSystemType )
+        private PipeType FindSuggestedPipeType(Document currentDocument, PipeSystemType pipeSystemType )
         {
             // find all the runs of pipe which have the same PipeSystemType as above
             var pipes = from pipe in (new FilteredElementCollector(currentDocument).OfType<Pipe>())
-                        where pipe.MEPSystem.SystemType.Equals(pipeSystemType)
+                        where ((PipingSystem)pipe.MEPSystem).SystemType.Equals(pipeSystemType)
                         select pipe;
 
-            // return the pipe system type whic occurs the most in the group
-            
+            // find the most frequently used PipeType in this Pipe System
+            var pipeType = pipes.GroupBy(p => p.PipeType).
+                           OrderByDescending(type => type.Count()).
+                           Take(1).
+                           Select(mostFrequent => mostFrequent.Key).ToArray().First();
+
+            // return the pipe system type which occurs the most in the group
+            return pipeType;
 
         }
+        //TODO: Write a test to ensure that this returns Imperial when Imperial and Metric when not
+        //TODO: Write a test to ensure this returns a simple value when there is no host
         private double CalculateRoughing(Element element)
         {
             double roughingAmount = 12.0;
@@ -206,6 +227,7 @@ namespace GreySMITH.Revit.Commands
             // i.e: changes inches to millimeters or vice versa
             return UnitUtils.ConvertToInternalUnits(roughingAmount, DisplayUnitType.DUT_FRACTIONAL_INCHES);
         }
+        //TODO: Write a test for each of these cases
         private double CalculateRoughingFromHost(Element element)
         {
             // typical roughing amount in inches
@@ -250,6 +272,7 @@ namespace GreySMITH.Revit.Commands
 
             return UnitUtils.ConvertToInternalUnits(roughingAmount, DisplayUnitType.DUT_FRACTIONAL_INCHES) + hostWidth;
         }
+        //TODO: Write a test to ensure this actually intersects itself
         private bool IntersectsWithOwner(Connector c)
         {
             ReferenceWithContext intersectedReference = 
@@ -288,4 +311,3 @@ namespace GreySMITH.Revit.Commands
         #endregion
     }
 }
-
