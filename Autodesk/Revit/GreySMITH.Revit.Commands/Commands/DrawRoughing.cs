@@ -21,28 +21,37 @@ namespace GreySMITH.Revit.Commands
     /// </summary>
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]
-    public partial class DrawPipeOutCommand : AbstractCommand
+    public partial class DrawRoughing : IExternalCommand
     {
-        public DrawPipeOutCommand()
+        protected ExternalCommandData _externalCMD
         {
-            
+            get;
+            set;
         }
-
-        // default constructor for concrete classes - make sure to implement this in all cases.
-        public DrawPipeOutCommand(
-            ExternalCommandData excmd,
-            string mainmessage,
-            ElementSet elemset,
-            string classname,
-            string description,
-            string assemblyLocation,
-            string panelname = "Plumbing",
-            string commandname = "Draw Roughing")
-            : base(excmd, mainmessage, elemset, commandname, panelname, assemblyLocation, classname, description)
+        protected string _mainMessage
         {
-            _mainMessage = mainmessage;
-            _externalCMD = excmd;
-            _elementSet = elemset;
+            get;
+            set;
+        }
+        protected Autodesk.Revit.DB.ElementSet _elementSet
+        {
+            get;
+            set;
+        }
+        protected UIApplication UiApplication
+        {
+            get
+            {
+                return _externalCMD.Application;
+            }
+        }
+        protected Document CurrentDocument
+        {
+            get { return UiApplication.ActiveUIDocument.Document; }
+        }
+        protected UIDocument UiDocument
+        {
+            get { return UiApplication.ActiveUIDocument; }
         }
 
         private static readonly Logger Logger =
@@ -61,24 +70,23 @@ namespace GreySMITH.Revit.Commands
         }
         private void CreateConnectorDictionary()
         {
+            IEnumerable<Connector> fecConnectors =
+                new FilteredElementCollector(CurrentDocument).OfType<Connector>();
 
-            var fecConnectors = 
-                new FilteredElementCollector(CurrentDocument).OfClass(typeof(Connector));
-            
-
-//            FilteredElementIdIterator
-//            
-//
-//            foreach (Connector connector in fecConnectors)
-//            {
-//                _connectorDictionary.Add(connector, connector.Owner);
-//            }
-
-            TaskDialog.Show("Connector Tests", string.Format("The FilteredElementCollector has {0} connects posing as Elements",
-                fecConnectors.Count()));
+            foreach (Connector connector in fecConnectors)
+            {
+                _connectorDictionary.Add(connector, connector.Owner);
+            }
         }
-        public override Result Work()
+        public Result Execute(
+            ExternalCommandData externalCommandData,
+            ref string mainMessage,
+            ElementSet elementSet)
         {
+            _mainMessage = mainMessage;
+            _externalCMD = externalCommandData;
+            _elementSet = elementSet;
+
             // create a dictionary of elements in the model vs connectors
             CreateConnectorDictionary();
 
@@ -86,7 +94,7 @@ namespace GreySMITH.Revit.Commands
             IList<Element> plumbingFixtures = PromptUserToSelectObjects();
 
             // draw a pipe from the object's connection of the correct system type in the appropiate direction
-            DrawRoughing(plumbingFixtures);
+            return Work(plumbingFixtures);
             
             return Result.Failed;
         }
@@ -116,7 +124,7 @@ namespace GreySMITH.Revit.Commands
                 return true;
             return false;
         }
-        private Result DrawRoughing(IList<Element> elementList)
+        private Result Work(IList<Element> elementList)
         {
             foreach (Element element in elementList)
             {
@@ -180,7 +188,6 @@ namespace GreySMITH.Revit.Commands
         {
             CurrentDocument.Create.NewPipe(pipeStartPoint, connector, pipeType);
         }
-
         // TODO: needs testing to confirm it goes in the right direction
         private XYZ CalculateStartPoint(bool fromOppositeDirection, Connector connector, double pipeLength)
         {
@@ -197,7 +204,6 @@ namespace GreySMITH.Revit.Commands
             
             return globalStartPoint;
         }
-
         //TODO: Needs testing to confirm that conversion works
         private XYZ ConvertToGlobalCoordinateSystem(XYZ point)
         {

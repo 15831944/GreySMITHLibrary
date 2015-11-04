@@ -3,6 +3,7 @@ using System.Reflection;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
+using NLog;
 using GreySMITH.Revit.Commands;
 
 namespace GreySMITH.Revit.Commands.Wrappers
@@ -11,6 +12,7 @@ namespace GreySMITH.Revit.Commands.Wrappers
     [Regeneration(RegenerationOption.Manual)]
     public abstract partial class AbstractCommand : IExternalCommand
     {
+        private static Logger logger;
         public string PanelName;
         public string CommandName;
         public string AssemblyLocation;
@@ -83,15 +85,16 @@ namespace GreySMITH.Revit.Commands.Wrappers
             Autodesk.Revit.DB.ElementSet elemset)
         {
             // if any of the private fields are incorrect - let Revit re-correct them
-            if(
-            (!_mainMessage.Equals(mainmessage)) ||
-            (!_externalCMD.Equals(excmd)) ||
-            (!_elementSet.Equals(elemset)))
-            {
+            // tried doing this before initializing the fields
+//            if(
+//            (!_mainMessage.Equals(mainmessage)) ||
+//            (!_externalCMD.Equals(excmd)) ||
+//            (!_elementSet.Equals(elemset)))
+//            {
                 _mainMessage = mainmessage;
                 _externalCMD = excmd;
                 _elementSet = elemset;
-            }
+//            }
 
             return Execute();
         }
@@ -117,7 +120,9 @@ namespace GreySMITH.Revit.Commands.Wrappers
 
             catch
             {
-                Console.WriteLine("Command failed because of an exception.");
+                logger.Debug("Command failed because of an exception");
+                TaskDialog.Show("Command Failed",
+                    "There was an error behind the scenes that caused the command to fail horribly and die.");
             }
 
             return Result.Failed;

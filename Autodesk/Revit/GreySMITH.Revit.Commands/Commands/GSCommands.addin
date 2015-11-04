@@ -13,6 +13,17 @@
     <AddInId>8054ba25-088e-47e0-bd33-f1da89c62087</AddInId>
     <FullClassName>GreySMITH.Revit.Commands.DrawPipeOutCommand</FullClassName>
     <VendorId>GreySMITH</VendorId>
+    <Text>Draw Roughing Original Test</Text>
+    <Description>Draws typical roughing for one or multiple Plumbing Fixtures - still need to work out AbstractCommand usage</Description>
+    <VisibilityMode>AlwaysVisible</VisibilityMode>
+    <Discipline>Any</Discipline>
+    <LanguageType>Unknown</LanguageType>
+  </AddIn>
+  <AddIn Type="Command">
+    <Assembly>GreySMITH.Revit.Commands.dll</Assembly>
+    <AddInId>715FF0DD-0A7D-44F1-90AA-62DAB0D30F9C</AddInId>
+    <FullClassName>GreySMITH.Revit.Commands.DrawRoughing</FullClassName>
+    <VendorId>GreySMITH</VendorId>
     <Text>Draw Roughing</Text>
     <Description>Draws typical roughing for one or multiple Plumbing Fixtures</Description>
     <VisibilityMode>AlwaysVisible</VisibilityMode>
