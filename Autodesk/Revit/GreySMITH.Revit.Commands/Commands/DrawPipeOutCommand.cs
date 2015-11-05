@@ -13,6 +13,8 @@ using Autodesk.Revit.UI.Selection;
 using GreySMITH.Revit.Commands.Wrappers;
 using GreySMITH.Revit.Extensions.Elements;
 using GreySMITH.Revit.Extensions.Documents;
+using Microsoft.Win32.SafeHandles;
+using NLog.LayoutRenderers.Wrappers;
 
 namespace GreySMITH.Revit.Commands
 {
@@ -61,21 +63,15 @@ namespace GreySMITH.Revit.Commands
         }
         private void CreateConnectorDictionary()
         {
-
-            var fecConnectors = 
-                new FilteredElementCollector(CurrentDocument).OfClass(typeof(Connector));
+            var fecPlumbingFixtures =
+                new FilteredElementCollector(CurrentDocument)
+                .OfCategory(BuiltInCategory.OST_PlumbingFixtures);
+                
+            
             
 
-//            FilteredElementIdIterator
-//            
-//
-//            foreach (Connector connector in fecConnectors)
-//            {
-//                _connectorDictionary.Add(connector, connector.Owner);
-//            }
-
-            TaskDialog.Show("Connector Tests", string.Format("The FilteredElementCollector has {0} connects posing as Elements",
-                fecConnectors.Count()));
+//            TaskDialog.Show("Connector Tests", string.Format("The FilteredElementCollector has {0} connects posing as Elements",
+//                fecConnectorManager.Count()));
         }
         public override Result Work()
         {
@@ -201,6 +197,7 @@ namespace GreySMITH.Revit.Commands
         //TODO: Needs testing to confirm that conversion works
         private XYZ ConvertToGlobalCoordinateSystem(XYZ point)
         {
+            #region OtherStuff
             double x = point.X;
             double y = point.Y;
             double z = point.Z;
@@ -216,8 +213,24 @@ namespace GreySMITH.Revit.Commands
             double xTemp = x * b0.X + y * b1.X + z * b2.X + origin.X;
             double yTemp = x * b0.Y + y * b1.Y + z * b2.Y + origin.Y;
             double zTemp = x * b0.Z + y * b1.Z + z * b2.Z + origin.Z;
+            #endregion
+
+//            Math.Cos()
+//            Math.Sin()
+
+//            XYZ.BasisX
 
             return new XYZ(xTemp, yTemp, zTemp);
+
+        }
+
+        private void HigginsFormula(Connector connector)
+        {
+            XYZ VectorNormal = connector.CoordinateSystem.BasisZ;
+
+            double Vx = VectorNormal.X;
+            double Vy = VectorNormal.Y;
+            double Vz = VectorNormal.Z;
 
         }
         //TODO: Write a test to ensure that this returns the most frequent pipe AND standard pipe if none are available
