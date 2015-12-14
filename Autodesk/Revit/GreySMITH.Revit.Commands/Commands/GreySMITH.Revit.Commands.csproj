@@ -83,6 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangeMultipleRevisions.cs" />
     <Compile Include="DrawRoughing.cs" />
     <Compile Include="DrawPipeOutCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

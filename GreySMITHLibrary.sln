@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreySMITH.Common", "Common\GreySMITH.Common.csproj", "{1F3B3D98-8618-45E1-8955-6DB266034938}"
 EndProject
@@ -33,6 +33,8 @@ EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GreySMITH.Revit", "Autodesk\Revit\GreySMITH.Revit\GreySMITH.Revit.shproj", "{30E5A928-4B04-4167-A93B-1440609816CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreySMITH.Revit.Commands", "Autodesk\Revit\GreySMITH.Revit.Commands\Commands\GreySMITH.Revit.Commands.csproj", "{81E9DF04-155E-4C8A-8A69-47D44C1152F2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AutoCAD", "AutoCAD", "{074D765D-C98E-403A-A62F-55BAC7894A24}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -88,5 +90,6 @@ Global
 		{32E3E6DA-A15C-4A8F-B545-A055DE88BBEC} = {FC5ED986-4FB1-4BDF-ACA6-80982D8861C5}
 		{30E5A928-4B04-4167-A93B-1440609816CF} = {FC5ED986-4FB1-4BDF-ACA6-80982D8861C5}
 		{81E9DF04-155E-4C8A-8A69-47D44C1152F2} = {8A8A8639-49D3-40C2-8C18-DE87CDD6552B}
+		{074D765D-C98E-403A-A62F-55BAC7894A24} = {8396604E-7E85-471C-B56B-EC80FAA560BD}
 	EndGlobalSection
 EndGlobal

@@ -2,7 +2,8 @@
 using NUnit.Framework;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Plumbing;
-using rvtUnit.Helpers;
+using Autodesk.Revit.UI;
+using Helpers;
 
 namespace GreySMITH.Revit.Commands.Tests
 {
@@ -30,6 +31,7 @@ namespace GreySMITH.Revit.Commands.Tests
         public void PlumbingFixtureIsMepModel()
         {
             Document currentDocument = GeneralHelper.ActiveUIDocument.Document;
+            TaskDialog.Show("Test Dialog", "Should appear");
 
             FamilyInstance plumbingFixture = 
                 (FamilyInstance) new FilteredElementCollector(currentDocument)
