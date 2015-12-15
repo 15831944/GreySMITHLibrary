@@ -1,6 +1,6 @@
 ﻿using Autodesk.Revit.UI;
 
-namespace GreySMITH.Revit.Misc
+namespace GreySMITH.Revit.Commands.Misc
 {
     public static class TaskDialogUtil
     {

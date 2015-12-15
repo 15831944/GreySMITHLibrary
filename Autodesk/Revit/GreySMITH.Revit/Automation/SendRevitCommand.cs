@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Autodesk.Revit.DB;
 
-namespace GreySMITH.Revit.Automation
+namespace GreySMITH.Revit.Commands.Automation
 {
     public static class SendRevitCommand
     {

@@ -1,6 +1,6 @@
 ﻿using GreySMITH.Common.Utilities.General;
 
-namespace GreySMITH.Revit.Extensions.Applications
+namespace GreySMITH.Revit.Commands.Extensions.Applications
 {
     public enum TemplateDiscipline
     {

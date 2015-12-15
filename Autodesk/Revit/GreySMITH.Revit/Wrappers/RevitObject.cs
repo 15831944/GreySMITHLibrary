@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Autodesk.Revit.DB;
+﻿using Autodesk.Revit.DB;
 
-namespace GreySMITH.Revit.Wrappers
+namespace GreySMITH.Revit.Commands.Wrappers
 {
     //TODO: Do you still need to create a RevitObject and IRevitObject?
     public partial class RevitObject : IRevitObject

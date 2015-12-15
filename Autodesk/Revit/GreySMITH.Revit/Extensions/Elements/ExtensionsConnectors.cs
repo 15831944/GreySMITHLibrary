@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using NLog;
-using Autodesk.Revit.DB;
-using Autodesk.Revit.UI;
-using Autodesk.Revit.UI.Selection;
-using GreySMITH.Revit.Wrappers;
+﻿using Autodesk.Revit.DB;
 
-namespace GreySMITH.Revit.Extensions.Elements
+namespace GreySMITH.Revit.Commands.Extensions.Elements
 {
     public static partial class ExtensionsConnectors
     {

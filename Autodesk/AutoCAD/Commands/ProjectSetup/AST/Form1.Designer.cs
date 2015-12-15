@@ -1,4 +1,4 @@
-﻿namespace AST
+﻿namespace GreySMITH.Autodesk.AutoCAD
 {
     partial class Form1
     {

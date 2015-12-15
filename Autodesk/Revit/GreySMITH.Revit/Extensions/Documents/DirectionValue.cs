@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GreySMITH.Revit.Extensions.Documents
+namespace GreySMITH.Revit.Commands.Extensions.Documents
 {
     public class DirectionValueAttribute : Attribute
     {

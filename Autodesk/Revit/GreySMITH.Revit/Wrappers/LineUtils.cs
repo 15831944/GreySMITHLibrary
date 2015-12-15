@@ -1,7 +1,4 @@
-﻿using System;
-using Autodesk.Revit.DB;
-
-namespace GreySMITH.Revit.Wrappers
+﻿namespace GreySMITH.Revit.Commands.Wrappers
 {
     public static partial class LineUtils
     {

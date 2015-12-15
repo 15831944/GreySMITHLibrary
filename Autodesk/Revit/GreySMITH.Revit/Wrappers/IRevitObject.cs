@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using NLog;
-using Autodesk.Revit.DB;
-using Autodesk.Revit.UI;
-using Autodesk.Revit.UI.Selection;
-using GreySMITH.Revit.Wrappers;
-using GreySMITH.Revit.Extensions.Elements;
+﻿using Autodesk.Revit.DB;
 
-namespace GreySMITH.Revit.Wrappers
+namespace GreySMITH.Revit.Commands.Wrappers
 {
     public interface IRevitObject
     {

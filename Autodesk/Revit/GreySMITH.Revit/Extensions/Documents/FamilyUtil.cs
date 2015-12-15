@@ -4,7 +4,7 @@ using System.Linq;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
-namespace GreySMITH.Revit.Extensions.Documents
+namespace GreySMITH.Revit.Commands.Extensions.Documents
 {
     public static class FamilyUtil
     {

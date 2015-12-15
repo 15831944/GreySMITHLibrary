@@ -10,7 +10,7 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
     /// <summary>
     /// A class which holds all the data necessary to recreate a viewport
     /// </summary>
-    public class Viewport
+    public class AutoCADViewport
     {
         //creates the specific fields for this class
         public StandardScaleType StandardScale;
@@ -23,7 +23,7 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
         public Point3d ViewTarget;
         public IEnumerable<ObjectId> FrozenLayers;
 
-        public Viewport(
+        public AutoCADViewport(
             StandardScaleType Standard_Scale,
             double Custom_Scale,
             Point3d Center_Point,

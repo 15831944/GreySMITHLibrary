@@ -1,18 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
-using Autodesk.AutoCAD.Geometry;
-using ExtensionMethods;
-using Project_Setup;
 
-
-namespace TitleBlock
+namespace GreySMITH.Autodesk.AutoCAD
 {
     /// <summary>
     /// An attempt at trying to find a way to distinguish a specific block reference 
@@ -33,7 +25,7 @@ namespace TitleBlock
 
             //Get a list of layouts/layoutids
             List<Layout> listoflayouts = new List<Layout>();
-            List<ObjectId> listoflayids = Project_Setup.ProjectSetup.Project_ListOfLayoutIds(doc);
+            List<ObjectId> listoflayids = ProjectSetup.Project_ListOfLayoutIds(doc);
             ed.WriteMessage("\n There are {0} layouts in this model", listoflayids.Count);
 
             // The objectIDs for the BlockTableRecords of the Model and PaperSpace layouts

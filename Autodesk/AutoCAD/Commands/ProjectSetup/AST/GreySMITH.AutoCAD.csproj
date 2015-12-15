@@ -45,6 +45,10 @@
     <Reference Include="AdWindows">
       <HintPath>References\AdWindows.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\NLog.4.2.2\lib\net40\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -56,9 +60,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Audit.cs" />
-    <Compile Include="Dialog Box Handler.cs" />
-    <Compile Include="Event Handling Test.cs" />
+    <Compile Include="AutoCADUtilities.cs" />
+    <Compile Include="Wrappers\AutoCADCommand.cs" />
     <Compile Include="Extensions_Document.cs" />
     <Compile Include="Extensions_Layout.cs" />
     <Compile Include="Form1.cs">
@@ -72,7 +75,15 @@
     <Compile Include="ProjectSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TitleBlock_Identifier.cs" />
-    <Compile Include="Wrappers\Viewport.cs" />
+    <Compile Include="Wrappers\AutoCADDrawing.cs" />
+    <Compile Include="Wrappers\AutoCADLayout.cs" />
+    <Compile Include="Wrappers\AutoCADViewport.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

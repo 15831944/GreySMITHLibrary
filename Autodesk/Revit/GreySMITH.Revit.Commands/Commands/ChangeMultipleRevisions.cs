@@ -11,8 +11,6 @@ using Autodesk.Revit.DB.Plumbing;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using GreySMITH.Revit.Commands.Wrappers;
-using GreySMITH.Revit.Extensions.Elements;
-using GreySMITH.Revit.Extensions.Documents;
 using NLog.LayoutRenderers.Wrappers;
 
 namespace GreySMITH.Revit.Commands

@@ -3,7 +3,7 @@ using System.Linq;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
-namespace GreySMITH.Revit.Extensions.Documents
+namespace GreySMITH.Revit.Commands.Extensions.Documents
 {
     /// <summary>
     /// Class of methods which deal with extending CopyMonitor functionality

@@ -4,7 +4,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.Exceptions;
 using GreySMITH.Common.Utilities.General;
 
-namespace GreySMITH.Revit.Extensions.Parameters
+namespace GreySMITH.Revit.Commands.Extensions.Parameters
 {
     /// <summary>
     // Parameter is a concrete class
@@ -244,13 +244,13 @@ namespace GreySMITH.Revit.Extensions.Parameters
 
         public enum ParameterForm
         {
-            [StringValueAttribute("Instance")]
+            [StringValue("Instance")]
             Instance = 1,
-            [StringValueAttribute("Type")]
+            [StringValue("Type")]
             Type = 2,
-            [StringValueAttribute("None")]
+            [StringValue("None")]
             None = 3,
-            [StringValueAttribute("Invalid")]
+            [StringValue("Invalid")]
             Invalid = 4
         }
     }

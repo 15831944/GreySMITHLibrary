@@ -4,9 +4,9 @@ using System.Windows.Forms;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using GreySMITH.Revit.Misc;
+using GreySMITH.Revit.Commands.Misc;
 
-namespace GreySMITH.Revit.Extensions.Documents
+namespace GreySMITH.Revit.Commands.Extensions.Documents
 {
     /// <summary>
     /// Class of items which deal with extension to Revit Linking capabilities

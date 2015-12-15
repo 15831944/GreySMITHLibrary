@@ -10,9 +10,8 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Plumbing;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
+using GreySMITH.Revit.Commands.Extensions.Documents;
 using GreySMITH.Revit.Commands.Wrappers;
-using GreySMITH.Revit.Extensions.Elements;
-using GreySMITH.Revit.Extensions.Documents;
 
 namespace GreySMITH.Revit.Commands
 {

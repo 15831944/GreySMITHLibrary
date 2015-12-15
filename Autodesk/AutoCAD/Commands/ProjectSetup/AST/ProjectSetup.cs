@@ -1,27 +1,16 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Dynamic;
-using System.Reflection;
-using System.Windows.Forms;
-using System.Threading;
 using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
-using Autodesk.AutoCAD.Geometry;
-using Autodesk.Windows;
-using Autodesk.AutoCAD.Windows;
-using ExtensionMethods;
-using Cleaners;
-using PageSetup;
+using Autodesk.AutoCAD.Runtime;
 
 #region Other Classes
-namespace Project_Setup
+namespace GreySMITH.Autodesk.AutoCAD
 {
-    public class Xref_Info : General_Setup.DictOfLists
+    public class Xref_Info : DictOfLists
     {
         public string XrOrigin;
 
@@ -81,7 +70,7 @@ namespace Project_Setup
         /// <returns> A List of all the block table records in the current project </returns>
         public static List<BlockTableRecord> GetAllBtrs()
         {
-            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Document doc = global::Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
 
             using (Transaction trans = db.TransactionManager.StartTransaction())
@@ -148,7 +137,7 @@ namespace Project_Setup
         public static void Xref_Exporter(BlockTableRecord btr)
         {
             //Access the current document
-            Document Cdoc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Document Cdoc = global::Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Database Adbase = Cdoc.Database;
 
             //***Gets the current directory by finding the file path
@@ -162,7 +151,7 @@ namespace Project_Setup
             string XrPath = btr.PathName;
             string XrOrigin = btr.Origin.ToString();
             string XrName = btr.Name.ToString().ToUpper();
-            General_Setup.Setup_Methods.Directory_Creator(FilePath, NewFol, NewSetup);
+            Setup_Methods.Directory_Creator(FilePath, NewFol, NewSetup);
 
             //if the Xref doesn't already exist in a xref/setup folder export it there
             if (!File.Exists(Path.Combine(FilePath, NewFol, NewSetup, XrName)))
@@ -216,7 +205,7 @@ namespace Project_Setup
                     }
                 }
 
-                catch (Autodesk.AutoCAD.Runtime.Exception aex)
+                catch (global::Autodesk.AutoCAD.Runtime.Exception aex)
                 {
                     if (aex.ErrorStatus == ErrorStatus.InvalidKey)
                     {
@@ -234,7 +223,7 @@ namespace Project_Setup
         ///</summary>
         public static void Xref_ExporterCopy(BlockTableRecord x)
         {
-            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Document doc = global::Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
 
             //***Gets the current directory by finding the file path
@@ -246,7 +235,7 @@ namespace Project_Setup
             string coploc = System.IO.Path.Combine(curloc, NewFol);
 
             //Creates the directory if it doesn't already exist
-            General_Setup.Setup_Methods.Directory_Creator(coploc);
+            Setup_Methods.Directory_Creator(coploc);
 
             if (!File.Exists(Path.Combine(curloc, NewFol, x.Name)))
             {
@@ -369,7 +358,7 @@ namespace Project_Setup
         /// <param name="field_value_new">The actual Value user wants the Property to have</param>
         public static void Xref_FieldChanger(BlockTableRecord obj, string field_name, Field field_value_new)
         {
-            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Document doc = global::Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
             Editor ed = doc.Editor;
 
@@ -415,7 +404,7 @@ namespace Project_Setup
         /// <param name="tblk">TitleBlock which should be used</param>
         public static List<Viewport> Xref_ViewPortInfo(ObjectId tblk_layid)
         {
-            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Document doc = global::Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
             List<Viewport> list_vpinfo = new List<Viewport>();
 
@@ -508,7 +497,7 @@ namespace Project_Setup
 
         public static ObjectId[] Xref_LayoutFinder(BlockTableRecord ExternalReference)
         {
-            using (Transaction tr = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Database.TransactionManager.StartTransaction())
+            using (Transaction tr = global::Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Database.TransactionManager.StartTransaction())
             {
                 //Get all the BlockReferences relative to the BlockTableRecord in question
                 //create a list to cycle through their respective ObjectIds
@@ -587,10 +576,10 @@ namespace Project_Setup
         [CommandMethod("ProjSet", CommandFlags.Session)]
         public static void Main()
         {
-            DocumentCollection mgr_doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager;
+            DocumentCollection mgr_doc = global::Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager;
 
             //Access and lock the current document and database
-            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Document doc = global::Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
             Editor ed = doc.Editor;
             HostApplicationServices.WorkingDatabase = db;
@@ -676,7 +665,7 @@ namespace Project_Setup
                     db.SecurityParameters);
             }
 
-            catch (Autodesk.AutoCAD.Runtime.Exception aex)
+            catch (global::Autodesk.AutoCAD.Runtime.Exception aex)
             {
                 if (aex.ErrorStatus == ErrorStatus.FileAccessErr)
                 {
@@ -698,11 +687,11 @@ namespace Project_Setup
                     //switch the active drawing to the newly made drawing
                     string BRA = "G:\\Shared\\CADD\\ACAD2011\\Template\\BR+A.dwt";
                     Document newdoc = doc.CreateNew(BRA, setuploc, l.LayoutName);
-                    Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument = newdoc;
+                    global::Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument = newdoc;
                     HostApplicationServices.WorkingDatabase = newdoc.Database;
                     try
                     {
-                        Autodesk.AutoCAD.ApplicationServices.Application.SetSystemVariable("CLAYER", "x-xref");
+                        global::Autodesk.AutoCAD.ApplicationServices.Application.SetSystemVariable("CLAYER", "x-xref");
                         newdoc.LayerManagement("Lock", "x-xref", false);
                     }
                     catch

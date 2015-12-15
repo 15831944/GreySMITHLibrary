@@ -1,18 +1,11 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
-using Autodesk.AutoCAD.Geometry;
-using Autodesk.AutoCAD.PlottingServices;
-using Project_Setup;
-using ExtensionMethods;
+using Autodesk.AutoCAD.Runtime;
 
-namespace ExtensionMethods
+namespace GreySMITH.Autodesk.AutoCAD
 {
     public static class Extensions_Layout
     {
@@ -106,11 +99,11 @@ namespace ExtensionMethods
                     ed.SwitchToPaperSpace();
 
                     //switch current layer to viewport layer
-                    Autodesk.AutoCAD.ApplicationServices.Application.SetSystemVariable("CLAYER", "x-vport");
+                    global::Autodesk.AutoCAD.ApplicationServices.Application.SetSystemVariable("CLAYER", "x-vport");
                     doc.LayerManagement("Lock", "x-vport", false);
 
                     // create a new viewport
-                    Autodesk.AutoCAD.DatabaseServices.Viewport vp = new Autodesk.AutoCAD.DatabaseServices.Viewport();
+                    global::Autodesk.AutoCAD.DatabaseServices.Viewport vp = new global::Autodesk.AutoCAD.DatabaseServices.Viewport();
                     
                     vp.Width = vpinfo.Width;
                     vp.Height = vpinfo.Height;
@@ -131,7 +124,7 @@ namespace ExtensionMethods
                         vp.StandardScale = vpinfo.StandardScale;
                     }
 
-                    catch (Autodesk.AutoCAD.Runtime.Exception aex)
+                    catch (global::Autodesk.AutoCAD.Runtime.Exception aex)
                     {
                         if (aex.ErrorStatus == ErrorStatus.InvalidInput)
                         {
@@ -142,7 +135,7 @@ namespace ExtensionMethods
                     //Enables the viewport
                     vp.On = true;
 
-                    Autodesk.AutoCAD.ApplicationServices.Application.SetSystemVariable("CLAYER", "0");
+                    global::Autodesk.AutoCAD.ApplicationServices.Application.SetSystemVariable("CLAYER", "0");
 
                     tr.Commit();
                 }

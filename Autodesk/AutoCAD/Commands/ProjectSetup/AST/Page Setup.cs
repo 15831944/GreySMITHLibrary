@@ -1,19 +1,9 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Dynamic;
-using System.Reflection;
-using System.Threading;
 using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.EditorInput;
-using Autodesk.AutoCAD.Geometry;
-using ExtensionMethods;
+using Autodesk.AutoCAD.Runtime;
 
-namespace PageSetup
+namespace GreySMITH.Autodesk.AutoCAD
 {
     public static class PaperSetupMethods
     {
@@ -149,4 +139,8 @@ namespace PageSetup
             }
         }
     }
+
+
+
+
 }

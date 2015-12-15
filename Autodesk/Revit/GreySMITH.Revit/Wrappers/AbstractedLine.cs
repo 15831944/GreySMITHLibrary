@@ -1,4 +1,4 @@
-﻿namespace GreySMITH.Revit.Wrappers
+﻿namespace GreySMITH.Revit.Commands.Wrappers
 {
     public partial class AbstractedLine
     {

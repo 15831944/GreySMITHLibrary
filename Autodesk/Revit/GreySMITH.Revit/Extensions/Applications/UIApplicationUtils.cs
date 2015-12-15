@@ -1,7 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
-namespace GreySMITH.Revit.Extensions.Applications
+namespace GreySMITH.Revit.Commands.Extensions.Applications
 {
     public static class UIApplicationUtils
     {

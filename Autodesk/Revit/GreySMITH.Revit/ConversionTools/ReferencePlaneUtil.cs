@@ -1,6 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 
-namespace GreySMITH.Revit.ConversionTools
+namespace GreySMITH.Revit.Commands.ConversionTools
 {
     public static class ReferencePlaneUtil
     {

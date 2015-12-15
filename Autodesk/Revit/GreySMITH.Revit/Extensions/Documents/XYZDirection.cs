@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace GreySMITH.Revit.Extensions.Documents
+namespace GreySMITH.Revit.Commands.Extensions.Documents
 {
 
     public enum XYZDirection

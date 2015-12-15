@@ -1,19 +1,14 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Dynamic;
-using System.Reflection;
 using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
-using ExtensionMethods;
+using Autodesk.AutoCAD.Runtime;
 
-
-namespace ExtensionMethods
+namespace GreySMITH.Autodesk.AutoCAD
 {
     public static class Extensions_Document
     {
@@ -26,11 +21,11 @@ namespace ExtensionMethods
             Editor ed = doc.Editor;
 
             //Gather all the xrefs from the document, if there are any
-            List<BlockTableRecord> xlist = Project_Setup.ProjectSetup.Xref_List(doc);
+            List<BlockTableRecord> xlist = ProjectSetup.Xref_List(doc);
 
             //Get a list of layouts/layoutids
             List<Layout> listoflayouts = new List<Layout>();
-            List<ObjectId> listoflayids = Project_Setup.ProjectSetup.Project_ListOfLayoutIds(doc);
+            List<ObjectId> listoflayids = ProjectSetup.Project_ListOfLayoutIds(doc);
             ed.WriteMessage("\n There are {0} layouts in this model", listoflayids.Count);
 
             // The objectIDs for the BlockTableRecords of the Model and PaperSpace layouts
@@ -65,17 +60,17 @@ namespace ExtensionMethods
         {
             bool value = false;
 
-            var btrlist = Project_Setup.ProjectSetup.GetAllBtrs();
-            var xreflist = Project_Setup.ProjectSetup.Xref_List(doc);
+            var btrlist = ProjectSetup.GetAllBtrs();
+            var xreflist = ProjectSetup.Xref_List(doc);
 
-            List<ObjectId> listoflayids = Project_Setup.ProjectSetup.Project_ListOfLayoutIds(doc);
+            List<ObjectId> listoflayids = ProjectSetup.Project_ListOfLayoutIds(doc);
             var mspace = listoflayids[0];
 
             if (xreflist.Count() > 0)
             {
                 foreach (BlockTableRecord x in xreflist)
                 {
-                    ObjectId[] xref_layids = Project_Setup.ProjectSetup.Xref_LayoutFinder(x);
+                    ObjectId[] xref_layids = ProjectSetup.Xref_LayoutFinder(x);
                     if (xref_layids.Any().Equals(mspace) || xref_layids.Any().Equals(mspace))
                     {
                         value = true;
@@ -90,17 +85,17 @@ namespace ExtensionMethods
         {
             bool value = false;
 
-            var btrlist = Project_Setup.ProjectSetup.GetAllBtrs();
-            var xreflist = Project_Setup.ProjectSetup.Xref_List(doc);
+            var btrlist = ProjectSetup.GetAllBtrs();
+            var xreflist = ProjectSetup.Xref_List(doc);
 
-            List<ObjectId> listoflayids = Project_Setup.ProjectSetup.Project_ListOfLayoutIds(doc);
+            List<ObjectId> listoflayids = ProjectSetup.Project_ListOfLayoutIds(doc);
             var pspaces = listoflayids.GetRange(1, (listoflayids.Count() - 1));
 
             if (xreflist.Count() > 0)
             {
                 foreach (BlockTableRecord x in xreflist)
                 {
-                    ObjectId[] xref_layids = Project_Setup.ProjectSetup.Xref_LayoutFinder(x);
+                    ObjectId[] xref_layids = ProjectSetup.Xref_LayoutFinder(x);
                     if (xref_layids.Any().Equals(pspaces.Any()) || xref_layids.Any().Equals(pspaces.Any()))
                     {
                         value = true;
@@ -152,14 +147,14 @@ namespace ExtensionMethods
                     if (File.Exists(xref_fullpath))
                     {
                         ObjectId xrefid = new ObjectId(IntPtr.Zero);
-                        Autodesk.AutoCAD.ApplicationServices.Application.SetSystemVariable("CLAYER", "x-xref");
+                        global::Autodesk.AutoCAD.ApplicationServices.Application.SetSystemVariable("CLAYER", "x-xref");
                         doc.LayerManagement("Lock", "x-xref", false);
                         try
                         {
                             xrefid = db.AttachXref(xref_fullpath, xref_name);
                         }
 
-                        catch (Autodesk.AutoCAD.Runtime.Exception aex)
+                        catch (global::Autodesk.AutoCAD.Runtime.Exception aex)
                         {
                             if (aex.ErrorStatus == ErrorStatus.FileAccessErr)
                             {
@@ -171,7 +166,7 @@ namespace ExtensionMethods
                         {
                             Point3d origin_default = new Point3d(0, 0, 0);
                             BlockReference xref_block = new BlockReference(origin_default, xrefid);
-                            List<Layout> list_lays = Project_Setup.ProjectSetup.Project_ListOfLayouts(doc);
+                            List<Layout> list_lays = ProjectSetup.Project_ListOfLayouts(doc);
                             if (layoutname.ToUpper().Equals("MODEL"))
                             {
                                 ObjectId modelspaceid = (from l in list_lays
@@ -186,7 +181,7 @@ namespace ExtensionMethods
 
                             else
                             {
-                                Autodesk.AutoCAD.ApplicationServices.Application.SetSystemVariable("CLAYER", "x-tblk");
+                                global::Autodesk.AutoCAD.ApplicationServices.Application.SetSystemVariable("CLAYER", "x-tblk");
                                 if (list_lays.Any(ln => ln.LayoutName.Equals(layoutname)))
                                 {
                                     //ObjectId otherspaceid = (from l in list_lays
@@ -214,7 +209,6 @@ namespace ExtensionMethods
                 }
             }
         }
-
         public static Layout Create_NewLayout(this Document doc, string layoutname)
         {
             Layout layout = new Layout();
@@ -231,7 +225,7 @@ namespace ExtensionMethods
                         layoutID = laymgr.CreateLayout(layoutname);
                     }
                         
-                    catch (Autodesk.AutoCAD.Runtime.Exception aex)
+                    catch (global::Autodesk.AutoCAD.Runtime.Exception aex)
                     {
                         if (aex.ErrorStatus == ErrorStatus.DuplicateKey)
                         {
@@ -289,7 +283,6 @@ namespace ExtensionMethods
 
             return btr_paper;
         }
-
         public static void LayerManagement(this Document doc, string Operation, string sLayerName, bool yesno)
         {
             // Get the current document and database

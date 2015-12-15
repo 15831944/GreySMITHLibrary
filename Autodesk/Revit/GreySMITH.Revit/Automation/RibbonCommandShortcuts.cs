@@ -1,6 +1,6 @@
 ﻿using GreySMITH.Common.Utilities.General;
 
-namespace GreySMITH.Revit.Automation
+namespace GreySMITH.Revit.Commands.Automation
 {
     public enum RibbonCommandShortcuts
     {
