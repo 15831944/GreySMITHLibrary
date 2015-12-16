@@ -17,7 +17,6 @@ namespace GreySMITH.Autodesk.AutoCAD
 
             return height;
         }
-
         public static double GetWidth(this Layout curlay)
         {
             double width = 0.0;
@@ -26,7 +25,6 @@ namespace GreySMITH.Autodesk.AutoCAD
 
             return width;
         }
-
         public static string PaperSize(this Layout curlay)
         {
             double x_min = curlay.Limits.MinPoint.X;
@@ -78,7 +76,6 @@ namespace GreySMITH.Autodesk.AutoCAD
             return tblksize;
                 
         }
-
         public static void Viewport_Create(this Layout layout, Project_Setup.Viewport vpinfo, Document doc)
         {
             Database db = doc.Database;
@@ -142,9 +139,5 @@ namespace GreySMITH.Autodesk.AutoCAD
             }
         }
 
-        public enum Size
-        {
-            
-        }
     }
 }

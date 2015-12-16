@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoCADUtilities.cs" />
+    <Compile Include="LayoutUtilities.cs" />
     <Compile Include="Wrappers\AutoCADCommand.cs" />
     <Compile Include="Extensions_Document.cs" />
     <Compile Include="Extensions_Layout.cs" />
