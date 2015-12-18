@@ -6,17 +6,20 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
+using NLog;
 
 namespace GreySMITH.Autodesk.AutoCAD
 {
     public static class AutoCADUtilities
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         /// <summary>
         /// Returns a list of the BlockTableRecords in the current Document's BlockTable using their ObjectIDs
         /// </summary>
         /// <returns> A List of all the block table records in the current project </returns>
         public static IEnumerable<BlockTableRecord> RetrieveAllBlockTableRecords(Document documentToGetBlocksFrom)
         {
+            Logger.Debug("Attempting to retrieve BlockTableRecords from {0}", documentToGetBlocksFrom.Name);
             IEnumerable<BlockTableRecord> blockTableRecords;
 
             using (Transaction blockTrans = documentToGetBlocksFrom.Database.TransactionManager.StartTransaction())

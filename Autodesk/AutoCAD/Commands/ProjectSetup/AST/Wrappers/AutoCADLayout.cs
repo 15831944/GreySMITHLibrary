@@ -9,7 +9,7 @@ using Exception = System.Exception;
 
 namespace GreySMITH.Autodesk.AutoCAD.Wrappers
 {
-    public class AutoCADLayout : Layout, IList<Viewport>
+    public class AutoCADLayout : Layout
     {
         public AutoCADLayout(Layout layout)
         {
