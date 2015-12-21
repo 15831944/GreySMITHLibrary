@@ -6,8 +6,8 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
+using GreySMITH.Autodesk.AutoCAD.Wrappers;
 
-#region Other Classes
 namespace GreySMITH.Autodesk.AutoCAD
 {
     public class Xref_Info : DictOfLists
@@ -30,7 +30,7 @@ namespace GreySMITH.Autodesk.AutoCAD
         }
     }
 
-    public class DictOfViewPorts : Dictionary<Layout, List<Viewport>>
+    public class DictOfViewPorts : Dictionary<Layout, List<AutoCADViewport>>
     {
         public int IdentityNumbers;
         public static int TotalNumIdens;
@@ -46,24 +46,19 @@ namespace GreySMITH.Autodesk.AutoCAD
         {
             TotalNumIdens++;
             IdentityNumbers = TotalNumIdens;
-            List<Viewport> list_vpinfo = new List<Viewport>();
-            list_vpinfo.Add(vpinfo);
+            List<AutoCADViewport> list_vpinfo = new List<AutoCADViewport>();
+            list_vpinfo.Add(new AutoCADViewport(vpinfo));
             this.Add(Layout, list_vpinfo);
         }
     }
-#endregion
-    #region Fields
     public class ProjectSetup
     {
-
         /// <summary>
         /// Parameter which will describe the kind
         /// of methodology which should
         /// be used in order to set up the files
         /// </summary>
         private static string File_Setup_Type = null;
-    #endregion
-        #region Project Setup Methods
         /// <summary>
         /// Returns a list of the BlockTableRecords in the current Document's BlockTable using their ObjectIDs
         /// </summary>
@@ -402,11 +397,11 @@ namespace GreySMITH.Autodesk.AutoCAD
         /// finds and all viewports in the same Layout and returns their relevant info
         /// </summary>
         /// <param name="tblk">TitleBlock which should be used</param>
-        public static List<Viewport> Xref_ViewPortInfo(ObjectId tblk_layid)
+        public static List<AutoCADViewport> Xref_ViewPortInfo(ObjectId tblk_layid)
         {
             Document doc = global::Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
-            List<Viewport> list_vpinfo = new List<Viewport>();
+            List<AutoCADViewport> list_vpinfo = new List<AutoCADViewport>();
 
             if (!tblk_layid.IsNull)
             {
@@ -424,19 +419,7 @@ namespace GreySMITH.Autodesk.AutoCAD
                         foreach (ObjectId v in vports)
                         {
                             numofvps++;
-                            Viewport vp = v.GetObject(OpenMode.ForRead) as Viewport;
-
-                            Viewport vpinfo =
-                                new Viewport(
-                                    vp.StandardScale,
-                                    vp.CustomScale,
-                                    vp.CenterPoint,
-                                    vp.ViewCenter,
-                                    vp.Width,
-                                    vp.Height,
-                                    vp.ViewHeight,
-                                    vp.ViewTarget,
-                                    vp.GetFrozenLayers());
+                            AutoCADViewport vpinfo = new AutoCADViewport(v.GetObject(OpenMode.ForRead) as Viewport);
 
                             list_vpinfo.Add(vpinfo);
                         }
@@ -468,7 +451,6 @@ namespace GreySMITH.Autodesk.AutoCAD
             }
             return listoflayids;
         }
-
         public static List<Layout> Project_ListOfLayouts(Document doc)
         {
             List<ObjectId> listoflayids = new List<ObjectId>();
@@ -494,7 +476,6 @@ namespace GreySMITH.Autodesk.AutoCAD
             }
 
         }
-
         public static ObjectId[] Xref_LayoutFinder(BlockTableRecord ExternalReference)
         {
             using (Transaction tr = global::Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Database.TransactionManager.StartTransaction())
@@ -570,8 +551,6 @@ namespace GreySMITH.Autodesk.AutoCAD
             }
         }
 
-        #endregion
-
         #region File_Setup_Analysis
         [CommandMethod("ProjSet", CommandFlags.Session)]
         public static void Main()
@@ -584,8 +563,8 @@ namespace GreySMITH.Autodesk.AutoCAD
             Editor ed = doc.Editor;
             HostApplicationServices.WorkingDatabase = db;
 
-            doc.NET_AUDIT();
-            doc.NET_PURGE();
+            AutoCADCommand.Audit();
+            AutoCADCommand.Purge();
 
             // if the drawing has any AEC or Proxy objects, immediately
             // send out to AECTOACAD, audit, purge and then start work
@@ -621,8 +600,6 @@ namespace GreySMITH.Autodesk.AutoCAD
             ObjectId mspace = listoflayids[0];
             List<ObjectId> pspaces = listoflayids.GetRange(1, (listoflayids.Count() - 1));
             DictOfViewPorts vp_dict = new DictOfViewPorts();
-    #endregion
-
             #region External Reference Exportation
             using (DocumentLock doclock = doc.LockDocument())
             {
@@ -646,7 +623,7 @@ namespace GreySMITH.Autodesk.AutoCAD
                 //get the info on all viewports in all layouts
                 foreach (Layout layout in listoflayouts)
                 {
-                    List<Viewport> list_vpinfo = Xref_ViewPortInfo(layout.ObjectId);
+                    List<AutoCADViewport> list_vpinfo = Xref_ViewPortInfo(layout.ObjectId);
                     vp_dict.Add(layout, list_vpinfo);
                 }
             }
@@ -925,7 +902,7 @@ namespace GreySMITH.Autodesk.AutoCAD
                             newlaymgr.RenameLayout(curlay.LayoutName, "Work");
 
                             // for each set of viewport info in the List of VP info
-                            foreach (Viewport vpinfo in vp_dict[l])
+                            foreach (AutoCADViewport vpinfo in vp_dict[l])
                             {
                                 // create a new vp with the corresponding info
                                 curlay.Viewport_Create(vpinfo, newdoc);
@@ -965,8 +942,8 @@ namespace GreySMITH.Autodesk.AutoCAD
                     #region Closing Area
                     try
                     {
-                        newdoc.NET_AUDIT();
-                        newdoc.NET_PURGE();
+                        AutoCADCommand.Audit();
+                        AutoCADCommand.Purge();
 
                         //save all the changes
                         newdoc.Database.SaveAs(
@@ -1006,5 +983,6 @@ namespace GreySMITH.Autodesk.AutoCAD
         }
     }
 }
-                #endregion
-                #endregion
+#endregion
+#endregion
+#endregion

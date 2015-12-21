@@ -65,12 +65,6 @@
     <Compile Include="Wrappers\AutoCADCommand.cs" />
     <Compile Include="Extensions_Document.cs" />
     <Compile Include="Extensions_Layout.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="General_Setup.cs" />
     <Compile Include="Page Setup.cs" />
     <Compile Include="ProjectSetup.cs" />
@@ -79,6 +73,7 @@
     <Compile Include="Wrappers\AutoCADDrawing.cs" />
     <Compile Include="Wrappers\AutoCADLayout.cs" />
     <Compile Include="Wrappers\AutoCADViewport.cs" />
+    <Compile Include="Wrappers\IAutoCADObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

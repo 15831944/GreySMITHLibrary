@@ -4,9 +4,12 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
+using GreySMITH.Autodesk.AutoCAD.Wrappers;
 
 namespace GreySMITH.Autodesk.AutoCAD
 {
+    // this has been converted into the AutoCADLayout Wrapper object
+    [Obsolete("Extensions_Layout is now obsolete - use the AutoCADLayout instead", true) ]
     public static class Extensions_Layout
     {
         public static double GetHeight(this Layout curlay)
@@ -76,7 +79,7 @@ namespace GreySMITH.Autodesk.AutoCAD
             return tblksize;
                 
         }
-        public static void Viewport_Create(this Layout layout, Project_Setup.Viewport vpinfo, Document doc)
+        public static void Viewport_Create(this Layout layout, AutoCADViewport vpinfo, Document doc)
         {
             Database db = doc.Database;
             Editor ed = doc.Editor;
@@ -114,7 +117,7 @@ namespace GreySMITH.Autodesk.AutoCAD
                     vp.ViewCenter = vpinfo.ViewCenter;
                     vp.ViewHeight = vpinfo.ViewHeight;
                     vp.ViewTarget = vpinfo.ViewTarget;
-                    vp.FreezeLayersInViewport(vpinfo.FrznLayers.GetEnumerator());
+                    vp.FreezeLayersInViewport(vpinfo.FrozenLayers.GetEnumerator());
 
                     try
                     {

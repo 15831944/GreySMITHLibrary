@@ -6,11 +6,10 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
 {
     public class AutoCADCommand
     {
-        public AutoCADCommand(Document currentDocument)
+        private static Document Document
         {
-            Document = currentDocument;
+            get { return Application.DocumentManager.MdiActiveDocument; }
         }
-        private static Document Document { get; set; }
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static void Execute(params string[] commandstoexecute)
         {

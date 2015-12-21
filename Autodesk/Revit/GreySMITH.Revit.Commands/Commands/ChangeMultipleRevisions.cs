@@ -40,13 +40,11 @@ namespace GreySMITH.Revit.Commands
 //                    .ToElements())
 //                select Revision;
 
-            List<Revision> ProjectRevisionList = new List<Revision>();
-
             IEnumerable<Revision> AllRevisionsInModel =
                 new FilteredElementCollector(currentDocument)
                     .OfCategory(BuiltInCategory.OST_Revisions)
                     .ToElements()
-                    .SelectMany(revision => ProjectRevisionList.Add(new Revision(
+                    .Select(revision => (new Revision(
                         revision.get_Parameter(BuiltInParameter.PROJECT_REVISION_REVISION_DESCRIPTION).ToString(),
                         revision.get_Parameter(BuiltInParameter.PROJECT_REVISION_REVISION_DATE).ToString(),
                         revision.get_Parameter(BuiltInParameter.PROJECT_REVISION_SEQUENCE_NUM).ToString())));

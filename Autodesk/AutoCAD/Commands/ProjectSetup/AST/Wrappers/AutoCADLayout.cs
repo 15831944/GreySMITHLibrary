@@ -5,11 +5,12 @@ using System;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
+using Autodesk.AutoCAD.EditorInput;
 using Exception = System.Exception;
 
 namespace GreySMITH.Autodesk.AutoCAD.Wrappers
 {
-    public class AutoCADLayout : Layout
+    public class AutoCADLayout : Layout, IAutoCADObject
     {
         public AutoCADLayout(Layout layout)
         {
@@ -19,8 +20,13 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
         {
             Document = parentDocument;
         }
-        private static Document Document
-        { get; set; }
+
+        public Document Document
+        {
+            get { return Application.DocumentManager.MdiActiveDocument; }
+            set { throw new NotImplementedException(); }
+        }
+
         private Layout Layout { get; set; }
         public double Height
         {
@@ -38,7 +44,7 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
 
         public LayoutSize PageSize
         {
-            get;
+            get { return LayoutSize.Unknown; }
             set
             {
                 using (DocumentLock documentLock = Document.LockDocument())
@@ -58,6 +64,47 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
             get; set;
         }
 
+        public void AddNewViewport(Viewport viewport)
+        {
+            using (DocumentLock doclock = Document.LockDocument())
+            {
+                using (Transaction tr = Document.Database.TransactionManager.StartTransaction())
+                {
+                    Database db = Document.Database;
+                    Editor ed = Document.Editor;
+
+                    // Get the BlockTableRecord so you can add to it
+                    BlockTable blt = tr.GetObject(db.BlockTableId,
+                        OpenMode.ForRead) as BlockTable;
+
+                    BlockTableRecord btr_paper = tr.GetObject(blt[BlockTableRecord.PaperSpace],
+                        OpenMode.ForWrite) as BlockTableRecord;
+
+                    //change the current space to Paper
+                    ed.SwitchToPaperSpace();
+
+                    //switch current layer to viewport layer
+                    global::Autodesk.AutoCAD.ApplicationServices.Application.SetSystemVariable("CLAYER", "x-vport");
+                    Document.LayerManagement("Lock", "x-vport", false);
+
+                    // create a new viewport
+                    AutoCADViewport acadViewport = new AutoCADViewport(viewport);
+                    Viewport vp = acadViewport;
+
+                    // add viewport to Paperspace and list within Document
+                    btr_paper.AppendEntity(vp);
+                    tr.AddNewlyCreatedDBObject(vp, true);
+                    Viewports.Add(acadViewport);
+
+                    //Enable the viewport
+                    vp.On = true;
+
+                    global::Autodesk.AutoCAD.ApplicationServices.Application.SetSystemVariable("CLAYER", "0");
+
+                    tr.Commit();
+                }
+            }
+        }
         private class PaperSizeAttribute : Attribute
         {
             private string Value { get; set; }
@@ -66,7 +113,7 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
                 Value = value;
             }
         }
-        private enum LayoutSize
+        public enum LayoutSize
         {
             [PaperSizeAttribute("ARCH_full_bleed_E_(36.00_x_48.00_Inches)")]
             Unknown = 0,

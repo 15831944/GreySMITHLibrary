@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
@@ -10,17 +9,10 @@ using NLog;
 
 namespace GreySMITH.Autodesk.AutoCAD.Wrappers
 {
-    public class AutoCADDrawing
+    public class AutoCADDrawing : AutoCADObject
     {
+        public bool IsExternalReference;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private Document Document
-        {
-            get; set;
-        }
-        private Database Database
-        {
-            get { return Document.Database; }
-        }
         private IEnumerable<BlockTableRecord> BlockTableRecords
         {
             get { return AutoCADUtilities.RetrieveAllBlockTableRecords(Document); }
@@ -30,13 +22,19 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
             get;
             set;
         }
-        private void Initialize()
+
+        // you may face errors here because of a lack of checks to one whether
+        // the values being added here already exist or are not null
+        public List<AutoCADDrawing> ExternalReferences { get; }
+
+        private void Initialize(Document internalDocument)
         {
+            Document = internalDocument;
         }
         public AutoCADDrawing(Document internalDocument)
         {
-            Document = internalDocument;
-            Initialize();
+            
+            Initialize(internalDocument);
         }
     }
 }
