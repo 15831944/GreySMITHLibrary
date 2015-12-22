@@ -7,11 +7,21 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
 using NLog;
+using NLog.LayoutRenderers.Wrappers;
+using Exception = System.Exception;
 
 namespace GreySMITH.Autodesk.AutoCAD
 {
-    public static class AutoCADUtilities
+    public class AutoCADUtilities
     {
+        private static Document Document
+        {
+            get { return Application.DocumentManager.MdiActiveDocument; }
+        }
+        private static Database Database
+        {
+            get { return Document.Database; }
+        }
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         /// <summary>
         /// Returns a list of the BlockTableRecords in the current Document's BlockTable using their ObjectIDs
@@ -34,6 +44,81 @@ namespace GreySMITH.Autodesk.AutoCAD
             }
 
             return blockTableRecords;
+        }
+        public static IEnumerable<BlockTableRecord> RetrieveExternalReferences(Document documentToGetReferencesFrom)
+        {
+            IEnumerable<BlockTableRecord> externalReferences;
+
+            using (Transaction transaction = documentToGetReferencesFrom.TransactionManager.StartTransaction())
+            {
+                //Create a list of all xrefs in the file
+                //Check the drawing to see if there are any xrefs
+                externalReferences =
+                    (from BlockTableRecord xrefBlock in
+                        (RetrieveAllBlockTableRecords(documentToGetReferencesFrom))
+                        where xrefBlock.IsFromExternalReference
+                        select xrefBlock);
+
+                //Complete the command
+                transaction.Commit();
+            }
+
+            return externalReferences;
+        }
+        /// <summary> 
+        /// Exports a BlockTableRecord out to another location using a WBlock methodology 
+        /// </summary>
+        /// <param name="blockTableRecord"> The External Reference to be exported; must be a Block Table Record </param>
+        public static void ExportExternalReferenceToFile(BlockTableRecord blockTableRecord)
+        {
+            Database database = Document.Database;
+
+            // Get the current directory by finding the file path
+            string docFilePath = Path.GetDirectoryName(Document.Database.Filename);
+
+            //Creates a new directory for all files to be saved to
+            //called "_Setup Files" and "Xrefs"
+            string setupDirectory = Directory.CreateDirectory(docFilePath + @"\_Setup Files\SETUP\Xrefs").ToString();
+
+            // if the file has already been exported - fail early
+            string newXrefPath = setupDirectory + blockTableRecord.Name.ToUpper() + ".dwg";
+            if (File.Exists(newXrefPath))
+                return;
+
+            if (!CanExternalReferenceBeResolved(blockTableRecord))
+                return;
+
+            using (Transaction transaction = database.TransactionManager.StartTransaction())
+            {
+                using (Database xrefDatabase = blockTableRecord.GetXrefDatabase(true))
+                {
+                    ObjectIdCollection idCol = new ObjectIdCollection();
+                    IdMapping idMap = new IdMapping();
+                    database.WblockCloneObjects(idCol, blockTableRecord.ObjectId, idMap, DuplicateRecordCloning.Ignore, false);
+                    transaction.Commit();
+                    if (!Directory.Exists(newXrefPath))
+                    {
+                        Directory.CreateDirectory(Path.GetDirectoryName(newXrefPath));
+                    }
+
+                    xrefDatabase.SaveAs(newXrefPath, DwgVersion.AC1021);
+                }
+            }
+        }
+
+        private static bool CanExternalReferenceBeResolved(BlockTableRecord blockTableRecord)
+        {
+            // if the External Reference can't be found nearby, just fail out
+            while (!blockTableRecord.IsResolved)
+            {
+                int counter = 0;
+                Database.ResolveXrefs(true, false);
+                counter++;
+                if (counter > 1)
+                    return false;
+            }
+
+            return true;
         }
     }
 }

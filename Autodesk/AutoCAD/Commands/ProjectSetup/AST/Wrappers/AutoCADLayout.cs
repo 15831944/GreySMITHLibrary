@@ -20,13 +20,15 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
         {
             Document = parentDocument;
         }
-
+        public LayoutType LayoutType
+        {
+            get; set;
+        }
         public Document Document
         {
             get { return Application.DocumentManager.MdiActiveDocument; }
             set { throw new NotImplementedException(); }
         }
-
         private Layout Layout { get; set; }
         public double Height
         {
@@ -41,7 +43,6 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
         {
             get { return Layout.LayoutName; }
         }
-
         public LayoutSize PageSize
         {
             get { return LayoutSize.Unknown; }
@@ -63,8 +64,7 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
         {
             get; set;
         }
-
-        public void AddNewViewport(Viewport viewport)
+        public void AddViewport(Viewport viewport)
         {
             using (DocumentLock doclock = Document.LockDocument())
             {
@@ -105,39 +105,51 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
                 }
             }
         }
-        private class PaperSizeAttribute : Attribute
-        {
-            private string Value { get; set; }
-            public PaperSizeAttribute(string value)
-            {
-                Value = value;
-            }
-        }
-        public enum LayoutSize
-        {
-            [PaperSizeAttribute("ARCH_full_bleed_E_(36.00_x_48.00_Inches)")]
-            Unknown = 0,
-            [PaperSizeAttribute("ANSI_full_bleed_B_(11.00_x_17.00_Inches)")]
-            Tabloid = 1,
-            [PaperSizeAttribute("ARCH_full_bleed_B_(18.00_x_24.00_Inches)")]
-            ArchB = 2,
-            [PaperSizeAttribute("ARCH_full_bleed_C_(17.00_x_22.00_Inches)")]
-            ArchC = 3,
-            [PaperSizeAttribute("ARCH_full_bleed_D_(24.00_x_36.00_Inches)")]
-            ArchD = 4,
-            [PaperSizeAttribute("ARCH_full_bleed_E_(36.00_x_48.00_Inches)")]
-            ArchE = 5,
-            [PaperSizeAttribute("ARCH_full_bleed_E1_(30.00_x_42.00_Inches)")]
-            ArchE1 = 6,
-        }
         private enum PlotDevice
         {
             
         }
-
         private void Initialize(Layout internalLayout)
         {
             Layout = internalLayout;
+            LayoutType = LayoutType.PaperSpace;
+        }
+
+        public IEnumerable<AutoCADDrawing> ExternalReferences
+        {
+            get { AutoCADUtilities.RetrieveAllBlockTableRecords(Document); }
+        }
+    }
+
+    public enum LayoutType
+    {
+        Unknown,
+        ModelSpace,
+        PaperSpace
+    }
+    public enum LayoutSize
+    {
+        [PaperSizeAttribute("ARCH_full_bleed_E_(36.00_x_48.00_Inches)")]
+        Unknown = 0,
+        [PaperSizeAttribute("ANSI_full_bleed_B_(11.00_x_17.00_Inches)")]
+        Tabloid = 1,
+        [PaperSizeAttribute("ARCH_full_bleed_B_(18.00_x_24.00_Inches)")]
+        ArchB = 2,
+        [PaperSizeAttribute("ARCH_full_bleed_C_(17.00_x_22.00_Inches)")]
+        ArchC = 3,
+        [PaperSizeAttribute("ARCH_full_bleed_D_(24.00_x_36.00_Inches)")]
+        ArchD = 4,
+        [PaperSizeAttribute("ARCH_full_bleed_E_(36.00_x_48.00_Inches)")]
+        ArchE = 5,
+        [PaperSizeAttribute("ARCH_full_bleed_E1_(30.00_x_42.00_Inches)")]
+        ArchE1 = 6,
+    }
+    public class PaperSizeAttribute : Attribute
+    {
+        private string Value { get; set; }
+        public PaperSizeAttribute(string value)
+        {
+            Value = value;
         }
     }
 }
