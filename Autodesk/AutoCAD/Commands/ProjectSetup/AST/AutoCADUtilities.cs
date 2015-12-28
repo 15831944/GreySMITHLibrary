@@ -71,8 +71,6 @@ namespace GreySMITH.Autodesk.AutoCAD
         /// <param name="blockTableRecord"> The External Reference to be exported; must be a Block Table Record </param>
         public static void ExportExternalReferenceToFile(BlockTableRecord blockTableRecord)
         {
-            Database database = Document.Database;
-
             // Get the current directory by finding the file path
             string docFilePath = Path.GetDirectoryName(Document.Database.Filename);
 
@@ -80,21 +78,19 @@ namespace GreySMITH.Autodesk.AutoCAD
             //called "_Setup Files" and "Xrefs"
             string setupDirectory = Directory.CreateDirectory(docFilePath + @"\_Setup Files\SETUP\Xrefs").ToString();
 
-            // if the file has already been exported - fail early
+            // if the file has already been exported 
+            // OR the ExternalReference can't be resolved - fail early
             string newXrefPath = setupDirectory + blockTableRecord.Name.ToUpper() + ".dwg";
-            if (File.Exists(newXrefPath))
+            if (File.Exists(newXrefPath) || !CanExternalReferenceBeResolved(blockTableRecord))
                 return;
 
-            if (!CanExternalReferenceBeResolved(blockTableRecord))
-                return;
-
-            using (Transaction transaction = database.TransactionManager.StartTransaction())
+            using (Transaction transaction = Database.TransactionManager.StartTransaction())
             {
                 using (Database xrefDatabase = blockTableRecord.GetXrefDatabase(true))
                 {
-                    ObjectIdCollection idCol = new ObjectIdCollection();
-                    IdMapping idMap = new IdMapping();
-                    database.WblockCloneObjects(idCol, blockTableRecord.ObjectId, idMap, DuplicateRecordCloning.Ignore, false);
+                    ObjectIdCollection idCollection = new ObjectIdCollection();
+//                    IdMapping idMapping = new IdMapping();
+                    Database.WblockCloneObjects(idCollection, blockTableRecord.ObjectId, new IdMapping(), DuplicateRecordCloning.Ignore, false);
                     transaction.Commit();
                     if (!Directory.Exists(newXrefPath))
                     {
@@ -105,7 +101,14 @@ namespace GreySMITH.Autodesk.AutoCAD
                 }
             }
         }
-
+        ///<summary>
+        /// Copies an External Reference from an existing location to another folder
+        /// will overwrite any file with the same name
+        ///</summary>
+        public static void CopyExternalReferenceToDirectory(BlockTableRecord blockTableRecord)
+        {
+            
+        }
         private static bool CanExternalReferenceBeResolved(BlockTableRecord blockTableRecord)
         {
             // if the External Reference can't be found nearby, just fail out
@@ -120,5 +123,6 @@ namespace GreySMITH.Autodesk.AutoCAD
 
             return true;
         }
+
     }
 }

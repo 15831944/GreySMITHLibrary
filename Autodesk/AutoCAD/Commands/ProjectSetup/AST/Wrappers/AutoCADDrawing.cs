@@ -24,7 +24,6 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
             get;
             set;
         }
-
         // you may face errors here because of a lack of checks to one whether
         // the values being added here already exist or are not null
         public List<AutoCADDrawing> ExternalReferences
@@ -34,7 +33,6 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
                 
             }
         }
-
         private void Initialize(Document internalDocument)
         {
             Document = internalDocument;
