@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -239,9 +240,9 @@ namespace GreySMITH.Autodesk.AutoCAD
                 try
                 {
                     string[] allpossiblexrefs = Directory.EnumerateFiles(
-                        (Path.GetDirectoryName(curloc)),
-                        "*.dwg",
-                        SearchOption.AllDirectories).ToArray<string>();
+                                                (Path.GetDirectoryName(curloc)),
+                                                "*.dwg",
+                                                SearchOption.AllDirectories).ToArray<string>();
                     // if the file is in the array
                     // copy the file from its location out to copy location
 
@@ -253,7 +254,6 @@ namespace GreySMITH.Autodesk.AutoCAD
                         foreach (var file in copy_xref)
                         {
                             File.Copy(file, (Path.Combine(coploc, (x.Name + ".dwg"))), true);
-                            break;
                         }
                     }
                     else
@@ -488,6 +488,8 @@ namespace GreySMITH.Autodesk.AutoCAD
                 {
                     BRI_list.Add(objid);
                 }
+
+                IEnumerable blockReferenceIds = ExternalReference.GetBlockReferenceIds(true, true);
 
                 //if there's only one Id in the list
                 if (BRI_list.Count() == 1)

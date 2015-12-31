@@ -1,28 +1,91 @@
-﻿using System;
+﻿using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.AutoCAD.DatabaseServices;
+using NLog;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.EditorInput;
-using Autodesk.AutoCAD.Runtime;
-using NLog;
 using NLog.LayoutRenderers.Wrappers;
-using Exception = System.Exception;
 
 namespace GreySMITH.Autodesk.AutoCAD
 {
     public class AutoCADUtilities
     {
-        private static Document Document
-        {
-            get { return Application.DocumentManager.MdiActiveDocument; }
-        }
+        #region Fields
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        #endregion Fields
+
+        #region Properties
+
         private static Database Database
         {
             get { return Document.Database; }
         }
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        private static Document Document
+        {
+            get { return Application.DocumentManager.MdiActiveDocument; }
+        }
+
+        private static string ExternalReferenceFolder
+        {
+            get
+            {
+                return InitializeSetupDirectory(@"\_Setup Files\Xrefs");
+            }
+        }
+
+        private static string SetupFolder
+        {
+            get
+            {
+                return InitializeSetupDirectory(@"\_Setup Files");
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Copies all external refernces to the default ExternalReference folder for 
+        /// AutoCAD setups
+        /// </summary>
+        /// <param name="overwrite">option to overwrite file in directory - default is false</param>
+        public static void CopyExternalReferenceToSetupDirectory(bool overwrite = false)
+        {
+            foreach (string externalReference in EnumerateExternalReferences(Database.Filename))
+            {
+                File.Copy(externalReference, ExternalReferenceFolder, overwrite);
+            }
+        }
+
+        /// <summary>
+        /// Exports a BlockTableRecord out to another location using a WBlock methodology
+        /// </summary>
+        /// <param name="blockTableRecord"> The External Reference to be exported; must be a Block Table Record </param>
+        public static void ExportExternalReferenceToFile(BlockTableRecord blockTableRecord)
+        {
+            // if the file has already been exported
+            // OR the ExternalReference can't be resolved - fail early
+            string newXrefPath = ExternalReferenceFolder + blockTableRecord.Name.ToUpper() + ".dwg";
+            if (File.Exists(newXrefPath) || !CanExternalReferenceBeResolved(blockTableRecord))
+                return;
+
+            using (Transaction transaction = Database.TransactionManager.StartTransaction())
+            {
+                using (Database xrefDatabase = blockTableRecord.GetXrefDatabase(true))
+                {
+                    Database.WblockCloneObjects(new ObjectIdCollection(), blockTableRecord.ObjectId, new IdMapping(), DuplicateRecordCloning.Ignore, false);
+                    transaction.Commit();
+
+                    // save the Xref to the new directory
+                    xrefDatabase.SaveAs(newXrefPath, DwgVersion.AC1021);
+                }
+            }
+        }
+
         /// <summary>
         /// Returns a list of the BlockTableRecords in the current Document's BlockTable using their ObjectIDs
         /// </summary>
@@ -40,11 +103,12 @@ namespace GreySMITH.Autodesk.AutoCAD
                 blockTableRecords =
                     (blockTrans.GetObject(documentToGetBlocksFrom.Database.BlockTableId, OpenMode.ForRead) as BlockTable)
                         .Cast<ObjectId>()
-                        .Select(blocktableID => (BlockTableRecord) blockTrans.GetObject(blocktableID, OpenMode.ForRead));
+                        .Select(blocktableID => (BlockTableRecord)blockTrans.GetObject(blocktableID, OpenMode.ForRead));
             }
 
             return blockTableRecords;
         }
+
         public static IEnumerable<BlockTableRecord> RetrieveExternalReferences(Document documentToGetReferencesFrom)
         {
             IEnumerable<BlockTableRecord> externalReferences;
@@ -56,8 +120,8 @@ namespace GreySMITH.Autodesk.AutoCAD
                 externalReferences =
                     (from BlockTableRecord xrefBlock in
                         (RetrieveAllBlockTableRecords(documentToGetReferencesFrom))
-                        where xrefBlock.IsFromExternalReference
-                        select xrefBlock);
+                     where xrefBlock.IsFromExternalReference
+                     select xrefBlock);
 
                 //Complete the command
                 transaction.Commit();
@@ -65,50 +129,22 @@ namespace GreySMITH.Autodesk.AutoCAD
 
             return externalReferences;
         }
-        /// <summary> 
-        /// Exports a BlockTableRecord out to another location using a WBlock methodology 
-        /// </summary>
-        /// <param name="blockTableRecord"> The External Reference to be exported; must be a Block Table Record </param>
-        public static void ExportExternalReferenceToFile(BlockTableRecord blockTableRecord)
+
+        public static IEnumerable<BlockTableRecord> RetrieveExternalReferences(Layout layout)
         {
-            // Get the current directory by finding the file path
-            string docFilePath = Path.GetDirectoryName(Document.Database.Filename);
+            // examine the layout's blocks
 
-            //Creates a new directory for all files to be saved to
-            //called "_Setup Files" and "Xrefs"
-            string setupDirectory = Directory.CreateDirectory(docFilePath + @"\_Setup Files\SETUP\Xrefs").ToString();
+            // establish if any are external references
 
-            // if the file has already been exported 
-            // OR the ExternalReference can't be resolved - fail early
-            string newXrefPath = setupDirectory + blockTableRecord.Name.ToUpper() + ".dwg";
-            if (File.Exists(newXrefPath) || !CanExternalReferenceBeResolved(blockTableRecord))
-                return;
-
-            using (Transaction transaction = Database.TransactionManager.StartTransaction())
-            {
-                using (Database xrefDatabase = blockTableRecord.GetXrefDatabase(true))
-                {
-                    ObjectIdCollection idCollection = new ObjectIdCollection();
-//                    IdMapping idMapping = new IdMapping();
-                    Database.WblockCloneObjects(idCollection, blockTableRecord.ObjectId, new IdMapping(), DuplicateRecordCloning.Ignore, false);
-                    transaction.Commit();
-                    if (!Directory.Exists(newXrefPath))
-                    {
-                        Directory.CreateDirectory(Path.GetDirectoryName(newXrefPath));
-                    }
-
-                    xrefDatabase.SaveAs(newXrefPath, DwgVersion.AC1021);
-                }
-            }
+            //return their records
+                    
         }
-        ///<summary>
-        /// Copies an External Reference from an existing location to another folder
-        /// will overwrite any file with the same name
-        ///</summary>
-        public static void CopyExternalReferenceToDirectory(BlockTableRecord blockTableRecord)
+
+        public static void DeleteEmptyLayouts(Document document)
         {
             
         }
+
         private static bool CanExternalReferenceBeResolved(BlockTableRecord blockTableRecord)
         {
             // if the External Reference can't be found nearby, just fail out
@@ -124,5 +160,44 @@ namespace GreySMITH.Autodesk.AutoCAD
             return true;
         }
 
+        /// <summary>
+        /// Returns a queryable collection of External References in the directory
+        /// </summary>
+        /// <param name="pathToStartSearch">place where the search shoudl start</param>
+        /// <returns></returns>
+        private static IEnumerable<string> EnumerateExternalReferences(string pathToStartSearch)
+        {
+            return Directory.EnumerateFiles(
+                    Path.GetDirectoryName(pathToStartSearch),
+                    "*.dwg",
+                    SearchOption.AllDirectories);
+        }
+
+        private static string InitializeSetupDirectory(string directoryToInitialize)
+        {
+            // Get the current directory by finding the file path
+            string docFilePath = Path.GetDirectoryName(Document.Database.Filename);
+
+            // if the directory already exists, fail early
+            if (Directory.Exists(docFilePath + directoryToInitialize))
+                return (docFilePath + directoryToInitialize);
+
+            //Creates a new directory for all files to be saved to
+            //called "_Setup Files" and "Xrefs"
+            return Directory.CreateDirectory(docFilePath + directoryToInitialize).ToString();
+        }
+
+        private static IEnumerable<Layout> RetrieveAllLayouts(Document document)
+        {
+            using (Transaction transaction = document.Database.TransactionManager.StartTransaction())
+            {
+                return (from BlockTableRecord blockTR in RetrieveAllBlockTableRecords(document)
+                        where blockTR.IsLayout
+                        select blockTR)
+                        .Select(btr => (Layout) transaction.GetObject(btr.Id, OpenMode.ForRead));
+            }
+        }
+
+        #endregion Methods
     }
 }

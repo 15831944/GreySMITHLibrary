@@ -11,7 +11,6 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
 {
     public class AutoCADDrawing : AutoCADObject
     {
-
         public bool IsExternalReference;
         public bool HasExternalReferencesInPaperSpace;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -24,14 +23,9 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
             get;
             set;
         }
-        // you may face errors here because of a lack of checks to one whether
-        // the values being added here already exist or are not null
-        public List<AutoCADDrawing> ExternalReferences
+        public IEnumerable<BlockTableRecord> ExternalReferences
         {
-            get
-            {
-                
-            }
+            get { return AutoCADUtilities.RetrieveExternalReferences(Document); }
         }
         private void Initialize(Document internalDocument)
         {
@@ -39,10 +33,7 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
         }
         public AutoCADDrawing(Document internalDocument)
         {
-            
             Initialize(internalDocument);
         }
     }
-
-
 }

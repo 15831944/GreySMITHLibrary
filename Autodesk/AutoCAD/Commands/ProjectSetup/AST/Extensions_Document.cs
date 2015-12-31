@@ -58,28 +58,31 @@ namespace GreySMITH.Autodesk.AutoCAD
         }
         public static bool HasXrefsInMSpace(this Document doc)
         {
-            bool value = false;
-
-            var btrlist = ProjectSetup.GetAllBtrs();
+            // retrieve a list of external references in entire document
             var xreflist = ProjectSetup.Xref_List(doc);
 
+            // retrieve a list of the layouts in the document
             List<ObjectId> listoflayids = ProjectSetup.Project_ListOfLayoutIds(doc);
+
+            // the first layout is apparently ALWAYS Model Space??
             var mspace = listoflayids[0];
 
+            // if there are external references in the list
             if (xreflist.Count() > 0)
             {
+                // cycle through each
                 foreach (BlockTableRecord x in xreflist)
                 {
+                    // find out which Layout they have Block References in
                     ObjectId[] xref_layids = ProjectSetup.Xref_LayoutFinder(x);
-                    if (xref_layids.Any().Equals(mspace) || xref_layids.Any().Equals(mspace))
+                    if (xref_layids.Any().Equals(mspace))
                     {
-                        value = true;
-                        return value;
+                        return true;
                     }
                 }
             }
 
-            return value;
+            return false;
         }
         public static bool HasXrefsInPSpace(this Document doc)
         {
@@ -96,7 +99,7 @@ namespace GreySMITH.Autodesk.AutoCAD
                 foreach (BlockTableRecord x in xreflist)
                 {
                     ObjectId[] xref_layids = ProjectSetup.Xref_LayoutFinder(x);
-                    if (xref_layids.Any().Equals(pspaces.Any()) || xref_layids.Any().Equals(pspaces.Any()))
+                    if (xref_layids.Any().Equals(pspaces.Any()))
                     {
                         value = true;
                         return value;
