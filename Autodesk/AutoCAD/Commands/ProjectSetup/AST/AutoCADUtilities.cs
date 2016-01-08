@@ -4,6 +4,7 @@ using NLog;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Autodesk.Windows;
 using NLog.LayoutRenderers.Wrappers;
 
 namespace GreySMITH.Autodesk.AutoCAD
@@ -92,52 +93,37 @@ namespace GreySMITH.Autodesk.AutoCAD
         /// <returns> A List of all the block table records in the current project </returns>
         public static IEnumerable<BlockTableRecord> RetrieveAllBlockTableRecords(Document documentToGetBlocksFrom)
         {
-            Logger.Debug("Attempting to retrieve BlockTableRecords from {0}", documentToGetBlocksFrom.Name);
-            IEnumerable<BlockTableRecord> blockTableRecords;
-
-            using (Transaction blockTrans = documentToGetBlocksFrom.Database.TransactionManager.StartTransaction())
-            {
-                // Open the database to read what blocks are in the drawing
-                // Cast the DBObjects into ObjectIDs
-                // Use those ObjectIDs to grab all BlockTableRecords
-                blockTableRecords =
-                    (blockTrans.GetObject(documentToGetBlocksFrom.Database.BlockTableId, OpenMode.ForRead) as BlockTable)
-                        .Cast<ObjectId>()
-                        .Select(blocktableID => (BlockTableRecord)blockTrans.GetObject(blocktableID, OpenMode.ForRead));
-            }
-
-            return blockTableRecords;
+            return new BlockTableRecordRetriever().Retrieve(documentToGetBlocksFrom);
         }
 
         public static IEnumerable<BlockTableRecord> RetrieveExternalReferences(Document documentToGetReferencesFrom)
         {
-            IEnumerable<BlockTableRecord> externalReferences;
-
-            using (Transaction transaction = documentToGetReferencesFrom.TransactionManager.StartTransaction())
-            {
-                //Create a list of all xrefs in the file
-                //Check the drawing to see if there are any xrefs
-                externalReferences =
-                    (from BlockTableRecord xrefBlock in
-                        (RetrieveAllBlockTableRecords(documentToGetReferencesFrom))
-                     where xrefBlock.IsFromExternalReference
-                     select xrefBlock);
-
-                //Complete the command
-                transaction.Commit();
-            }
-
-            return externalReferences;
+            return new ExternalReferenceRetriever().Retrieve(documentToGetReferencesFrom);
         }
 
         public static IEnumerable<BlockTableRecord> RetrieveExternalReferences(Layout layout)
         {
-            // examine the layout's blocks
+            // get all the BlockReferences in the Document
+            Document document =
+                global::Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.GetDocument(layout.Database);
 
-            // establish if any are external references
+
+            // find the BlockReferences that are in this specific Layout
+
+            // examine the layout's blocks AND establish if any are external references
 
             //return their records
-                    
+
+        }
+
+        private static IEnumerable<BlockReference> RetrieveBlockReferences(Document document)
+        {
+            
+        }
+
+        private static IEnumerable<BlockReference> RetrieveBlockReferences(Layout layout)
+        {
+
         }
 
         public static void DeleteEmptyLayouts(Document document)

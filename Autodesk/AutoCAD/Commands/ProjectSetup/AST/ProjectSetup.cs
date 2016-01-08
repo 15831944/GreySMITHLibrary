@@ -480,8 +480,8 @@ namespace GreySMITH.Autodesk.AutoCAD
         {
             using (Transaction tr = global::Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Database.TransactionManager.StartTransaction())
             {
-                //Get all the BlockReferences relative to the BlockTableRecord in question
-                //create a list to cycle through their respective ObjectIds
+                // Get all the BlockReferences relative to the BlockTableRecord in question
+                // create a list to cycle through their respective ObjectIds
                 ObjectIdCollection BlockRefIdsColl = ExternalReference.GetBlockReferenceIds(true, true);
                 List<ObjectId> BRI_list = new List<ObjectId>();
                 foreach (ObjectId objid in BlockRefIdsColl)

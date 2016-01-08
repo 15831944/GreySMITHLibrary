@@ -61,6 +61,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoCADUtilities.cs" />
+    <Compile Include="BlockTableRecordRetriever.cs" />
+    <Compile Include="ExternalReferenceRetriever.cs" />
     <Compile Include="LayoutUtilities.cs" />
     <Compile Include="Wrappers\AutoCADCommand.cs" />
     <Compile Include="Extensions_Document.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="Wrappers\AutoCADLayout.cs" />
     <Compile Include="Wrappers\AutoCADViewport.cs" />
     <Compile Include="Wrappers\IAutoCADObject.cs" />
+    <Compile Include="Wrappers\IRetriever.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
