@@ -86,13 +86,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\General\Report.cs" />
-    <Compile Include="Utilities\General\StringUtils.cs" />
-    <Compile Include="Utilities\General\DictionaryUtil.cs" />
-    <Compile Include="Utilities\General\Files\FileOperations.cs" />
-    <Compile Include="Utilities\General\StringEnum.cs" />
-    <Compile Include="Utilities\General\StringValue.cs" />
-    <Compile Include="Utilities\General\Time\TimeUtility.cs" />
+    <Compile Include="General\StringUtils.cs" />
+    <Compile Include="General\DictionaryUtil.cs" />
+    <Compile Include="Files\FileOperations.cs" />
+    <Compile Include="General\StringEnum.cs" />
+    <Compile Include="General\StringValueAttribute.cs" />
+    <Compile Include="General\Time\TimeUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

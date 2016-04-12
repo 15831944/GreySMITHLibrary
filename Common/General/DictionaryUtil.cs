@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace GreySMITH.Common.Utilities.General
+namespace GreySMITH.Common.General
 {
     /// <summary>
     /// Class for extending functionality of miscellaneous system objects

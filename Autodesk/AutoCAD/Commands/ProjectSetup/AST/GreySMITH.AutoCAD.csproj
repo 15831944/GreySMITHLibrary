@@ -34,16 +34,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="accoremgd">
-      <HintPath>References\accoremgd.dll</HintPath>
+      <HintPath>..\..\..\..\..\References\AutoCAD\2014\accoremgd.dll</HintPath>
     </Reference>
     <Reference Include="acdbmgd">
-      <HintPath>References\acdbmgd.dll</HintPath>
+      <HintPath>..\..\..\..\..\References\AutoCAD\2014\acdbmgd.dll</HintPath>
     </Reference>
     <Reference Include="acmgd">
-      <HintPath>References\acmgd.dll</HintPath>
+      <HintPath>..\..\..\..\..\References\AutoCAD\2014\acmgd.dll</HintPath>
     </Reference>
     <Reference Include="AdWindows">
-      <HintPath>References\AdWindows.dll</HintPath>
+      <HintPath>..\..\..\..\..\References\AutoCAD\2014\AdWindows.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\..\packages\NLog.4.2.2\lib\net40\NLog.dll</HintPath>

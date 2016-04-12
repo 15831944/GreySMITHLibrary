@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using GreySMITH.Common.Utilities.General;
+using GreySMITH.Common.General;
 
 namespace GreySMITH.Revit.Commands.Extensions.Applications
 {

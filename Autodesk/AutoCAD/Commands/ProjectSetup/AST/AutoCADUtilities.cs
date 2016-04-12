@@ -1,4 +1,5 @@
-﻿using Autodesk.AutoCAD.ApplicationServices;
+﻿using System;
+using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using NLog;
 using System.Collections.Generic;
@@ -113,17 +114,18 @@ namespace GreySMITH.Autodesk.AutoCAD
             // examine the layout's blocks AND establish if any are external references
 
             //return their records
+            throw new NotImplementedException();
 
         }
 
         private static IEnumerable<BlockReference> RetrieveBlockReferences(Document document)
         {
-            
+            throw new NotImplementedException();
         }
 
         private static IEnumerable<BlockReference> RetrieveBlockReferences(Layout layout)
         {
-
+            throw new NotImplementedException();
         }
 
         public static void DeleteEmptyLayouts(Document document)

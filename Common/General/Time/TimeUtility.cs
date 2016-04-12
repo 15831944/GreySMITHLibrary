@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GreySMITH.Common.Utilities.General.Time
+namespace GreySMITH.Common.General.Time
 {
     /// <summary>
     /// Contains Custom utilities for dealing with time

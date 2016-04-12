@@ -52,14 +52,14 @@
       <HintPath>..\..\..\..\packages\NLog.4.2.2\lib\net40\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RevitAddInUtility">
-      <HintPath>..\..\..\..\References\Revit\2014\RevitAddInUtility.dll</HintPath>
-    </Reference>
     <Reference Include="RevitAPI">
       <HintPath>..\..\..\..\References\Revit\2014\RevitAPI.dll</HintPath>
     </Reference>
     <Reference Include="RevitAPIUI">
       <HintPath>..\..\..\..\References\Revit\2014\RevitAPIUI.dll</HintPath>
+    </Reference>
+    <Reference Include="rvtUnit">
+      <HintPath>..\..\..\..\References\Revit.Testing\rvtUnit.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

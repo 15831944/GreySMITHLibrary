@@ -2,22 +2,18 @@
 
 namespace GreySMITH.Revit.Commands.Wrappers
 {
-    //TODO: Do you still need to create a RevitObject and IRevitObject?
-    public partial class RevitObject : IRevitObject
+    public abstract class RevitObject : IRevitObject
     {
-        public readonly Document _document;
+        public Document SourceDocument{get;}
 
-        public Document CurrentDocument
+        protected RevitObject(Document currentDocument)
         {
-            get
-            {
-                return _document;
-            }
+            SourceDocument = currentDocument;
         }
+    }
 
-        public RevitObject(Document currentDocument)
-        {
-            _document = currentDocument;
-        }
+    public interface IRevitObject
+    {
+        Document SourceDocument { get; }
     }
 }

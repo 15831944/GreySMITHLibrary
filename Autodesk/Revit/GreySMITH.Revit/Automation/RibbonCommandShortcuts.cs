@@ -1,4 +1,4 @@
-﻿using GreySMITH.Common.Utilities.General;
+﻿using GreySMITH.Common.General;
 
 namespace GreySMITH.Revit.Commands.Automation
 {

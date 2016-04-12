@@ -2,7 +2,8 @@
 using System.Diagnostics;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.Exceptions;
-using GreySMITH.Common.Utilities.General;
+using GreySMITH.Common.General;
+using NLog;
 
 namespace GreySMITH.Revit.Commands.Extensions.Parameters
 {
@@ -20,6 +21,8 @@ namespace GreySMITH.Revit.Commands.Extensions.Parameters
     /// </summary>
     public static class ParameterUtils
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static ParameterForm GetParameterForm(this Parameter param)
         {
             ParameterForm paramform = ParameterForm.None;
@@ -226,7 +229,8 @@ namespace GreySMITH.Revit.Commands.Extensions.Parameters
 
             catch (InvalidObjectException invalidoex)
             {
-                ExceptionReport.DebugLog(invalidoex);
+                logger.Debug("There was an exception: {0}", invalidoex);
+
             }
 
             return null;

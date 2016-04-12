@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GreySMITH.Common.Utilities.General.Time;
+using GreySMITH.Common.General.Time;
 
-namespace GreySMITH.Common.Utilities.General.Files
+namespace GreySMITH.Common.Files
 {
     public static class FileOperations
     {
