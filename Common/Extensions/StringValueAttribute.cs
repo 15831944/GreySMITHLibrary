@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GreySMITH.Common.General
+namespace GreySMITH.Common.Extensions
 {
     /// <summary>
     /// An attribute to be used to create flags with enums

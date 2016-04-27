@@ -7,9 +7,9 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
-using GreySMITH.Autodesk.AutoCAD.Wrappers;
+using GreySMITH.Domain.AutoCAD.Wrappers;
 
-namespace GreySMITH.Autodesk.AutoCAD
+namespace GreySMITH.Domain.AutoCAD
 {
     public class Xref_Info : DictOfLists
     {

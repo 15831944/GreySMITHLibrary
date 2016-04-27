@@ -2,7 +2,7 @@
 using Autodesk.AutoCAD.Runtime;
 using NLog;
 
-namespace GreySMITH.Autodesk.AutoCAD.Wrappers
+namespace GreySMITH.Domain.AutoCAD.Wrappers
 {
     public class AutoCADCommand
     {

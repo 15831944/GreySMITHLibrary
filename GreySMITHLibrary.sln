@@ -24,7 +24,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GreySMITH.Revit", "Autodesk
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreySMITH.Revit.Commands", "Autodesk\Revit\GreySMITH.Revit.Commands\Commands\GreySMITH.Revit.Commands.csproj", "{81E9DF04-155E-4C8A-8A69-47D44C1152F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreySMITH.AutoCAD", "Autodesk\AutoCAD\Commands\ProjectSetup\AST\GreySMITH.AutoCAD.csproj", "{56355E89-86E1-4D03-A01D-593750F735DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreySMITH.Domain.AutoCAD", "Autodesk\AutoCAD\Commands\ProjectSetup\AST\GreySMITH.Domain.AutoCAD.csproj", "{56355E89-86E1-4D03-A01D-593750F735DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreySMITH.Core", "GreySMITH.Core\GreySMITH.Core.csproj", "{0F201F4A-CC44-4846-92CA-64D62C9FB5F1}"
 EndProject

@@ -1,14 +1,12 @@
 ﻿using System;
-using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.DatabaseServices;
-using NLog;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Autodesk.Windows;
-using NLog.LayoutRenderers.Wrappers;
+using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.AutoCAD.DatabaseServices;
+using NLog;
 
-namespace GreySMITH.Autodesk.AutoCAD
+namespace GreySMITH.Domain.AutoCAD
 {
     public class AutoCADUtilities
     {

@@ -1,9 +1,8 @@
-﻿using System;
-using Autodesk.AutoCAD.ApplicationServices;
+﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
 
-namespace GreySMITH.Autodesk.AutoCAD
+namespace GreySMITH.Domain.AutoCAD
 {
     public static class PaperSetupMethods
     {

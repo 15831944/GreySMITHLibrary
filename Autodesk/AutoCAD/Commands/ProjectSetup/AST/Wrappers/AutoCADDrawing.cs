@@ -1,13 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.Runtime;
 using NLog;
 
-namespace GreySMITH.Autodesk.AutoCAD.Wrappers
+namespace GreySMITH.Domain.AutoCAD.Wrappers
 {
     public class AutoCADDrawing : AutoCADObject
     {

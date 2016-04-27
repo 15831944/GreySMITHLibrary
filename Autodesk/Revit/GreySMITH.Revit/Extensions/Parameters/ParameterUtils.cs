@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.Exceptions;
-using GreySMITH.Common.General;
+using GreySMITH.Common.Extensions;
 using NLog;
 
 namespace GreySMITH.Revit.Commands.Extensions.Parameters

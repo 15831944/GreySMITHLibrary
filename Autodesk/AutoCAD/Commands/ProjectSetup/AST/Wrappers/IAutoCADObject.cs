@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Autodesk.AutoCAD.ApplicationServices;
+﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 
-namespace GreySMITH.Autodesk.AutoCAD.Wrappers
+namespace GreySMITH.Domain.AutoCAD.Wrappers
 {
     public interface IAutoCADObject
     {

@@ -1,10 +1,10 @@
-﻿using Autodesk.AutoCAD.ApplicationServices;
+﻿using System;
+using System.Collections.Generic;
+using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
-using System;
-using System.Collections.Generic;
 
-namespace GreySMITH.Autodesk.AutoCAD.Wrappers
+namespace GreySMITH.Domain.AutoCAD.Wrappers
 {
     public class AutoCADLayout : Layout, IAutoCADObject
     {
@@ -163,25 +163,25 @@ namespace GreySMITH.Autodesk.AutoCAD.Wrappers
 
     public enum LayoutSize
     {
-        [PaperSizeAttribute("ARCH_full_bleed_E_(36.00_x_48.00_Inches)")]
+        [PaperSize("ARCH_full_bleed_E_(36.00_x_48.00_Inches)")]
         Unknown = 0,
 
-        [PaperSizeAttribute("ANSI_full_bleed_B_(11.00_x_17.00_Inches)")]
+        [PaperSize("ANSI_full_bleed_B_(11.00_x_17.00_Inches)")]
         Tabloid = 1,
 
-        [PaperSizeAttribute("ARCH_full_bleed_B_(18.00_x_24.00_Inches)")]
+        [PaperSize("ARCH_full_bleed_B_(18.00_x_24.00_Inches)")]
         ArchB = 2,
 
-        [PaperSizeAttribute("ARCH_full_bleed_C_(17.00_x_22.00_Inches)")]
+        [PaperSize("ARCH_full_bleed_C_(17.00_x_22.00_Inches)")]
         ArchC = 3,
 
-        [PaperSizeAttribute("ARCH_full_bleed_D_(24.00_x_36.00_Inches)")]
+        [PaperSize("ARCH_full_bleed_D_(24.00_x_36.00_Inches)")]
         ArchD = 4,
 
-        [PaperSizeAttribute("ARCH_full_bleed_E_(36.00_x_48.00_Inches)")]
+        [PaperSize("ARCH_full_bleed_E_(36.00_x_48.00_Inches)")]
         ArchE = 5,
 
-        [PaperSizeAttribute("ARCH_full_bleed_E1_(30.00_x_42.00_Inches)")]
+        [PaperSize("ARCH_full_bleed_E1_(30.00_x_42.00_Inches)")]
         ArchE1 = 6,
     }
 

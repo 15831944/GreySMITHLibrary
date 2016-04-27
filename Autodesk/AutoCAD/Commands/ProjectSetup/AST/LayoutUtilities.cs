@@ -1,16 +1,8 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Autodesk.AutoCAD.ApplicationServices;
+﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.EditorInput;
-using Autodesk.AutoCAD.Runtime;
-using GreySMITH.Autodesk.AutoCAD.Wrappers;
-using Exception = System.Exception;
+using GreySMITH.Domain.AutoCAD.Wrappers;
 
-namespace GreySMITH.Autodesk.AutoCAD
+namespace GreySMITH.Domain.AutoCAD
 {
     public class LayoutUtilities
     {

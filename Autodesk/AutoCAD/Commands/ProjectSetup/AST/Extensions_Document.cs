@@ -8,7 +8,7 @@ using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 
-namespace GreySMITH.Autodesk.AutoCAD
+namespace GreySMITH.Domain.AutoCAD
 {
     public static class Extensions_Document
     {

@@ -4,9 +4,9 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
-using GreySMITH.Autodesk.AutoCAD.Wrappers;
+using GreySMITH.Domain.AutoCAD.Wrappers;
 
-namespace GreySMITH.Autodesk.AutoCAD
+namespace GreySMITH.Domain.AutoCAD
 {
     // this has been converted into the AutoCADLayout Wrapper object
     [Obsolete("Extensions_Layout is now obsolete - use the AutoCADLayout instead", true) ]

@@ -8,8 +8,8 @@
     <ProjectGuid>{56355E89-86E1-4D03-A01D-593750F735DA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GreySMITH.Autodesk.AutoCAD</RootNamespace>
-    <AssemblyName>SetupCommand_BRplusA</AssemblyName>
+    <RootNamespace>GreySMITH.Domain.AutoCAD</RootNamespace>
+    <AssemblyName>GreySMITH.Domain.AutoCAD</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartAction>Program</StartAction>

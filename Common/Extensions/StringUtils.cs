@@ -1,4 +1,4 @@
-﻿namespace GreySMITH.Common.General
+﻿namespace GreySMITH.Common.Extensions
 {
     static class StringUtils
     {

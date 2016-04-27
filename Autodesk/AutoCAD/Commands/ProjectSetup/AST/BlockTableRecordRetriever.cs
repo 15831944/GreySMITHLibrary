@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
-using GreySMITH.Autodesk.AutoCAD.Wrappers;
+using GreySMITH.Domain.AutoCAD.Wrappers;
 using NLog;
 
-namespace GreySMITH.Autodesk.AutoCAD
+namespace GreySMITH.Domain.AutoCAD
 {
     public class BlockTableRecordRetriever : IRetriever<Document, IEnumerable<BlockTableRecord>>
     {

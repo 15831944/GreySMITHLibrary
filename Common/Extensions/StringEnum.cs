@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace GreySMITH.Common.General
+namespace GreySMITH.Common.Extensions
 {
     public static class StringEnum
     {
