@@ -46,31 +46,15 @@ namespace GreySMITH.Revit.Commands
             _elementSet = elemset;
         }
 
-        private static readonly Logger Logger =
-            LogManager.GetCurrentClassLogger();
-        private List<ElementId> ListOfElementsWithoutConnectors =
-            new List<ElementId>();
-        private Dictionary<Connector, Element> _connectorDictionary =
-            new Dictionary<Connector, Element>();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly List<ElementId> ListOfElementsWithoutConnectors = new List<ElementId>();
 
-        public Dictionary<Connector, Element> ConnectorDictionary
-        {
-            get
-            {
-                return _connectorDictionary;
-            }
-        }
+        public Dictionary<Connector, Element> ConnectorDictionary { get; }
         private void CreateConnectorDictionary()
         {
             var fecPlumbingFixtures =
                 new FilteredElementCollector(CurrentDocument)
                 .OfCategory(BuiltInCategory.OST_PlumbingFixtures);
-                
-            
-            
-
-//            TaskDialog.Show("Connector Tests", string.Format("The FilteredElementCollector has {0} connects posing as Elements",
-//                fecConnectorManager.Count()));
         }
         public override Result Work()
         {
@@ -107,7 +91,7 @@ namespace GreySMITH.Revit.Commands
         }
         private bool HasConnection(Element element)
         {
-            if (_connectorDictionary.ContainsValue(element))
+            if (ConnectorDictionary.ContainsValue(element))
                 return true;
             return false;
         }

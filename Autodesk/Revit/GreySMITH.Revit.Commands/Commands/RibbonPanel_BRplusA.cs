@@ -101,8 +101,9 @@ namespace GreySMITH.Revit.Commands
         {
             get
             {
-                return (from command in _commands.Keys
-                    select command.CommandName);
+                return _commands.Keys.Select(c => c.CommandName);
+                //return (from command in _commands.Keys
+                //    select command.CommandName);
             }
         }
         public static IEnumerable<AbstractCommand> Commands

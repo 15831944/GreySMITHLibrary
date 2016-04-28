@@ -94,8 +94,6 @@ namespace GreySMITH.Revit.Commands
 
             // draw a pipe from the object's connection of the correct system type in the appropiate direction
             return Work(plumbingFixtures);
-            
-            return Result.Failed;
         }
         private IList<Element> PromptUserToSelectObjects()
         {

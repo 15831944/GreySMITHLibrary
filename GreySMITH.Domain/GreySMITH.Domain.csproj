@@ -40,8 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Base\BaseDocument.cs" />
+    <Compile Include="DocumentType.cs" />
+    <Compile Include="Interfaces\IDocument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

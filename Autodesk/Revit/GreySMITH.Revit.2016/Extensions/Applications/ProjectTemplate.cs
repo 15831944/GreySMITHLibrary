@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using Autodesk.Revit.DB;
-using Autodesk.Revit.UI;
-
-namespace GreySMITH.Revit.Extensions.Applications
+﻿namespace GreySMITH.Domain.Revit.Extensions.Applications
 {
     public partial class ProjectTemplate
     {

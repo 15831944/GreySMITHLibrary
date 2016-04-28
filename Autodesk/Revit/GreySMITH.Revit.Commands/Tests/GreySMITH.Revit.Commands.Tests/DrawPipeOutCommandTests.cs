@@ -3,24 +3,19 @@ using NUnit.Framework;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Plumbing;
 using Autodesk.Revit.UI;
-using Helpers;
+using rvtUnit.Helpers;
 
 namespace GreySMITH.Revit.Commands.Tests
 {
     [TestFixture]
     public class DrawPipeOutCommandTests
     {
-        [SetUp]
-        public void Setup()
-        {
-            
-
-        }
+        private readonly Document currentDocument = GeneralHelper.ActiveUIDocument.Document;
 
         [Test]
         public void PlumbingFixtureHasConnection()
         {
-            Document currentDocument = GeneralHelper.ActiveUIDocument.Document;
+            
             Assert.That(PlumbingUtils.HasOpenConnector(currentDocument,
                 new FilteredElementCollector(currentDocument)
                 .OfCategory(BuiltInCategory.OST_PlumbingFixtures)
@@ -30,7 +25,6 @@ namespace GreySMITH.Revit.Commands.Tests
         [Test]
         public void PlumbingFixtureIsMepModel()
         {
-            Document currentDocument = GeneralHelper.ActiveUIDocument.Document;
             TaskDialog.Show("Test Dialog", "Should appear");
 
             FamilyInstance plumbingFixture = 

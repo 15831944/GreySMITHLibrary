@@ -88,10 +88,6 @@
     <Compile Include="DrawPipeOutCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RibbonPanel_BRplusA.cs" />
-    <Compile Include="Wrappers\AbstractApplication.cs" />
-    <Compile Include="Wrappers\AbstractButton.cs" />
-    <Compile Include="Wrappers\AbstractCommand.cs" />
-    <Compile Include="Wrappers\AbstractRibbon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
